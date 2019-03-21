@@ -34,6 +34,9 @@
     <ClCompile Include="j1Window.cpp">
       <Filter>Desenvolupament  ========\Modules\Core</Filter>
     </ClCompile>
+    <ClCompile Include="j2EntityManager.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -78,6 +81,12 @@
     <ClInclude Include="j1Window.h">
       <Filter>Desenvolupament  ========\Modules\Core</Filter>
     </ClInclude>
+    <ClInclude Include="j2EntityManager.h">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j2Entity.h">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -100,6 +109,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Core">
       <UniqueIdentifier>{e902725c-0cda-4cfe-9e5d-8507bfda5676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Entities">
+      <UniqueIdentifier>{3bdfb98b-fe06-4d17-847c-e812f2f80cef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
