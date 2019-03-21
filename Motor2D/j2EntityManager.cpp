@@ -8,7 +8,6 @@ j2EntityManager::j2EntityManager() : j1Module()
 	name="entities";
 
 	update_ms_cycle = 0.200f; 
-
 }
 
 j2EntityManager::~j2EntityManager()
@@ -17,8 +16,6 @@ j2EntityManager::~j2EntityManager()
 
 bool j2EntityManager::Awake(pugi::xml_node & config)
 {
-	active = false;
-
 	bool ret = true;
 
 	for (std::list<j2Entity*>::iterator item = entities.begin(); item != entities.end(); item++)
@@ -92,7 +89,7 @@ bool j2EntityManager::Update(float dt)
 bool j2EntityManager::PostUpdate()
 {
 	bool ret = true;
-	for (std::list<j2Entity*>::iterator item; item != entities.end(); item++)
+	for (std::list<j2Entity*>::iterator item = entities.begin(); item != entities.end(); item++)
 	{
 		if ((*item)->EntitiesEnable == true)
 		{

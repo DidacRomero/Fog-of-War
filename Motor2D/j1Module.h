@@ -14,7 +14,7 @@ class j1Module
 {
 public:
 
-	j1Module() : active(false)
+	j1Module() : active(true)
 	{}
 
 	virtual ~j1Module()

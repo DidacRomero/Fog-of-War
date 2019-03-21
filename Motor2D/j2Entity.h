@@ -10,27 +10,11 @@ class j2EntityManager;
 class j2DynamicEntity;
 struct Collider;
 
-enum class ENTITY_TYPE;
-
-struct collisionControl
+enum class ENTITY_TYPE
 {
-	bool wallFront;
-	bool wallBack;
-	bool wallTop;
-	bool wallDown;
-
-	//Collision Adjusters
-	int x_CollisionAdjuster;
-	int y_CollisionController;
-
-	iPoint colliderOffset;
-	iPoint colliderOffsetGodMode;
-
-	int colliderOffsetGroundBasic;
-	int colliderOffsetGroundSlash;
-	int collisionOffsetY;
-
+	UNKNOWN
 };
+
 
 class j2Entity
 {
@@ -81,10 +65,7 @@ public:
 	/*p2List<Collider*> colliders;*/
 	//staticElems
 
-
 	ENTITY_TYPE type;
-	collisionControl Offsets;
-
 
 	int id;
 	int EnemysFromMap;

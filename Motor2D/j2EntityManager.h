@@ -6,10 +6,7 @@
 #include <list>
 
 class j2Entity;
-enum class ENTITY_TYPE
-{
-	UNKNOWN
-};
+enum class ENTITY_TYPE;
 
 class j2EntityManager : public j1Module
 {
