@@ -46,6 +46,9 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	// Center camera
+	void FollowPlayer(int mov_x, int mov_y);
+
 public:
 
 	SDL_Renderer*	renderer;

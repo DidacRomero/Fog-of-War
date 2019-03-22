@@ -44,8 +44,8 @@ bool j1Render::Awake(pugi::xml_node& config)
 	{
 		camera.w = App->win->screen_surface->w;
 		camera.h = App->win->screen_surface->h;
-		camera.x = 0;
-		camera.y = 0;
+		camera.x = 446;
+		camera.y = -550;
 	}
 
 	return ret;
@@ -110,6 +110,12 @@ bool j1Render::Save(pugi::xml_node& data) const
 void j1Render::SetBackgroundColor(SDL_Color color)
 {
 	background = color;
+}
+
+void j1Render::FollowPlayer(int mov_x, int mov_y)
+{
+	camera.x -= mov_x;
+	camera.y -= mov_y;
 }
 
 void j1Render::SetViewPort(const SDL_Rect& rect)

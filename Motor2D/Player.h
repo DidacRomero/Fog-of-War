@@ -11,6 +11,8 @@ public:
 
 	bool Start();
 
+	bool Update(float dt, bool do_logic);
+
 	bool CleanUp();
 
 	void Draw();
