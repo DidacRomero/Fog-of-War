@@ -43,6 +43,12 @@ public:
 	//Draw Entity
 	virtual void Draw() {};
 
+	virtual void SetPos(int x, int y) 
+	{ 
+		position.x = x; 
+		position.y = y; 
+	};
+
 	//Load
 	virtual bool Load(pugi::xml_node&) { return true; }
 	//Save

@@ -45,6 +45,10 @@ public:
 
 private:
 
+	void SetLastEntityPos(int x, int y);
+
+private:
+
 	bool	do_logic;
 	int		logic_updates_per_second;
 	float	update_ms_cycle;

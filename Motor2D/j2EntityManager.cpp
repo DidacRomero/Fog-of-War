@@ -31,7 +31,22 @@ bool j2EntityManager::Awake(pugi::xml_node & config)
 
 
 	CreateEntity(ENTITY_TYPE::ENEMY);
+	SetLastEntityPos(10, 100);
+
+	CreateEntity(ENTITY_TYPE::ENEMY);
+	SetLastEntityPos(500, 450);
+
+	CreateEntity(ENTITY_TYPE::ENEMY);
+	SetLastEntityPos(850, 732);
+
+	CreateEntity(ENTITY_TYPE::ENEMY);
+	SetLastEntityPos(-400, 600);
+
+	CreateEntity(ENTITY_TYPE::ENEMY);
+	SetLastEntityPos(300, 1200);
+
 	CreateEntity(ENTITY_TYPE::PLAYER);
+	SetLastEntityPos(200, 50);
 
 	return ret;
 
@@ -177,4 +192,10 @@ void j2EntityManager::DestroyEntity(j2Entity* entity_to_destroy)
 			break;
 		}
 	}
+}
+
+void j2EntityManager::SetLastEntityPos(int x, int y)
+{
+	std::list<j2Entity*>::iterator item = --entities.end();
+	(*item)->SetPos(x, y);
 }

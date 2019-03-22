@@ -13,8 +13,6 @@ Player::~Player()
 
 bool Player::Start()
 {
-	position.x = 120;
-	position.y = 120;
 	entity_rect = { 13,4,32,57 };
 	entity_tex = App->tex->Load("textures/entities_sprites.png");
 	return true;
