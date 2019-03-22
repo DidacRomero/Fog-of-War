@@ -41,6 +41,7 @@ bool j1Scene::Start()
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");
+	entity_debug = App->tex->Load("textures/entities_sprites.png");
 
 	return true;
 }
@@ -120,6 +121,7 @@ bool j1Scene::Update(float dt)
 	p = App->map->MapToWorld(p.x, p.y);
 
 	App->render->Blit(debug_tex, p.x, p.y);
+	App->render->Blit(entity_debug,240,362);
 
 	/*const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 

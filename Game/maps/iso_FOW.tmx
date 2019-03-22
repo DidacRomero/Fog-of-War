@@ -2542,7 +2542,7 @@
    <tile gid="1"/>
   </data>
  </layer>
- <layer name="Colisions" width="50" height="50">
+ <layer name="Colisions" width="50" height="50" visible="0">
   <properties>
    <property name="Navigation" value="1"/>
    <property name="Nodraw" value="1"/>

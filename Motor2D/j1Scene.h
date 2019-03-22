@@ -34,6 +34,8 @@ public:
 
 private:
 	SDL_Texture* debug_tex;
+
+	SDL_Texture* entity_debug;
 };
 
 #endif // __j1SCENE_H__
