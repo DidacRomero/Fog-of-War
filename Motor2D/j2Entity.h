@@ -5,10 +5,9 @@
 #include "SDL_image/include/SDL_image.h"
 #include "PugiXml/src/pugixml.hpp"
 #include "SDL_image/include/SDL_image.h"
+#include <string>
 
 class j2EntityManager;
-class j2DynamicEntity;
-struct Collider;
 
 enum class ENTITY_TYPE
 {
@@ -22,7 +21,7 @@ public:
 
 	//Constructor
 
-	/*j2Entity(ENTITY_TYPE type) : name("Unnamed"), manager(NULL), type(type) {}*/
+	j2Entity(ENTITY_TYPE type) : name("Unnamed"), manager(NULL), type(type) {}
 
 	//Destructor
 	virtual ~j2Entity() {}
@@ -45,30 +44,17 @@ public:
 	//Save
 	virtual bool Save(pugi::xml_node&) const { return true; }
 
-	//OnCollision Callback
-	virtual void OnCollision(Collider* c1, Collider* c2) {}
-
 public:
-	iPoint positionOrigin;
 	iPoint position;
 	SDL_Rect EntityRect;
-	SDL_Rect EntityRectAUX;
-	/*p2SString name;*/
-	Collider*EntityCollider;
-	//fake collider
-	Collider*EntityColliderAUX;
 	bool active;
 	bool EntitiesEnable;
 
 	SDL_Texture*EntityText = nullptr;
-	//Enemies
-	/*p2List<Collider*> colliders;*/
-	//staticElems
 
 	ENTITY_TYPE type;
 
-	int id;
-	int EnemysFromMap;
+	std::string name;
 
 private:
 	j2EntityManager* manager;
