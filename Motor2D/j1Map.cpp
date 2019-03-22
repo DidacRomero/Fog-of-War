@@ -57,6 +57,9 @@ void j1Map::Draw()
 			}
 		}
 	}
+
+	//Testing Debug Grid
+	DrawGrid();
 }
 
 int Properties::Get(const char* value, int default_value) const
@@ -73,6 +76,42 @@ int Properties::Get(const char* value, int default_value) const
 	}
 
 	return default_value;
+}
+
+void j1Map::DrawGrid()
+{
+	iPoint point_a = {data.tile_width/2 +1,data.tile_height / 2 +1};
+	iPoint point_b = { -((data.width * data.tile_width ) / 2 + data.tile_width /2) + data.tile_width,
+		(data.height * data.tile_height) /2 + data.tile_height / 2};
+
+	for (int i = 0; i <= data.width; ++i)
+	{
+		App->render->DrawLine(point_a.x, point_a.y, point_b.x, point_b.y, 255, 255, 0,255);
+
+		point_a.x += data.tile_width / 2;
+		point_a.y += data.tile_height / 2;
+
+		point_b.x += data.tile_width / 2;
+		point_b.y += data.tile_height / 2;
+	}
+
+	//Back to the first tile
+	point_a.x = data.tile_width / 2;
+	point_a.y = data.tile_height / 2 +1;
+
+	point_b.x = (data.width * data.tile_width) / 2 + data.tile_width / 2;
+	point_b.y = (data.height * data.tile_height) / 2 + data.tile_height / 2;
+
+	for (int i = 0; i <= data.height; ++i)
+	{
+		App->render->DrawLine(point_a.x, point_a.y, point_b.x, point_b.y, 255, 255, 0, 255);
+
+		point_a.x -= data.tile_width / 2;
+		point_a.y += data.tile_height / 2;
+
+		point_b.x -= data.tile_width / 2;
+		point_b.y += data.tile_height / 2;
+	}
 }
 
 TileSet* j1Map::GetTilesetFromTileId(int id) const

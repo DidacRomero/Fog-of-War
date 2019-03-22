@@ -131,6 +131,9 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
+	//Testing and Debug purposes
+	void DrawGrid();
+
 	TileSet* GetTilesetFromTileId(int id) const;
 
 public:
