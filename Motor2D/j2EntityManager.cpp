@@ -2,6 +2,9 @@
 #include "j2Entity.h"
 #include "j1App.h"
 
+//Entities
+#include "DummyEnemy.h"
+
 
 j2EntityManager::j2EntityManager() : j1Module()
 {
@@ -24,6 +27,9 @@ bool j2EntityManager::Awake(pugi::xml_node & config)
 		if (!ret)
 			break;
 	}
+
+
+	CreateEntity(ENTITY_TYPE::ENEMY);
 
 	return ret;
 
@@ -49,7 +55,7 @@ bool j2EntityManager::PreUpdate()
 
 	for (std::list<j2Entity*>::iterator item = entities.begin(); item != entities.end(); item++)
 	{
-		if ((*item)->EntitiesEnable == true)
+		if ((*item)->entity_enabled == true)
 		{
 			ret = (*item)->PreUpdate();
 			if (!ret)
@@ -70,7 +76,7 @@ bool j2EntityManager::Update(float dt)
 
 	for (std::list<j2Entity*>::iterator item = entities.begin(); item != entities.end(); item++)
 	{
-		if ((*item)->EntitiesEnable == true)
+		if ((*item)->entity_enabled == true)
 		{
 			ret = (*item)->Update(dt,do_logic);
 			if (!ret)
@@ -91,9 +97,10 @@ bool j2EntityManager::PostUpdate()
 	bool ret = true;
 	for (std::list<j2Entity*>::iterator item = entities.begin(); item != entities.end(); item++)
 	{
-		if ((*item)->EntitiesEnable == true)
+		if ((*item)->entity_enabled == true)
 		{
 			ret = (*item)->PostUpdate();
+			(*item)->Draw();
 			if (!ret)
 				break;
 		}
@@ -145,16 +152,12 @@ bool j2EntityManager::Save(pugi::xml_node &save_game_manager) const
 
 j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)
 {
-	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(0), "code needs update");
+	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(1), "code needs update");
 	j2Entity* ret = nullptr;
-	//switch (type) {
+	switch (type) {
 
-	//*case ENTITY_TYPE::FLYING_ENEMY: ret = new j2FlyingEnemy(); break;
-	//case ENTITY_TYPE::GROUND_ENEMY: ret = new j2GroundEnemy(); break;
-	//case ENTITY_TYPE::PLAYER: ret = new j2Player(); break;
-	//case ENTITY_TYPE::LIFE_ITEM: ret = new j2LifeItem(); break;
-	//case ENTITY_TYPE::COIN: ret = new j2Coin(); break;*/
-	//}
+	case ENTITY_TYPE::ENEMY: ret = new DummyEnemy(); break;
+	}
 	if (ret != nullptr)
 		entities.push_back(ret);
 	return ret;

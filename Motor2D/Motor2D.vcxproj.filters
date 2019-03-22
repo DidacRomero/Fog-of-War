@@ -35,7 +35,10 @@
       <Filter>Desenvolupament  ========\Modules\Core</Filter>
     </ClCompile>
     <ClCompile Include="j2EntityManager.cpp">
-      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+      <Filter>Desenvolupament  ========\Modules\Entity management</Filter>
+    </ClCompile>
+    <ClCompile Include="DummyEnemy.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entity management\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,10 +85,13 @@
       <Filter>Desenvolupament  ========\Modules\Core</Filter>
     </ClInclude>
     <ClInclude Include="j2EntityManager.h">
-      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+      <Filter>Desenvolupament  ========\Modules\Entity management</Filter>
     </ClInclude>
     <ClInclude Include="j2Entity.h">
-      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+      <Filter>Desenvolupament  ========\Modules\Entity management</Filter>
+    </ClInclude>
+    <ClInclude Include="DummyEnemy.h">
+      <Filter>Desenvolupament  ========\Modules\Entity management\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -110,8 +116,11 @@
     <Filter Include="Desenvolupament  ========\Modules\Core">
       <UniqueIdentifier>{e902725c-0cda-4cfe-9e5d-8507bfda5676}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Entities">
+    <Filter Include="Desenvolupament  ========\Modules\Entity management">
       <UniqueIdentifier>{3bdfb98b-fe06-4d17-847c-e812f2f80cef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Entity management\Entities">
+      <UniqueIdentifier>{367840c9-ce43-49d4-a988-b94fd86aaa1b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

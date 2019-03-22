@@ -11,6 +11,7 @@ class j2EntityManager;
 
 enum class ENTITY_TYPE
 {
+	ENEMY,
 	UNKNOWN
 };
 
@@ -21,7 +22,7 @@ public:
 
 	//Constructor
 
-	j2Entity(ENTITY_TYPE type) : name("Unnamed"), manager(NULL), type(type) {}
+	j2Entity(ENTITY_TYPE type) : name("Unnamed"), manager(NULL), type(type), entity_enabled(true) {}
 
 	//Destructor
 	virtual ~j2Entity() {}
@@ -38,6 +39,8 @@ public:
 	//CleanUp
 	virtual bool CleanUp() { return true; }
 
+	//Draw Entity
+	virtual void Draw() {};
 
 	//Load
 	virtual bool Load(pugi::xml_node&) { return true; }
@@ -45,12 +48,12 @@ public:
 	virtual bool Save(pugi::xml_node&) const { return true; }
 
 public:
-	iPoint position;
-	SDL_Rect EntityRect;
-	bool active;
-	bool EntitiesEnable;
+	iPoint position = {0,0};
+	SDL_Rect entity_rect;
+	bool active = false;
+	bool entity_enabled = false;
 
-	SDL_Texture*EntityText = nullptr;
+	SDL_Texture* entity_tex = nullptr;
 
 	ENTITY_TYPE type;
 
