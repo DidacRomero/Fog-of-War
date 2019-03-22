@@ -4,6 +4,7 @@
 
 //Entities
 #include "DummyEnemy.h"
+#include "Player.h"
 
 
 j2EntityManager::j2EntityManager() : j1Module()
@@ -30,6 +31,7 @@ bool j2EntityManager::Awake(pugi::xml_node & config)
 
 
 	CreateEntity(ENTITY_TYPE::ENEMY);
+	CreateEntity(ENTITY_TYPE::PLAYER);
 
 	return ret;
 
@@ -152,11 +154,12 @@ bool j2EntityManager::Save(pugi::xml_node &save_game_manager) const
 
 j2Entity* j2EntityManager::CreateEntity(ENTITY_TYPE type)
 {
-	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(1), "code needs update");
+	static_assert(ENTITY_TYPE::UNKNOWN == ENTITY_TYPE(2), "code needs update");
 	j2Entity* ret = nullptr;
 	switch (type) {
 
 	case ENTITY_TYPE::ENEMY: ret = new DummyEnemy(); break;
+	case ENTITY_TYPE::PLAYER: ret = new Player(); break;
 	}
 	if (ret != nullptr)
 		entities.push_back(ret);

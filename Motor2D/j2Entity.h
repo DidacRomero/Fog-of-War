@@ -12,6 +12,7 @@ class j2EntityManager;
 enum class ENTITY_TYPE
 {
 	ENEMY,
+	PLAYER,
 	UNKNOWN
 };
 

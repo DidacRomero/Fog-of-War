@@ -40,6 +40,9 @@
     <ClCompile Include="DummyEnemy.cpp">
       <Filter>Desenvolupament  ========\Modules\Entity management\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entity management\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -91,6 +94,9 @@
       <Filter>Desenvolupament  ========\Modules\Entity management</Filter>
     </ClInclude>
     <ClInclude Include="DummyEnemy.h">
+      <Filter>Desenvolupament  ========\Modules\Entity management\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <Filter>Desenvolupament  ========\Modules\Entity management\Entities</Filter>
     </ClInclude>
   </ItemGroup>
