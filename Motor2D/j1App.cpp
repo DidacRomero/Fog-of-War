@@ -15,6 +15,7 @@
 #include "j1Map.h"
 #include "j1App.h"
 #include "j2EntityManager.h"
+#include "FowManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -30,6 +31,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	map = new j1Map();
 	entity_manager = new j2EntityManager();
+	fow_manager = new FowManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -40,6 +42,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(entity_manager);
+	AddModule(fow_manager);
 
 	// render last to swap buffer
 	AddModule(render);

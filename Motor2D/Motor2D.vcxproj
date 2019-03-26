@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DummyEnemy.cpp" />
+    <ClCompile Include="FowManager.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
     <ClCompile Include="j1Audio.cpp" />
@@ -93,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DummyEnemy.h" />
+    <ClInclude Include="FowManager.h" />
     <ClInclude Include="j1Map.h" />
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1Audio.h" />

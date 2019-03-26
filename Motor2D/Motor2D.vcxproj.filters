@@ -43,6 +43,7 @@
     <ClCompile Include="Player.cpp">
       <Filter>Desenvolupament  ========\Modules\Entity management\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="FowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -99,6 +100,9 @@
     <ClInclude Include="Player.h">
       <Filter>Desenvolupament  ========\Modules\Entity management\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="FowManager.h">
+      <Filter>Desenvolupament  ========\Modules\Fog of War</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -127,6 +131,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Entity management\Entities">
       <UniqueIdentifier>{367840c9-ce43-49d4-a988-b94fd86aaa1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Fog of War">
+      <UniqueIdentifier>{f9fe5173-2854-4057-b474-045c4335b95d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
