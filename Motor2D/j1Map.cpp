@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
+#include "FowManager.h"
 #include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)

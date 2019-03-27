@@ -2,6 +2,8 @@
 #define __FOWMANAGER_H__
 
 #include "j1Module.h"
+#include "p2Defs.h"
+#include "p2Point.h"
 
 class FowManager : public j1Module
 {
@@ -35,11 +37,19 @@ public: // Functions
 	//Save
 	bool Save(pugi::xml_node&) const;
 
+	// Set Visibility Map
+	void SetVisibilityMap(uint width, uint height);
+
+	int8_t GetVisibilityTileAt(const iPoint& pos) const;
+
 private: // Functions
 
 public: // Variables
 
-private: // Variables
+
+private: //Variables
+	uint width, height;
+	int8_t* visibility_map = nullptr;
 
 };
 

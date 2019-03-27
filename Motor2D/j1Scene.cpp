@@ -8,6 +8,7 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "FowManager.h" //Testing visibility map creation
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -41,6 +42,9 @@ bool j1Scene::Start()
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");
+
+	//Testing visibility map creation
+	App->fow_manager->SetVisibilityMap(App->map->data.width, App->map->data.height);
 
 	return true;
 }
