@@ -25,6 +25,14 @@ bool FowManager::PreUpdate()
 
 bool FowManager::Update(float dt)
 {
+	for (int i = 20; i < 40; ++i)
+	{
+		for (int j = 20; j < 30; ++j)
+		{
+			SetVisibilityTile({i,j}, 1);
+		}
+	}
+	
 	return true;
 }
 
@@ -68,4 +76,10 @@ int8_t FowManager::GetVisibilityTileAt(const iPoint& pos) const
 		return visibility_map[(pos.y * width) + pos.x];
 	else
 		return 0;
+}
+
+void FowManager::SetVisibilityTile(iPoint pos, int8_t value)
+{
+	if ((pos.y * width) + pos.x < width*height)
+	visibility_map[(pos.y * width) + pos.x] = value;
 }

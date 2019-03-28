@@ -43,7 +43,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Desenvolupament  ========\Modules\Entity management\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="FowManager.cpp" />
+    <ClCompile Include="FowManager.cpp">
+      <Filter>Desenvolupament  ========\Modules\Fog of War</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">

@@ -44,6 +44,9 @@ public: // Functions
 
 private: // Functions
 
+	// Set the value of a 
+	void SetVisibilityTile(iPoint pos, int8_t value);
+
 public: // Variables
 
 
