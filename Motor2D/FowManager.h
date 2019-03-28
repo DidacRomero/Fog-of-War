@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "p2Defs.h"
 #include "p2Point.h"
+#include <list>
 
 class FowManager : public j1Module
 {
@@ -46,6 +47,9 @@ private: // Functions
 
 	// Set the value of a 
 	void SetVisibilityTile(iPoint pos, int8_t value);
+
+	// Returns a list of iPoints that are contained in width and height
+	std::list<iPoint> GetRectFrontier(uint width, uint height, iPoint pos);
 
 public: // Variables
 

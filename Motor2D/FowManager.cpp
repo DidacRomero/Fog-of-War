@@ -15,6 +15,17 @@ bool FowManager::Awake()
 
 bool FowManager::Start()
 {
+	//Testing GetRectFrontier
+	std::list<iPoint> turn_visible = GetRectFrontier(11, 11, { 20,20 });
+
+	int i = 0;
+	for (std::list<iPoint>::const_iterator item = turn_visible.cbegin(); item != turn_visible.end(); item++)
+	{
+		SetVisibilityTile((*item), 1);
+		i++;
+	}
+
+
 	return true;
 }
 
@@ -25,14 +36,6 @@ bool FowManager::PreUpdate()
 
 bool FowManager::Update(float dt)
 {
-	for (int i = 20; i < 40; ++i)
-	{
-		for (int j = 20; j < 30; ++j)
-		{
-			SetVisibilityTile({i,j}, 1);
-		}
-	}
-	
 	return true;
 }
 
@@ -82,4 +85,24 @@ void FowManager::SetVisibilityTile(iPoint pos, int8_t value)
 {
 	if ((pos.y * width) + pos.x < width*height)
 	visibility_map[(pos.y * width) + pos.x] = value;
+}
+
+std::list<iPoint> FowManager::GetRectFrontier(uint w, uint h, iPoint pos)
+{
+	std::list<iPoint> square;
+
+	iPoint st_point = { int(pos.x - w / 2), int(pos.y - h / 2)};
+	iPoint curr = st_point;
+
+	for (int i = 1; i <= w; ++i)
+	{
+		for (int j = 0; j < h; ++j)
+		{
+			curr.y = st_point.y + j;
+			square.push_back(curr);
+		}
+		curr.x = st_point.x + i;
+	}
+
+	return square;
 }

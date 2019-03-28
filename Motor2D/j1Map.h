@@ -145,6 +145,7 @@ private:
 	pugi::xml_document	map_file;
 	std::string			folder;
 	bool				map_loaded;
+
 };
 
 #endif // __j1MAP_H__
