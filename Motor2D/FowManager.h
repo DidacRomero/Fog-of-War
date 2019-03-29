@@ -54,6 +54,9 @@ private: // Functions
 	// Manage visibility of entities
 	void ManageEntitiesVisibility();
 
+	//Update Entities positions
+	void UpdateEntitiesPositions();
+
 public: // Variables
 
 	bool debug = false;

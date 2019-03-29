@@ -42,20 +42,6 @@ bool FowManager::Start()
 		i++;
 	}
 
-	// ------
-	// Get the position of all entities, we call the entity manager to provide us all the entities (const)
-	// When implementing into your game, you will have to do the same thing but adapted into your own entity and entity manager
-	std::list<j2Entity*> entities_info = App->entity_manager->GetEntitiesInfo();
-
-	std::list<j2Entity*>::iterator item = entities_info.begin();
-
-	for (; item != entities_info.end(); ++item)
-	{
-		entities_pos.push_back(App->map->WorldToMap((*item)->position.x, (*item)->position.y));
-	}
-	// ------
-
-
 	return true;
 }
 
@@ -67,6 +53,7 @@ bool FowManager::PreUpdate()
 bool FowManager::Update(float dt)
 {
 	ManageEntitiesVisibility();
+	UpdateEntitiesPositions();
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
@@ -134,7 +121,7 @@ void FowManager::SetVisibilityMap(uint w, uint h)
 
 int8_t FowManager::GetVisibilityTileAt(const iPoint& pos) const
 {
-	// Utility: return the walkability value of a tile
+	// Utility: return the visibility value of a tile
 	if ((pos.y * width) + pos.x < width*height)
 		return visibility_map[(pos.y * width) + pos.x];
 	else
@@ -189,4 +176,35 @@ void FowManager::ManageEntitiesVisibility()
 		}
 		entity_position++;
 	}
+}
+
+void FowManager::UpdateEntitiesPositions()
+{
+	// ------
+	// Get the position of all entities, we call the entity manager to provide us all the entities (const)
+	// When implementing into your game, you will have to do the same thing but adapted into your own entity and entity manager
+	std::list<j2Entity*> entities_info = App->entity_manager->GetEntitiesInfo();
+
+	std::list<j2Entity*>::iterator item = entities_info.begin();
+
+	if (entities_pos.size() == 0)
+	{
+		for (; item != entities_info.end(); ++item)
+		{
+			entities_pos.push_back(App->map->WorldToMap((*item)->position.x, (*item)->position.y));
+		}
+	}
+	else
+	{
+		//We iterate the list of positions of entities to update the list of positions we have
+		std::list<iPoint>::iterator pos_item = entities_pos.begin();
+
+		for (; item != entities_info.end(); ++item)
+		{
+			(*pos_item) = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
+			pos_item++;
+		}
+	}
+	// ------
+
 }

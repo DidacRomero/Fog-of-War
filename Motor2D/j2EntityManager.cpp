@@ -29,6 +29,8 @@ bool j2EntityManager::Awake(pugi::xml_node & config)
 			break;
 	}
 
+	CreateEntity(ENTITY_TYPE::PLAYER);
+	SetLastEntityPos(50, 900);
 
 	CreateEntity(ENTITY_TYPE::ENEMY);
 	SetLastEntityPos(10, 100);
@@ -44,9 +46,6 @@ bool j2EntityManager::Awake(pugi::xml_node & config)
 
 	CreateEntity(ENTITY_TYPE::ENEMY);
 	SetLastEntityPos(300, 1200);
-
-	CreateEntity(ENTITY_TYPE::PLAYER);
-	SetLastEntityPos(50, 900);
 
 	return ret;
 
