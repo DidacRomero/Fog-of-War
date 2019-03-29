@@ -56,10 +56,17 @@ private: // Functions
 
 public: // Variables
 
+	bool debug = false;
 
 private: //Variables
 	uint width, height;
 	int8_t* visibility_map = nullptr;
+
+	//---- This 2 pointers are for debug purpose only
+	int8_t* debug_map = nullptr;
+	int8_t* visibility_debug_holder;
+	//----
+
 
 	// This list contains the position in MAP COORDINATES of all entities
 	std::list<iPoint> entities_pos;

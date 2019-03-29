@@ -3,6 +3,7 @@
 #include "j2EntityManager.h"
 #include "j2Entity.h"
 #include "j1Map.h"
+#include "j1Input.h"
 
 FowManager::FowManager()
 {
@@ -10,6 +11,18 @@ FowManager::FowManager()
 
 FowManager::~FowManager()
 {
+	//Delete all 2D Fog data containers
+	if (visibility_map != nullptr && visibility_map != debug_map)
+	{
+		delete[] visibility_map;
+		visibility_debug_holder = nullptr;
+	}
+	else if (visibility_debug_holder != nullptr)
+		delete[] visibility_debug_holder;
+	
+	
+	if (debug_map != nullptr)
+		delete[] debug_map;
 }
 
 bool FowManager::Awake()
@@ -54,6 +67,26 @@ bool FowManager::PreUpdate()
 bool FowManager::Update(float dt)
 {
 	ManageEntitiesVisibility();
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		debug = !debug;
+
+		// If we enter debug mode, our visibility map should be clear.
+		// We will point to a clear visibility map (debug_map) so all calls depending on visibility_map don't
+		// need further management. But before we store 
+		if (debug == true)
+		{
+			//To keep the pointer to the visibility map we use or debug_holder;
+			visibility_debug_holder = visibility_map;
+			visibility_map = debug_map;
+		}
+		else // Debug == false
+		{
+			visibility_map = visibility_debug_holder;
+		}
+	}
+
 	return true;
 }
 
@@ -82,12 +115,21 @@ void FowManager::SetVisibilityMap(uint w, uint h)
 	if (visibility_map != nullptr)
 	{
 		delete[] visibility_map;
+		visibility_debug_holder = nullptr;
 	}
+	
+	if (debug_map != nullptr)
+		delete[] debug_map;
+
 	width = w;
 	height = h;
 
 	visibility_map = new int8_t [width*height];
 	memset(visibility_map, 0,width*height);
+
+	// Keep a totally clear map for debug purposes
+	debug_map = new int8_t[width*height];
+	memset(debug_map, 1, width*height);
 }
 
 int8_t FowManager::GetVisibilityTileAt(const iPoint& pos) const
