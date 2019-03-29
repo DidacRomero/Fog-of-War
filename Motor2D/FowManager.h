@@ -6,6 +6,14 @@
 #include "p2Point.h"
 #include <list>
 
+struct FOW_Entity
+{
+	// List containing the tiles 
+	std::list<iPoint> frontier;
+
+	iPoint position;
+};
+
 class FowManager : public j1Module
 {
 public: // Functions
@@ -62,6 +70,7 @@ public: // Variables
 	bool debug = false;
 
 private: //Variables
+
 	uint width, height;
 	int8_t* visibility_map = nullptr;
 
@@ -70,6 +79,8 @@ private: //Variables
 	int8_t* visibility_debug_holder;
 	//----
 
+	// Testing the FOW_Entity 
+	FOW_Entity player;
 
 	// This list contains the position in MAP COORDINATES of all entities
 	std::list<iPoint> entities_pos;

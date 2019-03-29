@@ -33,14 +33,15 @@ bool FowManager::Awake()
 bool FowManager::Start()
 {
 	//Testing GetRectFrontier
-	std::list<iPoint> turn_visible = GetRectFrontier(20, 20, { 25,25 });
+	/*std::list<iPoint> turn_visible = GetRectFrontier(20, 20, { 25,25 });
 
 	int i = 0;
 	for (std::list<iPoint>::const_iterator item = turn_visible.cbegin(); item != turn_visible.end(); item++)
 	{
 		SetVisibilityTile((*item), 1);
 		i++;
-	}
+	}*/
+
 
 	return true;
 }
@@ -72,6 +73,19 @@ bool FowManager::Update(float dt)
 		{
 			visibility_map = visibility_debug_holder;
 		}
+	}
+
+
+	//Testing player frontier
+	player.position.x = (*entities_pos.begin()).x;
+	player.position.y = (*entities_pos.begin()).y;
+
+	player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
+	int i = 0;
+	for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.end(); item++)
+	{
+		SetVisibilityTile((*item), 1);
+		i++;
 	}
 
 	return true;
