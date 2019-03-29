@@ -62,6 +62,7 @@ public:
 
 	// Boolean that the FowManager will check
 	bool provides_visibility = false;
+	mutable bool is_visible = true;
 
 	SDL_Texture* entity_tex = nullptr;
 

@@ -20,7 +20,7 @@ bool FowManager::Awake()
 bool FowManager::Start()
 {
 	//Testing GetRectFrontier
-	std::list<iPoint> turn_visible = GetRectFrontier(11, 11, { 20,20 });
+	std::list<iPoint> turn_visible = GetRectFrontier(20, 20, { 25,25 });
 
 	int i = 0;
 	for (std::list<iPoint>::const_iterator item = turn_visible.cbegin(); item != turn_visible.end(); item++)
@@ -53,6 +53,7 @@ bool FowManager::PreUpdate()
 
 bool FowManager::Update(float dt)
 {
+	ManageEntitiesVisibility();
 	return true;
 }
 
@@ -122,4 +123,28 @@ std::list<iPoint> FowManager::GetRectFrontier(uint w, uint h, iPoint pos)
 	}
 
 	return square;
+}
+
+//We will manage the bool is_visible in the entities, so that the entity manager module manages everything else
+void FowManager::ManageEntitiesVisibility()
+{
+	//Get the entities 
+	std::list<j2Entity*> entities_info = App->entity_manager->GetEntitiesInfo();
+
+	std::list<iPoint>::const_iterator entity_position = entities_pos.begin();
+
+	for (std::list<j2Entity*>::iterator entity_item = entities_info.begin(); entity_item != entities_info.end(); entity_item++)
+	{
+		switch (GetVisibilityTileAt((*entity_position)))
+		{
+		case 0:
+			(*entity_item)->is_visible = false;
+			break;
+
+		case 1:
+			(*entity_item)->is_visible = true;
+			break;
+		}
+		entity_position++;
+	}
 }

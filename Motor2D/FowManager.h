@@ -51,6 +51,9 @@ private: // Functions
 	// Returns a list of iPoints that are contained in width and height
 	std::list<iPoint> GetRectFrontier(uint width, uint height, iPoint pos);
 
+	// Manage visibility of entities
+	void ManageEntitiesVisibility();
+
 public: // Variables
 
 
