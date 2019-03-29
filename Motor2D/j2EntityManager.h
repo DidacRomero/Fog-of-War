@@ -41,13 +41,17 @@ public:
 	j2Entity* CreateEntity(ENTITY_TYPE type);
 	void DestroyEntity(j2Entity* entity_to_destroy);
 
-	std::list<j2Entity*> entities;
+	// Return a const list of all entities
+	const std::list<j2Entity*> GetEntitiesInfo() const;
+
 
 private:
 
 	void SetLastEntityPos(int x, int y);
 
 private:
+
+	std::list<j2Entity*> entities;
 
 	bool	do_logic;
 	int		logic_updates_per_second;

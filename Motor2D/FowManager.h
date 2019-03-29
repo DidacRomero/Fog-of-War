@@ -58,6 +58,9 @@ private: //Variables
 	uint width, height;
 	int8_t* visibility_map = nullptr;
 
+	// This list contains the position in MAP COORDINATES of all entities
+	std::list<iPoint> entities_pos;
+
 };
 
 

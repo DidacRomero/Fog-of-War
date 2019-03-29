@@ -60,6 +60,9 @@ public:
 	bool active = false;
 	bool entity_enabled = false;
 
+	// Boolean that the FowManager will check
+	bool provides_visibility = false;
+
 	SDL_Texture* entity_tex = nullptr;
 
 	ENTITY_TYPE type;

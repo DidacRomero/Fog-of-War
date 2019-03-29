@@ -6,6 +6,8 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+//Testing j1Map problems of including header
+
 struct Properties
 {
 	struct Property

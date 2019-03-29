@@ -194,6 +194,11 @@ void j2EntityManager::DestroyEntity(j2Entity* entity_to_destroy)
 	}
 }
 
+const std::list<j2Entity*> j2EntityManager::GetEntitiesInfo() const
+{
+	return entities;
+}
+
 void j2EntityManager::SetLastEntityPos(int x, int y)
 {
 	std::list<j2Entity*>::iterator item = --entities.end();

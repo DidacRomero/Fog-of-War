@@ -1,4 +1,8 @@
 #include "FowManager.h"
+#include "j1App.h"
+#include "j2EntityManager.h"
+#include "j2Entity.h"
+#include "j1Map.h"
 
 FowManager::FowManager()
 {
@@ -24,6 +28,19 @@ bool FowManager::Start()
 		SetVisibilityTile((*item), 1);
 		i++;
 	}
+
+	// ------
+	// Get the position of all entities, we call the entity manager to provide us all the entities (const)
+	// When implementing into your game, you will have to do the same thing but adapted into your own entity and entity manager
+	std::list<j2Entity*> entities_info = App->entity_manager->GetEntitiesInfo();
+
+	std::list<j2Entity*>::iterator item = entities_info.begin();
+
+	for (; item != entities_info.end(); ++item)
+	{
+		entities_pos.push_back(App->map->WorldToMap((*item)->position.x, (*item)->position.y));
+	}
+	// ------
 
 
 	return true;
