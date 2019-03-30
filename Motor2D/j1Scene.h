@@ -32,6 +32,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool debug = true; 
 private:
 	SDL_Texture* debug_tex;
 };

@@ -121,6 +121,9 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
+	//Testing and Debug purposes
+	void DrawGrid();
+
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
@@ -132,9 +135,6 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
-
-	//Testing and Debug purposes
-	void DrawGrid();
 
 	TileSet* GetTilesetFromTileId(int id) const;
 

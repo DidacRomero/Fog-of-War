@@ -133,6 +133,16 @@ bool j1Scene::Update(float dt)
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}*/
 
+	//Testing Debug Grid
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		debug = !debug;
+	
+	if (debug == true)
+	 App->map->DrawGrid();
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		App->fow_manager->ResetFOWVisibility();
+		
 	return true;
 }
 

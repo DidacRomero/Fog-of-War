@@ -48,12 +48,15 @@ public: // Functions
 
 	// Set Visibility Map
 	void SetVisibilityMap(uint width, uint height);
+	
+	// Reset Visibility Map
+	void ResetFOWVisibility();
 
 	int8_t GetVisibilityTileAt(const iPoint& pos) const;
 
 private: // Functions
 
-	// Set the value of a 
+	// Set the value of a tile in the visibility map
 	void SetVisibilityTile(iPoint pos, int8_t value);
 
 	// Returns a list of iPoints that are contained in width and height

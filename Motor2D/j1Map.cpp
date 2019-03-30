@@ -62,9 +62,6 @@ void j1Map::Draw()
 			}
 		}
 	}
-
-	//Testing Debug Grid
-	DrawGrid();
 }
 
 int Properties::Get(const char* value, int default_value) const

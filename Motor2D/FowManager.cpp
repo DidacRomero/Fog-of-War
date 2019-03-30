@@ -88,6 +88,8 @@ bool FowManager::Update(float dt)
 		i++;
 	}
 
+
+
 	return true;
 }
 
@@ -221,4 +223,11 @@ void FowManager::UpdateEntitiesPositions()
 	}
 	// ------
 
+}
+
+void FowManager::ResetFOWVisibility()
+{
+	// We simply set the map again this way other modules can call and it will be
+	// easier to understand rather than setting the the map again manually
+	SetVisibilityMap(width,height);
 }
