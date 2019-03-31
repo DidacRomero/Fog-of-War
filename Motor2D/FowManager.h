@@ -6,6 +6,8 @@
 #include "p2Point.h"
 #include <list>
 
+struct SDL_Texture;
+
 struct FOW_Entity
 {
 	// List containing the tiles 
@@ -75,6 +77,8 @@ private: // Functions
 public: // Variables
 
 	bool debug = false;
+
+	SDL_Texture* meta_FOW = nullptr;
 
 private: //Variables
 

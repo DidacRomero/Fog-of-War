@@ -54,9 +54,30 @@ void j1Map::Draw()
 					iPoint pos = MapToWorld(x, y);
 
 					// testing Fog Of War
-					if (App->fow_manager->GetVisibilityTileAt({ x,y }) == 1)
+					if (App->fow_manager->GetVisibilityTileAt({ x,y }) != 0)
 					{
 						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+					}
+				}
+			}
+		}
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int tile_id = layer->Get(x, y);
+				if (tile_id > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+
+					SDL_Rect r = tileset->GetTileRect(tile_id);
+					iPoint pos = MapToWorld(x, y);
+
+					// testing Fog Of War
+					if (App->fow_manager->GetVisibilityTileAt({ x,y }) == 2)
+					{
+						App->render->Blit(App->fow_manager->meta_FOW, pos.x -3, pos.y -3, NULL);
 					}
 				}
 			}
@@ -82,7 +103,7 @@ int Properties::Get(const char* value, int default_value) const
 
 void j1Map::DrawGrid()
 {
-	iPoint point_a = {data.tile_width/2,data.tile_height / 2};
+	iPoint point_a = {data.tile_width/2,data.tile_height / 2 };
 	iPoint point_b = { -((data.width * data.tile_width ) / 2 + data.tile_width /2) + data.tile_width,
 		(data.height * data.tile_height) /2 + data.tile_height / 2};
 
@@ -98,8 +119,8 @@ void j1Map::DrawGrid()
 	}
 
 	//Back to the first tile
-	point_a.x = data.tile_width / 2;
-	point_a.y = data.tile_height / 2;
+	point_a.x = data.tile_width / 2 ;
+	point_a.y = data.tile_height / 2 ;
 
 	point_b.x = (data.width * data.tile_width) / 2 + data.tile_width / 2;
 	point_b.y = (data.height * data.tile_height) / 2 + data.tile_height / 2;

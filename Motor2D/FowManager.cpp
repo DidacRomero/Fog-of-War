@@ -4,6 +4,7 @@
 #include "j2Entity.h"
 #include "j1Map.h"
 #include "j1Input.h"
+#include "j1Textures.h"
 
 FowManager::FowManager()
 {
@@ -32,17 +33,7 @@ bool FowManager::Awake()
 
 bool FowManager::Start()
 {
-	//Testing GetRectFrontier
-	/*std::list<iPoint> turn_visible = GetRectFrontier(20, 20, { 25,25 });
-
-	int i = 0;
-	for (std::list<iPoint>::const_iterator item = turn_visible.cbegin(); item != turn_visible.end(); item++)
-	{
-		SetVisibilityTile((*item), 1);
-		i++;
-	}*/
-
-
+	meta_FOW = App->tex->Load("maps/meta_FOW.png");
 	return true;
 }
 
@@ -112,6 +103,7 @@ bool FowManager::PostUpdate()
 
 bool FowManager::CleanUp()
 {
+	App->tex->UnLoad(meta_FOW);
 	return true;
 }
 
