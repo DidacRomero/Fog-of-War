@@ -36,8 +36,10 @@ bool FowManager::Start()
 	meta_FOW = App->tex->Load("maps/meta_FOW.png");
 
 	// Testing getting a frontier
+	std::list<iPoint> test = CreateFrontierRect(5,5);
 
-	std::list<iPoint> test = CreateFrontierRect(3,3);
+	// Testing Filling a frontier
+	std::list<iPoint> LOS = FillFrontier(test);
 	return true;
 }
 
@@ -277,11 +279,6 @@ bool FowManager::CheckBoundaries(const iPoint& pos) const
 		pos.y >= 0 && pos.y <= (int)height);
 }
 
-std::list<iPoint> FowManager::FillFrontier(const std::list<iPoint>& frontier)
-{
-	return std::list<iPoint>();
-}
-
 std::list<iPoint> FowManager::CreateFrontierRect(uint w, uint h)
 {
 	std::list<iPoint> frontier_to_fill;
@@ -305,4 +302,28 @@ std::list<iPoint> FowManager::CreateFrontierRect(uint w, uint h)
 	}
 	
 	return frontier_to_fill;
+}
+
+std::list<iPoint> FowManager::FillFrontier(const std::list<iPoint>& frontier)
+{
+	std::list<iPoint> shape_to_fill;
+
+	//Iterate the frontier
+	for (std::list<iPoint>::const_iterator curr = frontier.cbegin(); curr != frontier.cend(); ++curr)
+	{
+		if ((*std::next(curr)).y == (*curr).y)
+		{
+			int w = (*std::next(curr)).x - (*curr).x;
+			for (int i = 0; i < w; ++i)
+			{
+				shape_to_fill.push_back({ (*curr).x + i ,(*curr).y });
+			}
+		}
+		else
+		{
+			shape_to_fill.push_back(*curr);
+		}
+	}
+
+	return shape_to_fill;
 }
