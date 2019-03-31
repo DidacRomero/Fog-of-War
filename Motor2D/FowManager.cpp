@@ -129,9 +129,21 @@ void FowManager::SetVisibilityMap(uint w, uint h)
 {
 	if (visibility_map != nullptr)
 	{
+		if (visibility_debug_holder == visibility_map)
+		{
+			visibility_debug_holder = nullptr;
+		}
+		else
+		{
+			delete[] visibility_debug_holder;
+			visibility_debug_holder = nullptr;
+		}
+
+		if(visibility_map != debug_map)
 		delete[] visibility_map;
-		visibility_debug_holder = nullptr;
 	}
+
+	
 	
 	if (debug_map != nullptr)
 		delete[] debug_map;
@@ -255,4 +267,9 @@ void FowManager::ResetFOWVisibility()
 	// We simply set the map again this way other modules can call and it will be
 	// easier to understand rather than setting the the map again manually
 	SetVisibilityMap(width,height);
+
+	if (debug)
+	{
+		debug = false;
+	}
 }
