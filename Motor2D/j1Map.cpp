@@ -77,7 +77,7 @@ void j1Map::Draw()
 					// testing Fog Of War
 					if (App->fow_manager->GetVisibilityTileAt({ x,y }) == 2)
 					{
-						App->render->Blit(App->fow_manager->meta_FOW, pos.x -3, pos.y -3, NULL);
+						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, NULL);
 					}
 				}
 			}
