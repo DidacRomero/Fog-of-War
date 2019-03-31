@@ -71,9 +71,10 @@ bool FowManager::Update(float dt)
 	player.position.x = (*entities_pos.begin()).x;
 	player.position.y = (*entities_pos.begin()).y;
 
+	player.frontier.clear();
 	player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
 
-	for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.end(); item++)
+	for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.cend(); item++)
 	{
 		SetVisibilityTile((*item), 1);
 	}
@@ -86,10 +87,6 @@ bool FowManager::Update(float dt)
 			SetVisibilityTile((*lf_item), 2);
 		}
 	}
-
-
-
-
 
 	player.last_frontier = player.frontier;
 
@@ -104,6 +101,7 @@ bool FowManager::PostUpdate()
 bool FowManager::CleanUp()
 {
 	App->tex->UnLoad(meta_FOW);
+	meta_FOW = nullptr;
 	return true;
 }
 
@@ -154,7 +152,7 @@ void FowManager::SetVisibilityMap(uint w, uint h)
 int8_t FowManager::GetVisibilityTileAt(const iPoint& pos) const
 {
 	// Utility: return the visibility value of a tile
-	if ((pos.y * width) + pos.x < width*height)
+	if (CheckBoundaries(pos))
 		return visibility_map[(pos.y * width) + pos.x];
 	else
 		return 0;
@@ -162,7 +160,7 @@ int8_t FowManager::GetVisibilityTileAt(const iPoint& pos) const
 
 void FowManager::SetVisibilityTile(iPoint pos, int8_t value)
 {
-	if ((pos.y * width) + pos.x < width*height)
+	if (CheckBoundaries(pos))
 	visibility_map[(pos.y * width) + pos.x] = value;
 }
 
@@ -204,6 +202,10 @@ void FowManager::ManageEntitiesVisibility()
 
 		case 1:
 			(*entity_item)->is_visible = true;
+			break;
+
+		case 2:
+			(*entity_item)->is_visible = false;
 			break;
 		}
 		entity_position++;
@@ -264,4 +266,11 @@ void FowManager::ResetFOWVisibility()
 	{
 		debug = false;
 	}
+}
+
+
+bool FowManager::CheckBoundaries(const iPoint& pos) const
+{
+	return (pos.x >= 0 && pos.x <= (int)width &&
+		pos.y >= 0 && pos.y <= (int)height);
 }

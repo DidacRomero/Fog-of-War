@@ -74,6 +74,9 @@ private: // Functions
 	// Tile inside a Frontier
 	int8_t TileInsideFrontier(iPoint tile, const std::list<iPoint>& frontier_checked) const;
 
+	// Check boundaries
+	bool CheckBoundaries(const iPoint& pos) const;
+
 public: // Variables
 
 	bool debug = false;
