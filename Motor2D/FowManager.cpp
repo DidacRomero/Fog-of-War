@@ -34,6 +34,10 @@ bool FowManager::Awake()
 bool FowManager::Start()
 {
 	meta_FOW = App->tex->Load("maps/meta_FOW.png");
+
+	// Testing getting a frontier
+
+	std::list<iPoint> test = CreateFrontierRect(3,3);
 	return true;
 }
 
@@ -133,8 +137,6 @@ void FowManager::SetVisibilityMap(uint w, uint h)
 		delete[] visibility_map;
 	}
 
-	
-	
 	if (debug_map != nullptr)
 		delete[] debug_map;
 
@@ -273,4 +275,34 @@ bool FowManager::CheckBoundaries(const iPoint& pos) const
 {
 	return (pos.x >= 0 && pos.x <= (int)width &&
 		pos.y >= 0 && pos.y <= (int)height);
+}
+
+std::list<iPoint> FowManager::FillFrontier(const std::list<iPoint>& frontier)
+{
+	return std::list<iPoint>();
+}
+
+std::list<iPoint> FowManager::CreateFrontierRect(uint w, uint h)
+{
+	std::list<iPoint> frontier_to_fill;
+
+	// We iterate to find the iPoints that ARE part of the frontier
+	int j = 0;
+	for (; j < h; ++j)
+	{
+		int i = 0;
+		for (; i < w - 1; ++i) //check the explanations below to understand why i < w -1
+		{
+			// Since it's a rectangle some assumptions can be made: i== 0 will always be at the 
+			// frontier as the left-most tile, i == w -1 will be for the right-most tile
+			if (i == 0 || j== 0 || j == h -1)
+			{
+				frontier_to_fill.push_back({ i, j });
+			}
+		}
+		// We exit the for loop when i == w -1
+		frontier_to_fill.push_back({ i, j });
+	}
+	
+	return frontier_to_fill;
 }

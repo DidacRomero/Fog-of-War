@@ -77,6 +77,12 @@ private: // Functions
 	// Check boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
 
+	// Fill a given Frontier to return a LOS (Line of Sight)
+	std::list<iPoint> FillFrontier(const std::list<iPoint>& frontier);
+
+	// Set a frontier with the rectangle size
+	std::list<iPoint> CreateFrontierRect(uint width, uint height);
+
 public: // Variables
 
 	bool debug = false;
