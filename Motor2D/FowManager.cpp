@@ -81,14 +81,26 @@ bool FowManager::Update(float dt)
 	player.position.y = (*entities_pos.begin()).y;
 
 	player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
-	int i = 0;
+
 	for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.end(); item++)
 	{
 		SetVisibilityTile((*item), 1);
-		i++;
 	}
 
 
+	for (std::list<iPoint>::const_iterator lf_item = player.last_frontier.cbegin(); lf_item != player.last_frontier.end(); lf_item++)
+	{
+		if (TileInsideFrontier((*lf_item), player.frontier) == 0)
+		{
+			SetVisibilityTile((*lf_item), 2);
+		}
+	}
+
+
+
+
+
+	player.last_frontier = player.frontier;
 
 	return true;
 }
@@ -223,6 +235,19 @@ void FowManager::UpdateEntitiesPositions()
 	}
 	// ------
 
+}
+
+int8_t FowManager::TileInsideFrontier(iPoint tile, const std::list<iPoint>& frontier_checked) const
+{
+	for (std::list<iPoint>::const_iterator item = frontier_checked.cbegin(); item != frontier_checked.end(); item++)
+	{
+		if ((*item).x == tile.x && (*item).y == tile.y)
+		{
+			return 1;
+		}
+	}
+
+	return 0;
 }
 
 void FowManager::ResetFOWVisibility()

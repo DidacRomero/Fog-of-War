@@ -10,6 +10,7 @@ struct FOW_Entity
 {
 	// List containing the tiles 
 	std::list<iPoint> frontier;
+	std::list<iPoint> last_frontier;
 
 	iPoint position;
 };
@@ -67,6 +68,9 @@ private: // Functions
 
 	//Update Entities positions
 	void UpdateEntitiesPositions();
+
+	// Tile inside a Frontier
+	int8_t TileInsideFrontier(iPoint tile, const std::list<iPoint>& frontier_checked) const;
 
 public: // Variables
 
