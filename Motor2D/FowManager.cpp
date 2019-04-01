@@ -91,7 +91,7 @@ bool FowManager::Update(float dt)
 		if (TileInsideFrontier((*lf_item), player.frontier) == 0)
 		{
 			SetVisibilityTile((*lf_item), 2);
-		}
+		} 
 	}
 
 	player.last_frontier = player.frontier;
@@ -135,12 +135,18 @@ void FowManager::SetVisibilityMap(uint w, uint h)
 			visibility_debug_holder = nullptr;
 		}
 
-		if(visibility_map != debug_map)
-		delete[] visibility_map;
+		if (visibility_map != debug_map)
+		{
+			delete[] visibility_map;
+			visibility_map = nullptr;
+		}
 	}
 
 	if (debug_map != nullptr)
+	{
 		delete[] debug_map;
+		debug_map = nullptr;
+	}
 
 	width = w;
 	height = h;
