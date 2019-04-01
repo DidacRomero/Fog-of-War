@@ -82,7 +82,7 @@ bool FowManager::Update(float dt)
 
 	for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.cend(); item++)
 	{
-		SetVisibilityTile((*item), 1);
+		SetVisibilityTile((*item), FOW_TileState::VISIBLE);
 	}
 
 
@@ -90,7 +90,7 @@ bool FowManager::Update(float dt)
 	{
 		if (TileInsideFrontier((*lf_item), player.frontier) == 0)
 		{
-			SetVisibilityTile((*lf_item), 2);
+			SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED);
 		} 
 	}
 
@@ -168,10 +168,10 @@ int8_t FowManager::GetVisibilityTileAt(const iPoint& pos) const
 		return 0;
 }
 
-void FowManager::SetVisibilityTile(iPoint pos, int8_t value)
+void FowManager::SetVisibilityTile(iPoint pos, FOW_TileState state)
 {
 	if (CheckBoundaries(pos))
-	visibility_map[(pos.y * width) + pos.x] = value;
+	visibility_map[(pos.y * width) + pos.x] = (int8_t)state;
 }
 
 std::list<iPoint> FowManager::GetRectFrontier(uint w, uint h, iPoint pos)

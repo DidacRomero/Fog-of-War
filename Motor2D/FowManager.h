@@ -8,6 +8,38 @@
 
 struct SDL_Texture;
 
+enum class FOW_TileState
+{
+	//Basic states
+	UNVISITED = 0,
+	VISIBLE = 1,
+	SHROUDED,
+
+	//States for edge smoothing (SMTH)
+	// Black
+	BLACK_SMTH_TOP,
+	BLACK_SMTH_DOWN,
+	BLACK_SMTH_RIGHT,
+	BLACK_SMTH_LEFT,
+
+	BLACK_SMTH_TRIGHT_CORNER, // Top right Corner
+	BLACK_SMTH_TLEFT_CORNER, // Top left Corner
+	BLACK_SMTH_DRIGHT_CORNER, // Down right Corner
+	BLACK_SMTH_DLEFT_CORNER, // Down left Corner
+
+	// Shroud
+	SHROUD_SMTH_TOP,
+	SHROUD_SMTH_DOWN,
+	SHROUD_SMTH_RIGHT,
+	SHROUD_SMTH_LEFT,
+
+	SHROUD_SMTH_TRIGHT_CORNER, // Top right Corner
+	SHROUD_SMTH_TLEFT_CORNER, // Top left Corner
+	SHROUD_SMTH_DRIGHT_CORNER, // Down right Corner
+	SHROUD_SMTH_DLEFT_CORNER, // Down left Corner
+
+};
+
 struct FOW_Entity
 {
 	// List containing the tiles 
@@ -59,8 +91,8 @@ public: // Functions
 
 private: // Functions
 
-	// Set the value of a tile in the visibility map
-	void SetVisibilityTile(iPoint pos, int8_t value);
+	// Set the state of a tile in the visibility map
+	void SetVisibilityTile(iPoint pos, FOW_TileState state);
 
 	// Returns a list of iPoints that are contained in width and height
 	std::list<iPoint> GetRectFrontier(uint width, uint height, iPoint pos);
