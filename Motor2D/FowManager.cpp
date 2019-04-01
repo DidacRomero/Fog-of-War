@@ -33,7 +33,7 @@ bool FowManager::Awake()
 
 bool FowManager::Start()
 {
-	meta_FOW = App->tex->Load("maps/meta_FOW.png");
+	meta_FOW = App->tex->Load("maps/FOW_meta_sheet.png");
 
 	// Testing getting a frontier
 	std::list<iPoint> test = CreateFrontierRect(5,5);
@@ -166,6 +166,19 @@ int8_t FowManager::GetVisibilityTileAt(const iPoint& pos) const
 		return visibility_map[(pos.y * width) + pos.x];
 	else
 		return 0;
+}
+
+SDL_Rect& FowManager::GetFOWMetaRect(FOW_TileState state)
+{
+	SDL_Rect ret;
+	uint real_sprite_pos = uint(state) - uint(FOW_TileState::SHROUDED); // tile inside the FOWmeta spritesheet
+
+	ret.w = 64; // 64 is the width between different tiles in the spritesheet
+	ret.h = 64;
+	ret.x = real_sprite_pos * ret.w; 
+	ret.y = 0;
+
+	return ret;
 }
 
 void FowManager::SetVisibilityTile(iPoint pos, FOW_TileState state)

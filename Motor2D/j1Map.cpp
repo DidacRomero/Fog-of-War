@@ -75,9 +75,10 @@ void j1Map::Draw()
 					iPoint pos = MapToWorld(x, y);
 
 					// testing Fog Of War
-					if (App->fow_manager->GetVisibilityTileAt({ x,y }) == 2)
+					if (App->fow_manager->GetVisibilityTileAt({ x,y }) == int8_t(FOW_TileState::SHROUDED))
 					{
-						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, NULL);
+						SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::SHROUDED);
+						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 					}
 				}
 			}

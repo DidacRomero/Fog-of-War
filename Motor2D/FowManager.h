@@ -7,6 +7,7 @@
 #include <list>
 
 struct SDL_Texture;
+struct SDL_Rect;
 
 enum class FOW_TileState
 {
@@ -88,6 +89,8 @@ public: // Functions
 	void ResetFOWVisibility();
 
 	int8_t GetVisibilityTileAt(const iPoint& pos) const;
+
+	SDL_Rect& GetFOWMetaRect(FOW_TileState state);
 
 private: // Functions
 
