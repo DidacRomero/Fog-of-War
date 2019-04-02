@@ -110,6 +110,10 @@ bool FowManager::Update(float dt)
 			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TOP);
 			break;
 
+		case 3:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TLEFT_CORNER);
+			break;
+
 		case 2:
 			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_LEFT);
 			break;
@@ -118,8 +122,20 @@ bool FowManager::Update(float dt)
 			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DOWN);
 			break;
 
+		case 6:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DLEFT_CORNER);
+			break;
+
 		case 8:
 			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_RIGHT);
+			break;
+
+		case 9:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TRIGHT_CORNER);
+			break;
+
+		case 12:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
 			break;
 		}
 	}
