@@ -74,10 +74,13 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 
-					// testing Fog Of War
-					if (App->fow_manager->GetVisibilityTileAt({ x,y }) == int8_t(FOW_TileState::SHROUDED))
+					
+					// testing Fog Of War Shroud and smoothin'
+
+					FOW_TileState st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y });
+					if (int8_t(st) != int8_t(FOW_TileState::VISIBLE) && int8_t(st) != int8_t(FOW_TileState::UNVISITED))
 					{
-						SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::SHROUDED);
+						SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
 						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 					}
 				}
