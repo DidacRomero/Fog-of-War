@@ -85,6 +85,14 @@ bool FowManager::Update(float dt)
 		SetVisibilityTile((*item), FOW_TileState::VISIBLE);
 	}
 
+	for (std::list<iPoint>::const_iterator lf_item = player.last_frontier.cbegin(); lf_item != player.last_frontier.end(); lf_item++)
+	{
+		if (TileInsideFrontier((*lf_item), player.frontier) == 0)
+		{
+			SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED);
+		}
+	}
+
 	for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.cend(); item++)
 	{
 		//Testing edge smoothing
@@ -140,13 +148,59 @@ bool FowManager::Update(float dt)
 		}
 	}
 
-
-	for (std::list<iPoint>::const_iterator lf_item = player.last_frontier.cbegin(); lf_item != player.last_frontier.end(); lf_item++)
+	for (std::list<iPoint>::const_iterator item = player.last_frontier.cbegin(); item != player.last_frontier.cend(); item++)
 	{
-		if (TileInsideFrontier((*lf_item), player.frontier) == 0)
+		//Testing edge smoothing
+
+		// THIS IS ULTRA HARDCODED, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
+		int index = 0;
+		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED) ) //Check ABOVE
+			index += 1;
+
+		if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y }) == int8_t(FOW_TileState::UNVISITED)) //Check LEFT
+			index += 2;
+
+		if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED) ) //Check DOWN
+			index += 4;
+
+		if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }) == int8_t(FOW_TileState::UNVISITED) ) //Check RIGHT
+			index += 8;
+
+
+		switch (index)
 		{
-			SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED);
-		} 
+		case 1:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TOP);
+			break;
+
+		case 3:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TLEFT_CORNER);
+			break;
+
+		case 2:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_LEFT);
+			break;
+
+		case 4:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DOWN);
+			break;
+
+		case 6:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DLEFT_CORNER);
+			break;
+
+		case 8:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_RIGHT);
+			break;
+
+		case 9:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TRIGHT_CORNER);
+			break;
+
+		case 12:
+			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
+			break;
+		}
 	}
 
 	player.last_frontier = player.frontier;
