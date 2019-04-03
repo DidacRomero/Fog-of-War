@@ -51,124 +51,47 @@ bool FowManager::PreUpdate()
 bool FowManager::Update(float dt)
 {
 	ManageEntitiesVisibility();
-	UpdateEntitiesPositions();
-
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (UpdateEntitiesPositions() == true)
 	{
-		debug = !debug;
+		//Testing player frontier
+		player.position.x = (*entities_pos.begin()).x;
+		player.position.y = (*entities_pos.begin()).y;
 
-		// If we enter debug mode, our visibility map should be clear.
-		// We will point to a clear visibility map (debug_map) so all calls depending on visibility_map don't
-		// need further management. But before we store 
-		if (debug == true)
+		player.frontier.clear();
+		player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
+
+		for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.cend(); item++)
 		{
-			//To keep the pointer to the visibility map we use or debug_holder;
-			visibility_debug_holder = visibility_map;
-			visibility_map = debug_map;
+			SetVisibilityTile((*item), FOW_TileState::VISIBLE);
 		}
-		else // Debug == false
+
+		for (std::list<iPoint>::const_iterator lf_item = player.last_frontier.cbegin(); lf_item != player.last_frontier.end(); lf_item++)
 		{
-			visibility_map = visibility_debug_holder;
+			if (TileInsideFrontier((*lf_item), player.frontier) == 0)
+			{
+				SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED);
+			}
 		}
-	}
 
-
-	//Testing player frontier
-	player.position.x = (*entities_pos.begin()).x;
-	player.position.y = (*entities_pos.begin()).y;
-
-	player.frontier.clear();
-	player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
-
-	for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.cend(); item++)
-	{
-		SetVisibilityTile((*item), FOW_TileState::VISIBLE);
-	}
-
-	for (std::list<iPoint>::const_iterator lf_item = player.last_frontier.cbegin(); lf_item != player.last_frontier.end(); lf_item++)
-	{
-		if (TileInsideFrontier((*lf_item), player.frontier) == 0)
+		for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.cend(); item++)
 		{
-			SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED);
-		}
-	}
+			//Testing edge smoothing
 
-	for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.cend(); item++)
-	{
-		//Testing edge smoothing
+			// THIS IS ULTRA HARDCODED, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
+			int index = 0;
+			if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::SHROUDED)) //Check ABOVE
+				index += 1;
 
-		// THIS IS ULTRA HARDCODED, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
-		int index = 0;
-		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::SHROUDED)) //Check ABOVE
-			index += 1;
+			if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x - 1, (*item).y }) == int8_t(FOW_TileState::SHROUDED)) //Check LEFT
+				index += 2;
 
-		if (GetVisibilityTileAt({ (*item).x -1 , (*item).y }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x -1, (*item).y }) == int8_t(FOW_TileState::SHROUDED)) //Check LEFT
-			index += 2;
+			if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::SHROUDED)) //Check DOWN
+				index += 4;
 
-		if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::SHROUDED)) //Check DOWN
-			index += 4;
-
-		if (GetVisibilityTileAt({ (*item).x +1, (*item).y }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x +1, (*item).y }) == int8_t(FOW_TileState::SHROUDED)) //Check RIGHT
-			index += 8;
+			if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x + 1, (*item).y }) == int8_t(FOW_TileState::SHROUDED)) //Check RIGHT
+				index += 8;
 
 
-		switch (index)
-		{
-		case 1:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TOP);
-			break;
-
-		case 3:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TLEFT_CORNER);
-			break;
-
-		case 2:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_LEFT);
-			break;
-
-		case 4:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DOWN);
-			break;
-
-		case 6:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DLEFT_CORNER);
-			break;
-
-		case 8:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_RIGHT);
-			break;
-
-		case 9:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TRIGHT_CORNER);
-			break;
-
-		case 12:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
-			break;
-		}
-	}
-
-	for (std::list<iPoint>::const_iterator item = player.last_frontier.cbegin(); item != player.last_frontier.cend(); item++)
-	{
-		//Testing edge smoothing
-
-		// THIS IS HARDCODED, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
-		int index = 0;
-		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE
-			index += 1;
-
-		if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y }) == int8_t(FOW_TileState::UNVISITED)) //Check LEFT
-			index += 2;
-
-		if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN
-			index += 4;
-
-		if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }) == int8_t(FOW_TileState::UNVISITED)) //Check RIGHT
-			index += 8;
-
-
-		if (GetVisibilityTileAt((*item)) == int8_t(FOW_TileState::VISIBLE))
-		{
 			switch (index)
 			{
 			case 1:
@@ -204,28 +127,108 @@ bool FowManager::Update(float dt)
 				break;
 			}
 		}
-		else
+
+		for (std::list<iPoint>::const_iterator item = player.last_frontier.cbegin(); item != player.last_frontier.cend(); item++)
 		{
-			switch (index)
+			//Testing edge smoothing
+
+			// THIS IS HARDCODED, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
+			int index = 0;
+			if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE
+				index += 1;
+
+			if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y }) == int8_t(FOW_TileState::UNVISITED)) //Check LEFT
+				index += 2;
+
+			if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN
+				index += 4;
+
+			if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }) == int8_t(FOW_TileState::UNVISITED)) //Check RIGHT
+				index += 8;
+
+
+			if (GetVisibilityTileAt((*item)) == int8_t(FOW_TileState::VISIBLE))
 			{
-			case 3:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TLEFT_CORNER);
-				break;
+				switch (index)
+				{
+				case 1:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TOP);
+					break;
 
-			case 6:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DLEFT_CORNER);
-				break;
+				case 3:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TLEFT_CORNER);
+					break;
 
-			case 9:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TRIGHT_CORNER);
-				break;
+				case 2:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_LEFT);
+					break;
 
-			case 12:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
-				break;
+				case 4:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DOWN);
+					break;
+
+				case 6:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DLEFT_CORNER);
+					break;
+
+				case 8:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_RIGHT);
+					break;
+
+				case 9:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TRIGHT_CORNER);
+					break;
+
+				case 12:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
+					break;
+				}
+			}
+			else
+			{
+				switch (index)
+				{
+				case 3:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TLEFT_CORNER);
+					break;
+
+				case 6:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DLEFT_CORNER);
+					break;
+
+				case 9:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TRIGHT_CORNER);
+					break;
+
+				case 12:
+					SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
+					break;
+				}
 			}
 		}
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		debug = !debug;
+
+		// If we enter debug mode, our visibility map should be clear.
+		// We will point to a clear visibility map (debug_map) so all calls depending on visibility_map don't
+		// need further management. But before we store 
+		if (debug == true)
+		{
+			//To keep the pointer to the visibility map we use or debug_holder;
+			visibility_debug_holder = visibility_map;
+			visibility_map = debug_map;
+		}
+		else // Debug == false
+		{
+			visibility_map = visibility_debug_holder;
+		}
+	}
+
+
+	
 
 	player.last_frontier = player.frontier;
 
@@ -368,14 +371,22 @@ void FowManager::ManageEntitiesVisibility()
 	}
 }
 
-void FowManager::UpdateEntitiesPositions()
+bool FowManager::UpdateEntitiesPositions()
 {
+	bool ret = false;
 	// ------
 	// Get the position of all entities, we call the entity manager to provide us all the entities (const)
 	// When implementing into your game, you will have to do the same thing but adapted into your own entity and entity manager
 	std::list<j2Entity*> entities_info = App->entity_manager->GetEntitiesInfo();
 
 	std::list<j2Entity*>::iterator item = entities_info.begin();
+
+	// We want to know if the player moved in order to update fog, in your game, you should check for all entities that change visibility
+	// This is a bit hardcoded, since we know that the first entity of the list is the player
+	if (App->map->WorldToMap((*item)->position.x, (*item)->position.y) != player.position)
+	{
+		ret = true;
+	}
 
 	if (entities_pos.size() == 0)
 	{
@@ -396,7 +407,7 @@ void FowManager::UpdateEntitiesPositions()
 		}
 	}
 	// ------
-
+	return ret;
 }
 
 int8_t FowManager::TileInsideFrontier(iPoint tile, const std::list<iPoint>& frontier_checked) const

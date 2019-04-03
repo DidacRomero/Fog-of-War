@@ -111,7 +111,7 @@ private: // Functions
 	void ManageEntitiesVisibility();
 
 	//Update Entities positions
-	void UpdateEntitiesPositions();
+	bool UpdateEntitiesPositions();
 
 	// Tile inside a Frontier
 	int8_t TileInsideFrontier(iPoint tile, const std::list<iPoint>& frontier_checked) const;
