@@ -152,54 +152,78 @@ bool FowManager::Update(float dt)
 	{
 		//Testing edge smoothing
 
-		// THIS IS ULTRA HARDCODED, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
+		// THIS IS HARDCODED, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
 		int index = 0;
-		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED) ) //Check ABOVE
+		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE
 			index += 1;
 
 		if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y }) == int8_t(FOW_TileState::UNVISITED)) //Check LEFT
 			index += 2;
 
-		if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED) ) //Check DOWN
+		if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN
 			index += 4;
 
-		if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }) == int8_t(FOW_TileState::UNVISITED) ) //Check RIGHT
+		if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }) == int8_t(FOW_TileState::UNVISITED)) //Check RIGHT
 			index += 8;
 
 
-		switch (index)
+		if (GetVisibilityTileAt((*item)) == int8_t(FOW_TileState::VISIBLE))
 		{
-		case 1:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TOP);
-			break;
+			switch (index)
+			{
+			case 1:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TOP);
+				break;
 
-		case 3:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TLEFT_CORNER);
-			break;
+			case 3:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TLEFT_CORNER);
+				break;
 
-		case 2:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_LEFT);
-			break;
+			case 2:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_LEFT);
+				break;
 
-		case 4:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DOWN);
-			break;
+			case 4:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DOWN);
+				break;
 
-		case 6:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DLEFT_CORNER);
-			break;
+			case 6:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DLEFT_CORNER);
+				break;
 
-		case 8:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_RIGHT);
-			break;
+			case 8:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_RIGHT);
+				break;
 
-		case 9:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TRIGHT_CORNER);
-			break;
+			case 9:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TRIGHT_CORNER);
+				break;
 
-		case 12:
-			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
-			break;
+			case 12:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
+				break;
+			}
+		}
+		else
+		{
+			switch (index)
+			{
+			case 3:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TLEFT_CORNER);
+				break;
+
+			case 6:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DLEFT_CORNER);
+				break;
+
+			case 9:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TRIGHT_CORNER);
+				break;
+
+			case 12:
+				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
+				break;
+			}
 		}
 	}
 
