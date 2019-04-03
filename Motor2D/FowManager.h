@@ -54,7 +54,11 @@ struct FOW_Entity
 	std::list<iPoint> frontier;
 	std::list<iPoint> last_frontier;
 
+	std::list<iPoint> LOS;
+	std::list<iPoint> last_LOS;
+
 	iPoint position;
+	iPoint last_position;
 };
 
 class FowManager : public j1Module
@@ -123,7 +127,7 @@ private: // Functions
 	std::list<iPoint> FillFrontier(const std::list<iPoint>& frontier);
 
 	// Set a frontier with the rectangle size
-	std::list<iPoint> CreateFrontierRect(uint width, uint height);
+	std::list<iPoint> CreateFrontierRect(uint width, uint height, iPoint center);
 
 public: // Variables
 

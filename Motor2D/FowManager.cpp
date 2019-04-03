@@ -35,11 +35,17 @@ bool FowManager::Start()
 {
 	meta_FOW = App->tex->Load("maps/FOW_meta_sheet.png");
 
-	// Testing getting a frontier
-	std::list<iPoint> test = CreateFrontierRect(5,5);
+	UpdateEntitiesPositions();
 
-	// Testing Filling a frontier
-	std::list<iPoint> LOS = FillFrontier(test);
+	player.position.x = (*entities_pos.begin()).x;
+	player.position.y = (*entities_pos.begin()).y;
+
+	// Testing getting the player frontier
+	player.frontier = CreateFrontierRect(10,10,player.position);
+
+	// Testing Filling the player frontier
+	player.LOS = FillFrontier(player.frontier);
+
 	return true;
 }
 
@@ -51,29 +57,39 @@ bool FowManager::PreUpdate()
 bool FowManager::Update(float dt)
 {
 	ManageEntitiesVisibility();
-	if (UpdateEntitiesPositions() == true)
+	//Update Entities positions. 
+
+	// We will need the difference in position to move the forntiers and LOS
+	player.last_position = player.position;
+
+	if (UpdateEntitiesPositions() == true) // If the position of an entity that manipulates visibility changed, update the visibility map
 	{
 		//Testing player frontier
 		player.position.x = (*entities_pos.begin()).x;
 		player.position.y = (*entities_pos.begin()).y;
 
-		player.frontier.clear();
-		player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
+		iPoint player_motion = { player.position.x - player.last_position.x , player.position.y - player.last_position.y };
 
-		for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.cend(); item++)
+		//player.frontier.clear();
+		//player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
+
+		for (std::list<iPoint>::iterator item = player.LOS.begin(); item != player.LOS.end(); item++)
 		{
+			(*item).x += player_motion.x;
+			(*item).y += player_motion.y;
+
 			SetVisibilityTile((*item), FOW_TileState::VISIBLE);
 		}
 
-		for (std::list<iPoint>::const_iterator lf_item = player.last_frontier.cbegin(); lf_item != player.last_frontier.end(); lf_item++)
+		for (std::list<iPoint>::const_iterator lf_item = player.last_LOS.cbegin(); lf_item != player.last_LOS.end(); lf_item++)
 		{
-			if (TileInsideFrontier((*lf_item), player.frontier) == 0)
+			if (TileInsideFrontier((*lf_item), player.LOS) == 0)
 			{
 				SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED);
 			}
 		}
 
-		for (std::list<iPoint>::const_iterator item = player.frontier.cbegin(); item != player.frontier.cend(); item++)
+		for (std::list<iPoint>::const_iterator item = player.LOS.cbegin(); item != player.LOS.cend(); item++)
 		{
 			//Testing edge smoothing
 
@@ -128,7 +144,7 @@ bool FowManager::Update(float dt)
 			}
 		}
 
-		for (std::list<iPoint>::const_iterator item = player.last_frontier.cbegin(); item != player.last_frontier.cend(); item++)
+		for (std::list<iPoint>::const_iterator item = player.last_LOS.cbegin(); item != player.last_LOS.cend(); item++)
 		{
 			//Testing edge smoothing
 
@@ -230,7 +246,7 @@ bool FowManager::Update(float dt)
 
 	
 
-	player.last_frontier = player.frontier;
+	player.last_LOS = player.LOS;
 
 	return true;
 }
@@ -442,20 +458,22 @@ bool FowManager::CheckBoundaries(const iPoint& pos) const
 		pos.y >= 0 && pos.y <= (int)height);
 }
 
-std::list<iPoint> FowManager::CreateFrontierRect(uint w, uint h)
+std::list<iPoint> FowManager::CreateFrontierRect(uint w, uint h, iPoint center)
 {
 	std::list<iPoint> frontier_to_fill;
 
+	iPoint st_pos = { center.x - (int)(w/2), center.y - (int)(h / 2) };
+	iPoint final_pos = { st_pos.x + (int)w, (int)st_pos.y + (int)h};
+
 	// We iterate to find the iPoints that ARE part of the frontier
-	int j = 0;
-	for (; j < h; ++j)
+	for (int j = st_pos.y; j < final_pos.y; ++j)
 	{
-		int i = 0;
-		for (; i < w - 1; ++i) //check the explanations below to understand why i < w -1
+		int i = st_pos.x;
+		for (; i < final_pos.x - 1; ++i) //check the explanations below to understand why i < w -1
 		{
 			// Since it's a rectangle some assumptions can be made: i== 0 will always be at the 
 			// frontier as the left-most tile, i == w -1 will be for the right-most tile
-			if (i == 0 || j== 0 || j == h -1)
+			if (i == st_pos.x || j == st_pos.y || j == final_pos.y -1)
 			{
 				frontier_to_fill.push_back({ i, j });
 			}
