@@ -54,19 +54,9 @@ void j1Map::Draw()
 					iPoint pos = MapToWorld(x, y);
 
 					// testing Fog Of War
-					if (App->fow_manager->GetVisibilityTileAt({ x,y }) != 0)
+					if (App->fow_manager->GetVisibilityTileAt({ x,y }) !=0)
 					{
 						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
-					}
-					else if (App->fow_manager->GetVisibilityTileAt({ x,y }) == 2) //Hardcode to test basic visibility different than corners
-					{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
-
-						r.x = 0;
-						r.y = 0;
-						r.w, r.h = 64;
-						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
-
 					}
 				}
 			}
@@ -85,45 +75,67 @@ void j1Map::Draw()
 					iPoint pos = MapToWorld(x, y);
 
 					
-					// testing Fog Of War Shroud and smoothin' I REALLY NEED to fix all this hardcoding
-
+					// Testing Fog Of War Shroud and smoothing
 					FOW_TileState st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y });
 
-					if (int8_t(st) != int8_t(FOW_TileState::VISIBLE) && int8_t(st) != int8_t(FOW_TileState::UNVISITED))
+					//If the tile is shrouded or any state different than visible and unvisited
+					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED) 
 					{
-						if (st == FOW_TileState::BTOS_SMTH_DLEFT_CORNER || st == FOW_TileState::BTOS_SMTH_TLEFT_CORNER ||
-							st == FOW_TileState::BTOS_SMTH_DRIGHT_CORNER || st == FOW_TileState::BTOS_SMTH_TRIGHT_CORNER)
+						//If we find ourselves in a special state (shrouded area that has to be smoothed on top)
+						if (st >= FOW_TileState::BTOS_SMTH_TRIGHT_CORNER && st <= FOW_TileState::BTOS_SMTH_DLEFT_CORNER)
 						{
+							// Blit as if tile is shrouded
 							SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::SHROUDED);
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 
-							switch (st)
-							{
-							case FOW_TileState::BTOS_SMTH_DLEFT_CORNER:
-								st = FOW_TileState::BLACK_SMTH_DLEFT_CORNER;
-								break;
+							// Calculate & Blit the correspondant smooth tile
+							int8_t fake_st = (int8_t)st - (int8_t)FOW_TileState::SHROUD_SMTH_DOWN;
 
-							case FOW_TileState::BTOS_SMTH_TLEFT_CORNER:
-								st = FOW_TileState::BLACK_SMTH_TLEFT_CORNER;
-								break;
+							r = App->fow_manager->GetFOWMetaRect((FOW_TileState)fake_st);
+							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 
-							case FOW_TileState::BTOS_SMTH_DRIGHT_CORNER:
-								st = FOW_TileState::BLACK_SMTH_DRIGHT_CORNER;
-								break;
-							case FOW_TileState::BTOS_SMTH_TRIGHT_CORNER:
-								st = FOW_TileState::BLACK_SMTH_TRIGHT_CORNER;
-								break;
-							}
-							SDL_Rect r_1 = App->fow_manager->GetFOWMetaRect(st);
-							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r_1);
 						}
-						else // Base case
+						else // If we're not a special case
 						{
-
 							SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 						}
 					}
+					//if (int8_t(st) != int8_t(FOW_TileState::VISIBLE) && int8_t(st) != int8_t(FOW_TileState::UNVISITED))
+					//{
+					//	if (st == FOW_TileState::BTOS_SMTH_DLEFT_CORNER || st == FOW_TileState::BTOS_SMTH_TLEFT_CORNER ||
+					//		st == FOW_TileState::BTOS_SMTH_DRIGHT_CORNER || st == FOW_TileState::BTOS_SMTH_TRIGHT_CORNER)
+					//	{
+					//		SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::SHROUDED);
+					//		App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
+
+					//		switch (st)
+					//		{
+					//		case FOW_TileState::BTOS_SMTH_DLEFT_CORNER:
+					//			st = FOW_TileState::BLACK_SMTH_DLEFT_CORNER;
+					//			break;
+
+					//		case FOW_TileState::BTOS_SMTH_TLEFT_CORNER:
+					//			st = FOW_TileState::BLACK_SMTH_TLEFT_CORNER;
+					//			break;
+
+					//		case FOW_TileState::BTOS_SMTH_DRIGHT_CORNER:
+					//			st = FOW_TileState::BLACK_SMTH_DRIGHT_CORNER;
+					//			break;
+					//		case FOW_TileState::BTOS_SMTH_TRIGHT_CORNER:
+					//			st = FOW_TileState::BLACK_SMTH_TRIGHT_CORNER;
+					//			break;
+					//		}
+					//		SDL_Rect r_1 = App->fow_manager->GetFOWMetaRect(st);
+					//		App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r_1);
+					//	}
+					//	else // Base case
+					//	{
+
+					//		SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
+					//		App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
+					//	}
+					//}
 				}
 			}
 		}

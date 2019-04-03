@@ -58,7 +58,7 @@ struct FOW_Entity
 	std::list<iPoint> last_LOS;
 
 	iPoint position;
-	iPoint last_position;
+	iPoint motion;
 };
 
 class FowManager : public j1Module
@@ -72,19 +72,10 @@ public: // Functions
 
 	// Called before render is available
 	bool Awake();
-
 	// Called before the first frame
 	bool Start();
-
-	// Called before all Updates
-	bool PreUpdate();
-
 	// Called each loop iteration
 	bool Update(float dt);
-
-	// Called before all Updates
-	bool PostUpdate();
-
 	// Called before quitting
 	bool CleanUp();
 
@@ -95,13 +86,14 @@ public: // Functions
 
 	// Set Visibility Map
 	void SetVisibilityMap(uint width, uint height);
-	
 	// Reset Visibility Map
 	void ResetFOWVisibility();
 
 	int8_t GetVisibilityTileAt(const iPoint& pos) const;
 
 	SDL_Rect& GetFOWMetaRect(FOW_TileState state);
+
+	void SmoothEdges();
 
 private: // Functions
 
@@ -129,21 +121,22 @@ private: // Functions
 	// Set a frontier with the rectangle size
 	std::list<iPoint> CreateFrontierRect(uint width, uint height, iPoint center);
 
+
+
 public: // Variables
 
 	bool debug = false;
 
 	SDL_Texture* meta_FOW = nullptr;
 
+
+
 private: //Variables
 
 	uint width, height;
-	int8_t* visibility_map = nullptr;
 
-	//---- This 2 pointers are for debug purpose only
-	int8_t* debug_map = nullptr;
-	int8_t* visibility_debug_holder = nullptr;
-	//----
+	int8_t* visibility_map = nullptr;
+	int8_t* edge_smoothing_map = nullptr;
 
 	// Testing the FOW_Entity 
 	FOW_Entity player;
@@ -151,8 +144,11 @@ private: //Variables
 	// This list contains the position in MAP COORDINATES of all entities
 	std::list<iPoint> entities_pos;
 
+
+	//---- This 2 pointers are for debug purpose only
+	int8_t* debug_map = nullptr;
+	int8_t* visibility_debug_holder = nullptr;
+	//----
+
 };
-
-
 #endif 
-
