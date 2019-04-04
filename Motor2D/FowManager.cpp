@@ -197,7 +197,7 @@ void FowManager::SmoothEdges()
 		(*item).y += player.motion.y;
 		//Testing edge smoothing
 
-		// THIS IS ULTRA HARDCODED, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
+		// THE ENUM SWITCH IS USED AS A TOOL, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
 		int index = 0;
 		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::SHROUDED)) //Check ABOVE
 			index += 1;
@@ -214,7 +214,7 @@ void FowManager::SmoothEdges()
 
 		switch (index)
 		{
-		case 1:
+		/*case 1:
 			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TOP);
 			break;
 
@@ -244,6 +244,39 @@ void FowManager::SmoothEdges()
 
 		case 12:
 			SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
+			break;
+		}*/
+
+		case 1:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TOP);
+			break;
+
+		case 3:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TLEFT_CORNER);
+			break;
+
+		case 2:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_LEFT);
+			break;
+
+		case 4:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DOWN);
+			break;
+
+		case 6:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DLEFT_CORNER);
+			break;
+
+		case 8:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_RIGHT);
+			break;
+
+		case 9:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TRIGHT_CORNER);
+			break;
+
+		case 12:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DRIGHT_CORNER);
 			break;
 		}
 	}
