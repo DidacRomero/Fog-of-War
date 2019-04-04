@@ -93,7 +93,7 @@ bool FowManager::Update(float dt)
 
 		// If we enter debug mode, our visibility map should be clear.
 		// We will point to a clear visibility map (debug_map) so all calls depending on visibility_map don't
-		// need further management. But before we store 
+		// need further management. But before we store our current visibility map!
 		if (debug == true)
 		{
 			//To keep the pointer to the visibility map we use our debug_holder;
@@ -248,6 +248,7 @@ void FowManager::SmoothEdges()
 		}
 	}
 
+	std::list<iPoint> corners;
 	for (std::list<iPoint>::const_iterator item = player.last_frontier.cbegin(); item != player.last_frontier.cend(); item++)
 	{
 		//Testing edge smoothing
@@ -271,6 +272,10 @@ void FowManager::SmoothEdges()
 		{
 			switch (index)
 			{
+			case 0: 
+				// A tile in the last frontier will never be a shrouded area, so we can assume it's an outer corner
+				corners.push_back(*item);
+				break;
 			case 1:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TOP);
 				break;
@@ -324,6 +329,28 @@ void FowManager::SmoothEdges()
 			case 12:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_CORNER);
 				break;
+			}
+		}
+
+		for (std::list<iPoint>::const_iterator item = corners.cbegin(); item != corners.cend(); item++)
+		{
+			//Since we know these elements where in a frontier, thus they can only be corners, we will check the diagonal tiles
+			//since there can only be one tile that is still unvisited, when we find it we will: continue; the loop
+			if (GetVisibilityTileAt({ (*item).x - 1, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-LEFT
+			{
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TLEFT_OUT_CORNER);
+			}
+			else if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y +1 }) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN-LEFT
+			{
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DLEFT_OUT_CORNER);
+			}
+			else if (GetVisibilityTileAt({ (*item).x + 1, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN-RIGHT
+			{
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_OUT_CORNER);
+			}
+			else if (GetVisibilityTileAt({ (*item).x + 1, (*item).y -1}) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-RIGHT
+			{
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TRIGHT_OUT_CORNER);
 			}
 		}
 	}

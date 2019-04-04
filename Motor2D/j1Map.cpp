@@ -82,7 +82,7 @@ void j1Map::Draw()
 					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED) 
 					{
 						//If we find ourselves in a special state (shrouded area that has to be smoothed on top)
-						if (st >= FOW_TileState::BTOS_SMTH_TOP && st <= FOW_TileState::BTOS_SMTH_DLEFT_CORNER)
+						if (st >= FOW_TileState::BTOS_SMTH_TOP && st <= FOW_TileState::BTOS_SMTH_TRIGHT_OUT_CORNER)
 						{
 							// Blit as if tile is shrouded
 							SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::SHROUDED);
