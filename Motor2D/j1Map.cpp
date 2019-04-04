@@ -89,7 +89,7 @@ void j1Map::Draw()
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 
 							// Calculate & Blit the correspondant smooth tile
-							int8_t fake_st = (int8_t)st - (int8_t)20;
+							int8_t fake_st = (int8_t)st - (int8_t)24;
 
 							r = App->fow_manager->GetFOWMetaRect((FOW_TileState)fake_st);
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);

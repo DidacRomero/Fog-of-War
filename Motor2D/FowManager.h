@@ -44,6 +44,11 @@ enum class FOW_TileState
 	SHROUD_SMTH_DRIGHT_CORNER, // Down right Corner
 	SHROUD_SMTH_DLEFT_CORNER, // Down left Corner
 
+	SHROUD_SMTH_TLEFT_OUT_CORNER,
+	SHROUD_SMTH_DLEFT_OUT_CORNER,
+	SHROUD_SMTH_DRIGHT_OUT_CORNER,
+	SHROUD_SMTH_TRIGHT_OUT_CORNER,
+
 	// Black to Shroud
 	BTOS_SMTH_TOP,
 	BTOS_SMTH_DOWN,
@@ -109,6 +114,8 @@ public: // Functions
 	SDL_Rect& GetFOWMetaRect(FOW_TileState state);
 
 	void SmoothEdges();
+
+	void SmoothEntitiesInnerEdges();
 
 private: // Functions
 
