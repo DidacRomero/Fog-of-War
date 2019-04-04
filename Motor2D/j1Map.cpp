@@ -78,6 +78,21 @@ void j1Map::Draw()
 					// Testing Fog Of War Shroud and smoothing
 					FOW_TileState st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y },VISIBILITY);
 
+					//if (st == FOW_TileState::SHROUDED)
+					//{
+					//	SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
+					//	App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
+
+					//}
+
+					//// Chek if we have to print any edge over the 
+					//st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y }, EDGES);
+
+					//if (st > FOW_TileState::SHROUDED) 
+					//{
+					//	st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y }, EDGES);
+					//}
+					
 					//If the tile is shrouded or any state different than visible and unvisited
 					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED) 
 					{

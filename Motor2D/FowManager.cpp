@@ -156,11 +156,22 @@ void FowManager::SetVisibilityMap(uint w, uint h)
 		debug_map = nullptr;
 	}
 
+	if (edge_smoothing_map != nullptr)
+	{
+		delete[] edge_smoothing_map;
+		edge_smoothing_map = nullptr;
+	}
+
 	width = w;
 	height = h;
 
+	//Visibility map will contain the 3 basic states of logic in FOW
 	visibility_map = new int8_t [width*height];
 	memset(visibility_map, 0,width*height);
+
+	//Edge smoothing map will contain the softened edges
+	edge_smoothing_map = new int8_t[width*height];
+	memset(edge_smoothing_map, 0, width*height);
 
 	// Keep a totally clear map for debug purposes
 	debug_map = new int8_t[width*height];
@@ -321,16 +332,20 @@ void FowManager::SmoothEntitiesInnerEdges()
 
 		// THE ENUM SWITCH IS USED AS A TOOL, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
 		int index = 0;
-		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y - 1 }, VISIBILITY) == int8_t(FOW_TileState::SHROUDED)) //Check ABOVE
+		int8_t st = GetVisibilityTileAt({ (*item).x, (*item).y - 1 }, VISIBILITY); //Check ABOVE
+		if ( st == int8_t(FOW_TileState::UNVISITED) || st == int8_t(FOW_TileState::SHROUDED) || st >= int8_t(FOW_TileState::BTOS_SMTH_TOP)) 
 			index += 1;
 
-		if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x - 1, (*item).y }, VISIBILITY) == int8_t(FOW_TileState::SHROUDED)) //Check LEFT
+		st = GetVisibilityTileAt({ (*item).x - 1 , (*item).y }, VISIBILITY); //Check LEFT
+		if (st == int8_t(FOW_TileState::UNVISITED) || st == int8_t(FOW_TileState::SHROUDED) || st >= int8_t(FOW_TileState::BTOS_SMTH_TOP)) 
 			index += 2;
 
-		if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y + 1 }, VISIBILITY) == int8_t(FOW_TileState::SHROUDED)) //Check DOWN
+		st = GetVisibilityTileAt({ (*item).x , (*item).y + 1 }, VISIBILITY); //Check DOWN
+		if (st == int8_t(FOW_TileState::UNVISITED) || st == int8_t(FOW_TileState::SHROUDED) || st >= int8_t(FOW_TileState::BTOS_SMTH_TOP)) 
 			index += 4;
 
-		if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x + 1, (*item).y }, VISIBILITY) == int8_t(FOW_TileState::SHROUDED)) //Check RIGHT
+		st = GetVisibilityTileAt({ (*item).x + 1 , (*item).y }, VISIBILITY); //Check RIGHT
+		if (st == int8_t(FOW_TileState::UNVISITED) || st == int8_t(FOW_TileState::SHROUDED) || st >= int8_t(FOW_TileState::BTOS_SMTH_TOP)) 
 			index += 8;
 
 		switch (index)
@@ -443,19 +458,13 @@ void FowManager::ManageEntitiesVisibility()
 
 	for (std::list<j2Entity*>::iterator entity_item = entities_info.begin(); entity_item != entities_info.end(); entity_item++)
 	{
-		switch (GetVisibilityTileAt((*entity_position), VISIBILITY))
+		int8_t st = GetVisibilityTileAt((*entity_position), VISIBILITY);
+		if (st == (int8_t)FOW_TileState::VISIBLE || (st < (int8_t)FOW_TileState::BTOS_SMTH_TOP && st >(int8_t)FOW_TileState::SHROUDED))
 		{
-		case 0:
-			(*entity_item)->is_visible = false;
-			break;
+		(*entity_item)->is_visible = true;
 
-		case 1:
-			(*entity_item)->is_visible = true;
-			break;
-
-		case 2:
-			(*entity_item)->is_visible = false;
-			break;
+		}else{
+		(*entity_item)->is_visible = false;
 		}
 		entity_position++;
 	}
