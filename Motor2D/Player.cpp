@@ -37,6 +37,8 @@ bool Player::Update(float dt, bool do_logic)
 
 	App->render->FollowPlayer(position.x - last_pos.x, position.y - last_pos.y);
 
+	
+
 	return true;
 }
 
@@ -48,5 +50,5 @@ bool Player::CleanUp()
 
 void Player::Draw()
 {
-	App->render->Blit(entity_tex, position.x, position.y, &entity_rect);
+	App->render->Blit(entity_tex, position.x, position.y -64, &entity_rect);
 }
