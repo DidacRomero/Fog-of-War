@@ -267,7 +267,7 @@ void FowManager::SmoothEdges()
 			index += 8;
 
 
-		if (GetVisibilityTileAt((*item)) == int8_t(FOW_TileState::VISIBLE))
+		if (GetVisibilityTileAt((*item)) == int8_t(FOW_TileState::SHROUDED))
 		{
 			switch (index)
 			{
