@@ -39,6 +39,11 @@ enum class FOW_TileState
 	SHROUD_SMTH_DRIGHT_CORNER, // Down right Corner
 	SHROUD_SMTH_DLEFT_CORNER, // Down left Corner
 
+	// Black to Shroud
+	BTOS_SMTH_TOP,
+	BTOS_SMTH_DOWN,
+	BTOS_SMTH_RIGHT,
+	BTOS_SMTH_LEFT,
 
 	BTOS_SMTH_TRIGHT_CORNER, // Top right Corner Black to shroud
 	BTOS_SMTH_TLEFT_CORNER, // Top left Corner Black to shroud

@@ -272,35 +272,35 @@ void FowManager::SmoothEdges()
 			switch (index)
 			{
 			case 1:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TOP);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TOP);
 				break;
 
 			case 3:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TLEFT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TLEFT_CORNER);
 				break;
 
 			case 2:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_LEFT);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_LEFT);
 				break;
 
 			case 4:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DOWN);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DOWN);
 				break;
 
 			case 6:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DLEFT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DLEFT_CORNER);
 				break;
 
 			case 8:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_RIGHT);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_RIGHT);
 				break;
 
 			case 9:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_TRIGHT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TRIGHT_CORNER);
 				break;
 
 			case 12:
-				SetVisibilityTile((*item), FOW_TileState::BLACK_SMTH_DRIGHT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_CORNER);
 				break;
 			}
 		}
@@ -308,6 +308,7 @@ void FowManager::SmoothEdges()
 		{
 			switch (index)
 			{
+
 			case 3:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TLEFT_CORNER);
 				break;

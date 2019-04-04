@@ -82,14 +82,14 @@ void j1Map::Draw()
 					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED) 
 					{
 						//If we find ourselves in a special state (shrouded area that has to be smoothed on top)
-						if (st >= FOW_TileState::BTOS_SMTH_TRIGHT_CORNER && st <= FOW_TileState::BTOS_SMTH_DLEFT_CORNER)
+						if (st >= FOW_TileState::BTOS_SMTH_TOP && st <= FOW_TileState::BTOS_SMTH_DLEFT_CORNER)
 						{
 							// Blit as if tile is shrouded
 							SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::SHROUDED);
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 
 							// Calculate & Blit the correspondant smooth tile
-							int8_t fake_st = (int8_t)st - (int8_t)FOW_TileState::SHROUD_SMTH_DOWN;
+							int8_t fake_st = (int8_t)st - (int8_t)16;
 
 							r = App->fow_manager->GetFOWMetaRect((FOW_TileState)fake_st);
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
@@ -160,9 +160,9 @@ int Properties::Get(const char* value, int default_value) const
 
 void j1Map::DrawGrid()
 {
-	iPoint point_a = {data.tile_width/2,data.tile_height / 2 };
-	iPoint point_b = { -((data.width * data.tile_width ) / 2 + data.tile_width /2) + data.tile_width,
-		(data.height * data.tile_height) /2 + data.tile_height / 2};
+	iPoint point_a = {data.tile_width/2 +3,data.tile_height / 2 +3};
+	iPoint point_b = { -((data.width * data.tile_width ) / 2 + data.tile_width /2) + data.tile_width +3,
+		(data.height * data.tile_height) /2 + data.tile_height / 2 +3};
 
 	for (int i = 0; i <= data.width; ++i)
 	{
@@ -177,10 +177,10 @@ void j1Map::DrawGrid()
 
 	//Back to the first tile
 	point_a.x = data.tile_width / 2 ;
-	point_a.y = data.tile_height / 2 ;
+	point_a.y = data.tile_height / 2 + 3;
 
-	point_b.x = (data.width * data.tile_width) / 2 + data.tile_width / 2;
-	point_b.y = (data.height * data.tile_height) / 2 + data.tile_height / 2;
+	point_b.x = (data.width * data.tile_width) / 2 + data.tile_width / 2 ;
+	point_b.y = (data.height * data.tile_height) / 2 + data.tile_height / 2 +3;
 
 	for (int i = 0; i <= data.height; ++i)
 	{
