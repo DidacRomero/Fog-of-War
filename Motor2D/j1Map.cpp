@@ -54,7 +54,7 @@ void j1Map::Draw()
 					iPoint pos = MapToWorld(x, y);
 
 					// testing Fog Of War
-					if (App->fow_manager->GetVisibilityTileAt({ x,y }) !=0)
+					if (App->fow_manager->GetVisibilityTileAt({ x,y }, VISIBILITY) !=0)
 					{
 						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 					}
@@ -76,7 +76,7 @@ void j1Map::Draw()
 
 					
 					// Testing Fog Of War Shroud and smoothing
-					FOW_TileState st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y });
+					FOW_TileState st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y },VISIBILITY);
 
 					//If the tile is shrouded or any state different than visible and unvisited
 					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED) 

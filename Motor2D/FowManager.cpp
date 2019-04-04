@@ -73,14 +73,14 @@ bool FowManager::Update(float dt)
 			(*item).x += player.motion.x;
 			(*item).y += player.motion.y;
 
-			SetVisibilityTile((*item), FOW_TileState::VISIBLE);
+			SetVisibilityTile((*item), FOW_TileState::VISIBLE, VISIBILITY);
 		}
 
 		for (std::list<iPoint>::const_iterator lf_item = player.last_LOS.cbegin(); lf_item != player.last_LOS.end(); lf_item++)
 		{
 			if (TileInsideFrontier((*lf_item), player.LOS) == 0)
 			{
-				SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED);
+				SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED, VISIBILITY);
 			}
 		}
 
@@ -167,11 +167,20 @@ void FowManager::SetVisibilityMap(uint w, uint h)
 	memset(debug_map, 1, width*height);
 }
 
-int8_t FowManager::GetVisibilityTileAt(const iPoint& pos) const
+int8_t FowManager::GetVisibilityTileAt(const iPoint& pos, FOW_Map map) const
 {
 	// Utility: return the visibility value of a tile
-	if (CheckBoundaries(pos))
-		return visibility_map[(pos.y * width) + pos.x];
+	if (CheckBoundaries(pos)) // Since both maps will have the same size we can check with the main one
+		switch (map)
+		{
+		case VISIBILITY:
+			return visibility_map[(pos.y * width) + pos.x];
+			break;
+		case EDGES:
+			return edge_smoothing_map[(pos.y * width) + pos.x];
+			break;
+		}
+		
 	else
 		return 0;
 }
@@ -200,20 +209,20 @@ void FowManager::SmoothEdges()
 
 		// THIS IS HARDCODED, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
 		int index = 0;
-		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE
+		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 } , VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE
 			index += 1;
 
-		if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y }) == int8_t(FOW_TileState::UNVISITED)) //Check LEFT
+		if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y } , VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check LEFT
 			index += 2;
 
-		if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN
+		if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN
 			index += 4;
 
-		if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }) == int8_t(FOW_TileState::UNVISITED)) //Check RIGHT
+		if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check RIGHT
 			index += 8;
 
 
-		if (GetVisibilityTileAt((*item)) == int8_t(FOW_TileState::SHROUDED))
+		if (GetVisibilityTileAt((*item), VISIBILITY) == int8_t(FOW_TileState::SHROUDED))
 		{
 			switch (index)
 			{
@@ -222,35 +231,35 @@ void FowManager::SmoothEdges()
 				corners.push_back(*item);
 				break;
 			case 1:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TOP);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TOP, VISIBILITY);
 				break;
 
 			case 3:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TLEFT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TLEFT_CORNER, VISIBILITY);
 				break;
 
 			case 2:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_LEFT);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_LEFT, VISIBILITY);
 				break;
 
 			case 4:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DOWN);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DOWN, VISIBILITY);
 				break;
 
 			case 6:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DLEFT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DLEFT_CORNER, VISIBILITY);
 				break;
 
 			case 8:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_RIGHT);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_RIGHT, VISIBILITY);
 				break;
 
 			case 9:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TRIGHT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TRIGHT_CORNER, VISIBILITY);
 				break;
 
 			case 12:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_CORNER, VISIBILITY);
 				break;
 			}
 		}
@@ -260,19 +269,19 @@ void FowManager::SmoothEdges()
 			{
 
 			case 3:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TLEFT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TLEFT_CORNER, VISIBILITY);
 				break;
 
 			case 6:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DLEFT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DLEFT_CORNER, VISIBILITY);
 				break;
 
 			case 9:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TRIGHT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TRIGHT_CORNER, VISIBILITY);
 				break;
 
 			case 12:
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_CORNER, VISIBILITY);
 				break;
 			}
 		}
@@ -281,21 +290,21 @@ void FowManager::SmoothEdges()
 		{
 			//Since we know these elements where in a frontier, thus they can only be corners, we will check the diagonal tiles
 			//since there can only be one tile that is still unvisited, when we find it we will: continue; the loop
-			if (GetVisibilityTileAt({ (*item).x - 1, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-LEFT
+			if (GetVisibilityTileAt({ (*item).x - 1, (*item).y - 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-LEFT
 			{
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TLEFT_OUT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TLEFT_OUT_CORNER, VISIBILITY);
 			}
-			else if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y +1 }) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN-LEFT
+			else if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y +1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN-LEFT
 			{
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DLEFT_OUT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DLEFT_OUT_CORNER, VISIBILITY);
 			}
-			else if (GetVisibilityTileAt({ (*item).x + 1, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN-RIGHT
+			else if (GetVisibilityTileAt({ (*item).x + 1, (*item).y + 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN-RIGHT
 			{
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_OUT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_OUT_CORNER, VISIBILITY);
 			}
-			else if (GetVisibilityTileAt({ (*item).x + 1, (*item).y -1}) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-RIGHT
+			else if (GetVisibilityTileAt({ (*item).x + 1, (*item).y -1}, VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-RIGHT
 			{
-				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TRIGHT_OUT_CORNER);
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TRIGHT_OUT_CORNER, VISIBILITY);
 			}
 		}
 	}
@@ -312,16 +321,16 @@ void FowManager::SmoothEntitiesInnerEdges()
 
 		// THE ENUM SWITCH IS USED AS A TOOL, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
 		int index = 0;
-		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::SHROUDED)) //Check ABOVE
+		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y - 1 }, VISIBILITY) == int8_t(FOW_TileState::SHROUDED)) //Check ABOVE
 			index += 1;
 
-		if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x - 1, (*item).y }) == int8_t(FOW_TileState::SHROUDED)) //Check LEFT
+		if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x - 1, (*item).y }, VISIBILITY) == int8_t(FOW_TileState::SHROUDED)) //Check LEFT
 			index += 2;
 
-		if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y + 1 }) == int8_t(FOW_TileState::SHROUDED)) //Check DOWN
+		if (GetVisibilityTileAt({ (*item).x, (*item).y + 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x, (*item).y + 1 }, VISIBILITY) == int8_t(FOW_TileState::SHROUDED)) //Check DOWN
 			index += 4;
 
-		if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x + 1, (*item).y }) == int8_t(FOW_TileState::SHROUDED)) //Check RIGHT
+		if (GetVisibilityTileAt({ (*item).x + 1, (*item).y }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED) || GetVisibilityTileAt({ (*item).x + 1, (*item).y }, VISIBILITY) == int8_t(FOW_TileState::SHROUDED)) //Check RIGHT
 			index += 8;
 
 		switch (index)
@@ -331,35 +340,35 @@ void FowManager::SmoothEntitiesInnerEdges()
 			inner_corners.push_back(*item);
 			break;
 		case 1:
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TOP);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TOP, VISIBILITY);
 			break;
 
 		case 3:
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TLEFT_CORNER);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TLEFT_CORNER, VISIBILITY);
 			break;
 
 		case 2:
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_LEFT);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_LEFT, VISIBILITY);
 			break;
 
 		case 4:
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DOWN);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DOWN, VISIBILITY);
 			break;
 
 		case 6:
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DLEFT_CORNER);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DLEFT_CORNER, VISIBILITY);
 			break;
 
 		case 8:
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_RIGHT);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_RIGHT, VISIBILITY);
 			break;
 
 		case 9:
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TRIGHT_CORNER);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TRIGHT_CORNER, VISIBILITY);
 			break;
 
 		case 12:
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DRIGHT_CORNER);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DRIGHT_CORNER, VISIBILITY);
 			break;
 		}
 	}
@@ -368,29 +377,40 @@ void FowManager::SmoothEntitiesInnerEdges()
 	{
 		//Since we know these elements where in a frontier, thus they can only be corners, we will check the diagonal tiles
 		//since there can only be one tile that is still unvisited, when we find it we will: continue; the loop
-		if (GetVisibilityTileAt({ (*item).x - 1, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-LEFT
+		if (GetVisibilityTileAt({ (*item).x - 1, (*item).y - 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-LEFT
 		{
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TLEFT_OUT_CORNER);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TLEFT_OUT_CORNER, VISIBILITY);
 		}
-		else if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN-LEFT
+		else if (GetVisibilityTileAt({ (*item).x - 1 , (*item).y + 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN-LEFT
 		{
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DLEFT_OUT_CORNER);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DLEFT_OUT_CORNER, VISIBILITY);
 		}
-		else if (GetVisibilityTileAt({ (*item).x + 1, (*item).y + 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN-RIGHT
+		else if (GetVisibilityTileAt({ (*item).x + 1, (*item).y + 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check DOWN-RIGHT
 		{
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DRIGHT_OUT_CORNER);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DRIGHT_OUT_CORNER, VISIBILITY);
 		}
-		else if (GetVisibilityTileAt({ (*item).x + 1, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-RIGHT
+		else if (GetVisibilityTileAt({ (*item).x + 1, (*item).y - 1 }, VISIBILITY) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-RIGHT
 		{
-			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TRIGHT_OUT_CORNER);
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TRIGHT_OUT_CORNER, VISIBILITY);
 		}
 	}
 }
 
-void FowManager::SetVisibilityTile(iPoint pos, FOW_TileState state)
+void FowManager::SetVisibilityTile(iPoint pos, FOW_TileState state, FOW_Map map)
 {
 	if (CheckBoundaries(pos))
-	visibility_map[(pos.y * width) + pos.x] = (int8_t)state;
+	{
+		switch (map)
+		{
+		case VISIBILITY:
+			visibility_map[(pos.y * width) + pos.x] = (int8_t)state;
+			break;
+		case EDGES:
+			edge_smoothing_map[(pos.y * width) + pos.x] = (int8_t)state;
+			break;
+
+		}
+	}
 }
 
 std::list<iPoint> FowManager::GetRectFrontier(uint w, uint h, iPoint pos)
@@ -423,7 +443,7 @@ void FowManager::ManageEntitiesVisibility()
 
 	for (std::list<j2Entity*>::iterator entity_item = entities_info.begin(); entity_item != entities_info.end(); entity_item++)
 	{
-		switch (GetVisibilityTileAt((*entity_position)))
+		switch (GetVisibilityTileAt((*entity_position), VISIBILITY))
 		{
 		case 0:
 			(*entity_item)->is_visible = false;
