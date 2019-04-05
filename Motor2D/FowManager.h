@@ -8,11 +8,6 @@
 
 struct SDL_Texture;
 struct SDL_Rect;
-enum FOW_Map
-{
-	VISIBILITY=0,
-	EDGES
-};
 
 enum class FOW_TileState
 {
@@ -130,7 +125,7 @@ public: // Functions
 	// Reset Visibility Map
 	void ResetFOWVisibility();
 
-	int8_t GetVisibilityTileAt(const iPoint& pos, FOW_Map map) const;
+	int8_t GetVisibilityTileAt(const iPoint& pos) const;
 
 	SDL_Rect& GetFOWMetaRect(FOW_TileState state);
 
@@ -141,7 +136,7 @@ public: // Functions
 private: // Functions
 
 	// Set the state of a tile in the visibility map
-	void SetVisibilityTile(iPoint pos, FOW_TileState state, FOW_Map map);
+	void SetVisibilityTile(iPoint pos, FOW_TileState state);
 
 	// Returns a list of iPoints that are contained in width and height
 	std::list<iPoint> GetRectFrontier(uint width, uint height, iPoint pos);
