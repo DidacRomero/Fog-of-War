@@ -244,39 +244,44 @@ void FowManager::SmoothEdges()
 			case 1:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TOP, VISIBILITY);
 				break;
-
 			case 3:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TLEFT_CORNER, VISIBILITY);
 				break;
-
 			case 2:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_LEFT, VISIBILITY);
 				break;
-
 			case 4:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DOWN, VISIBILITY);
 				break;
-
 			case 6:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DLEFT_CORNER, VISIBILITY);
 				break;
-
+			case 7:
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DEAD_END_LEFT, VISIBILITY);
+				break;
 			case 8:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_RIGHT, VISIBILITY);
 				break;
-
 			case 9:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_TRIGHT_CORNER, VISIBILITY);
 				break;
-
+			case 11:
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DEAD_END_TOP, VISIBILITY);
+				break;
 			case 12:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_CORNER, VISIBILITY);
+				break;
+			case 13:
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DEAD_END_RIGHT, VISIBILITY);
+				break;
+			case 14:
+				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DEAD_END_BOTTOM, VISIBILITY);
 				break;
 			}
 		}
 		else
 		{
-			switch (index)
+			/*switch (index)
 			{
 
 			case 3:
@@ -294,7 +299,7 @@ void FowManager::SmoothEdges()
 			case 12:
 				SetVisibilityTile((*item), FOW_TileState::BTOS_SMTH_DRIGHT_CORNER, VISIBILITY);
 				break;
-			}
+			}*/
 		}
 
 		for (std::list<iPoint>::const_iterator item = corners.cbegin(); item != corners.cend(); item++)
@@ -330,7 +335,8 @@ void FowManager::SmoothEntitiesInnerEdges()
 		(*item).y += player.motion.y;
 		//Testing edge smoothing
 
-		// THE ENUM SWITCH IS USED AS A TOOL, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
+		// THE ENUM SWITCH IS USED AS A TOOL, SHOULD USE THE NUMBER OF STATES TO MIRROR POSITION IN THE SPRITESHEET
+		// If we did this we would only need to typecast index to FOW_TileState 
 		int index = 0;
 		int8_t st = GetVisibilityTileAt({ (*item).x, (*item).y - 1 }, VISIBILITY); //Check ABOVE
 		if ( st == int8_t(FOW_TileState::UNVISITED) || st == int8_t(FOW_TileState::SHROUDED) || st >= int8_t(FOW_TileState::BTOS_SMTH_TOP)) 
@@ -357,33 +363,38 @@ void FowManager::SmoothEntitiesInnerEdges()
 		case 1:
 			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TOP, VISIBILITY);
 			break;
-
 		case 3:
 			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TLEFT_CORNER, VISIBILITY);
 			break;
-
 		case 2:
 			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_LEFT, VISIBILITY);
 			break;
-
 		case 4:
 			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DOWN, VISIBILITY);
 			break;
-
 		case 6:
 			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DLEFT_CORNER, VISIBILITY);
 			break;
-
+		case 7:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DEAD_END_LEFT, VISIBILITY);
+			break;
 		case 8:
 			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_RIGHT, VISIBILITY);
 			break;
-
 		case 9:
 			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_TRIGHT_CORNER, VISIBILITY);
 			break;
-
+		case 11:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DEAD_END_TOP, VISIBILITY);
+			break;
 		case 12:
 			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DRIGHT_CORNER, VISIBILITY);
+			break;
+		case 13:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DEAD_END_RIGHT, VISIBILITY);
+			break;
+		case 14:
+			SetVisibilityTile((*item), FOW_TileState::SHROUD_SMTH_DEAD_END_BOTTOM, VISIBILITY);
 			break;
 		}
 	}
