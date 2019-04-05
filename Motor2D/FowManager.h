@@ -175,7 +175,6 @@ private: //Variables
 
 	// If I have more time use all map "layers" inside an array
 	int8_t* visibility_map = nullptr;
-	int8_t* edge_smoothing_map = nullptr;
 
 	// Testing the FOW_Entity 
 	FOW_Entity player;

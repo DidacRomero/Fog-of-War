@@ -164,22 +164,12 @@ void FowManager::SetVisibilityMap(uint w, uint h)
 		debug_map = nullptr;
 	}
 
-	if (edge_smoothing_map != nullptr)
-	{
-		delete[] edge_smoothing_map;
-		edge_smoothing_map = nullptr;
-	}
-
 	width = w;
 	height = h;
 
 	//Visibility map will contain the 3 basic states of logic in FOW
 	visibility_map = new int8_t [width*height];
 	memset(visibility_map, 0,width*height);
-
-	//Edge smoothing map will contain the softened edges
-	edge_smoothing_map = new int8_t[width*height];
-	memset(edge_smoothing_map, 0, width*height);
 
 	// Keep a totally clear map for debug purposes
 	debug_map = new int8_t[width*height];
