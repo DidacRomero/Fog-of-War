@@ -57,34 +57,42 @@ bool FowManager::Update(float dt)
 	// We will need the difference in position to move the forntiers and LOS
 	iPoint player_last_pos = player.position;
 
-	if (UpdateEntitiesPositions() == true) // If the position of an entity that manipulates visibility changed, update the visibility map
+	if (debug == false)
 	{
-		//Testing player frontier
-		player.position.x = (*entities_pos.begin()).x;
-		player.position.y = (*entities_pos.begin()).y;
-
-		player.motion = { player.position.x - player_last_pos.x , player.position.y - player_last_pos.y };
-
-		//player.frontier.clear();
-		//player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
-
-		for (std::list<iPoint>::iterator item = player.LOS.begin(); item != player.LOS.end(); item++)
+		if (UpdateEntitiesPositions() == true) // If the position of an entity that manipulates visibility changed, update the visibility map
 		{
-			(*item).x += player.motion.x;
-			(*item).y += player.motion.y;
+			//Testing player frontier
+			player.position.x = (*entities_pos.begin()).x;
+			player.position.y = (*entities_pos.begin()).y;
 
-			SetVisibilityTile((*item), FOW_TileState::VISIBLE, VISIBILITY);
-		}
+			player.motion = { player.position.x - player_last_pos.x , player.position.y - player_last_pos.y };
 
-		for (std::list<iPoint>::const_iterator lf_item = player.last_LOS.cbegin(); lf_item != player.last_LOS.end(); lf_item++)
-		{
-			if (TileInsideFrontier((*lf_item), player.LOS) == 0)
+			//player.frontier.clear();
+			//player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
+
+			for (std::list<iPoint>::iterator item = player.LOS.begin(); item != player.LOS.end(); item++)
 			{
-				SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED, VISIBILITY);
-			}
-		}
+				(*item).x += player.motion.x;
+				(*item).y += player.motion.y;
 
-		SmoothEdges();
+				SetVisibilityTile((*item), FOW_TileState::VISIBLE, VISIBILITY);
+			}
+
+			
+				for (std::list<iPoint>::const_iterator lf_item = player.last_LOS.cbegin(); lf_item != player.last_LOS.end(); lf_item++)
+				{
+					if (TileInsideFrontier((*lf_item), player.LOS) == 0)
+					{
+						if (scouting_trail == true)
+							SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED, VISIBILITY);
+						else
+							SetVisibilityTile((*lf_item), FOW_TileState::UNVISITED, VISIBILITY);
+					}
+				}
+			
+
+			SmoothEdges();
+		}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)

@@ -142,6 +142,9 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		App->fow_manager->ResetFOWVisibility();
+
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+		App->fow_manager->scouting_trail = !App->fow_manager->scouting_trail;
 		
 	return true;
 }

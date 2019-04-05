@@ -170,9 +170,9 @@ public: // Variables
 
 	bool debug = false;
 
+	bool scouting_trail = true;
+
 	SDL_Texture* meta_FOW = nullptr;
-
-
 
 private: //Variables
 
