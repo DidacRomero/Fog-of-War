@@ -526,7 +526,7 @@ void FowManager::ResetFOWVisibility()
 
 bool FowManager::CheckBoundaries(const iPoint& pos) const
 {
-	return (pos.x >= 0 && pos.x <= (int)width &&
+	return (pos.x >= 0 && pos.x < (int)width &&
 		pos.y >= 0 && pos.y <= (int)height);
 }
 
