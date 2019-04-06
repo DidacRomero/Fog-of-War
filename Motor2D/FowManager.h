@@ -173,7 +173,7 @@ private: //Variables
 
 	uint width, height;
 
-	// If I have more time use all map "layers" inside an array
+
 	int8_t* visibility_map = nullptr;
 
 	// Testing the FOW_Entity 
