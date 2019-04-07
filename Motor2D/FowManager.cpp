@@ -41,7 +41,7 @@ bool FowManager::Start()
 	player.position.y = (*entities_pos.begin()).y;
 
 	// Testing getting the player frontier
-	player.frontier = CreateFrontierRect(10,10,player.position);
+	player.frontier = CreateFrontierSquare(10,player.position);
 
 	// Testing Filling the player frontier
 	player.LOS = FillFrontier(player.frontier);
@@ -555,6 +555,11 @@ std::list<iPoint> FowManager::CreateFrontierRect(uint w, uint h, iPoint center)
 	}
 	
 	return frontier_to_fill;
+}
+
+std::list<iPoint> FowManager::CreateFrontierSquare(uint radius, iPoint center)
+{
+	return CreateFrontierRect(radius, radius, center);
 }
 
 std::list<iPoint> FowManager::FillFrontier(const std::list<iPoint>& frontier)

@@ -159,7 +159,8 @@ private: // Functions
 	// Set a frontier with the rectangle size
 	std::list<iPoint> CreateFrontierRect(uint width, uint height, iPoint center);
 
-
+	// Set a squared frontier depending of a radius
+	std::list<iPoint> CreateFrontierSquare(uint radius, iPoint center);
 
 public: // Variables
 
