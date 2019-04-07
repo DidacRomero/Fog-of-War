@@ -27,7 +27,7 @@ From that moment on, later strategy games such as _Age of Empires_ or _League of
 #### League of Legends
 In [_League of Legends_](https://en.wikipedia.org/wiki/League_of_Legends) by [_Riot Games_](https://www.riotgames.com/en) all areas of the map where you don’t have a structure or ally providing visibility are covered in a fog that allow you to see the terrain but not the enemy or neutral entities that are inside the fogged area. But even though you may not have vision of neutral entities like a Drake or the Baron Nashor, which provide great buffs when killed, the game will alert players if these monsters are killed by your opponents. League of Legends is applying the concept of giving information to the players that they shouldn't have in the first place. It seems counterintuitive to implement such a feature for a game in which Fog of War plays a critical role, but that feature may help to avoid delivering a bad gaming experience, since the improvements of these buffs change for a period of time the strategies that both teams will follow and facing the enemy team without that information will more often than not lead to a crushing defeat.
 
-#### Innovative ways to display Fog of War 
+#### Innovative ways to use and display Fog of War 
 Now we will check some innovative ways that can still be related to the original concepts of completely unvisited and fogged areas.
 ##### Recompile
 In the still to be released video game [_Recompile_](https://recompilegame.com/) by [_Phigames_](https://phigames.co.uk/), a new way of revealing the map is explored, in which you “undistort” the world to discover which paths to follow.
@@ -77,5 +77,27 @@ We can create another gray layer with some transparency that will go under the m
 ![Zelda Step 2](Images/Zelda FOW demo step 3.png)
 
 If you want to implement this method into your code, you can check [this link](https://stackoverflow.com/questions/13654753/sdl-drawing-negative-circles-fog-of-war=) where the method is explained in detail and coded in Simple Direct-Media Layer. I also took the photos of this implementation from this explanation.
+
+### 2D visibility approach
+
+
+
+
+## References
+
+* **About History:**
+  * [History of Fog of War](https://en.wikipedia.org/wiki/Fog_of_war)
+* **About Technical Approaches**
+  * [Mask based Fog of War (Stackoverflow comment/tutorial)](https://stackoverflow.com/questions/13654753/sdl-drawing-negative-circles-fog-of-war=)
+  * [Fog of War by Roger Tello](https://github.com/rogerta97/FogOfWar)
+  * [Line Of Sight or Shadow Casting in 2D](https://www.youtube.com/watch?v=fc3nnG2CG8U)
+  * [2D Visibility](https://www.redblobgames.com/articles/visibility/)
+* **My approach? Implementing Tile-based Fog of War**
+  * [A Story of Fog and War](https://technology.riotgames.com/news/story-fog-and-war)
+  * [Fog of War by Roger Tello](https://github.com/rogerta97/FogOfWar)
+  * [Neighbour aware tile selection](https://web.archive.org/web/20170608082007/http://www.saltgames.com/article/awareTiles/)
+  
+
+
 
 
