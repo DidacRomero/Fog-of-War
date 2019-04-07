@@ -59,16 +59,22 @@ Some games maps, specially 2D games, are made up of tiles which can have differe
 
 In this approach, we will keep track of all the tiles in the map, to know what must be done at each tile in terms of visuals and logic, specially regarding entities such as enemies or structures.
 
-There are a couple of ways to do this, but generally we have a 2D container with the same size as our map. In the container, we will store ID’s referring to the state of each tile in its correspondent position, to know if it’s unvisited, covered in fog or completely clear (visible). With this approach we can also have metadata stored in another equal in size 2D container in order to create zones with special conditions, such as always visible areas, areas only visible for certain entities, bushes that hide everything under them until you are inside the bush etc.
+There are a couple of ways to do this, but generally we have a 2D container with the same size as our map. In the container, we will store **ID**’s referring to the state of each tile in its correspondent position, to know if it’s **unvisited**, covered in **fog** or completely **clear** (visible). With this approach we can also have metadata stored in another equal in size 2D container in order to create zones with special conditions, such as always visible areas, areas only visible for certain entities, bushes that hide everything under them until you are inside the bush etc.
 
 The main drawback of this approach is that as tiles have edges, we will need to think and code a solution to smooth the edges of the tiles.
 
 ### Mask based approach
 In this approach we will draw a surface overlapping the map. This way we cover the map in a determined color and alpha that we want.
 
+![Zelda Step 1](Images/Zelda FOW demo step 1.png) 
+
 We will create a png sprite with the shape and radius that we want. This sprite will be following our player. Each time that our character moves, we will be subtracting the transparent area of the sprite we created onto the surface that is covering the map.
 
+![Zelda Punch Sprite!](Images/Zelda FOW demo punch sprite.png) ![Zelda Step 2](Images/Zelda FOW demo step 2.png)
+
 We can create another gray layer with some transparency that will go under the main black mask of the Fog of war, where we refill the previous “hole” of subtracted pixels before subtracting the sprite onto the surface.
+
+![Zelda Step 2](Images/Zelda FOW demo step 3.png)
 
 If you want to implement this method into your code, you can check [this link](https://stackoverflow.com/questions/13654753/sdl-drawing-negative-circles-fog-of-war=) where the method is explained in detail and coded in Simple Direct-Media Layer. I also took the photos of this implementation from this explanation.
 
