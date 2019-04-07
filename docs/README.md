@@ -16,11 +16,13 @@ Since uncertainty can be a very powerful mechanic of a game, specially in strate
 The first time we saw the concept of Fog of War applied in a video game was in the Turn-based Wargame [_Empire_](https://en.wikipedia.org/wiki/Empire_(1977_video_game)) by [_Walter Bright_](https://en.wikipedia.org/wiki/Walter_Bright). In this game black squared tiles covered unvisited areas.
 
 ![Empire](https://github.com/DidacRomero/Fog-of-War-Project-2-Research/blob/master/docs/Images/EmpireOriginal.png)
+<img src="Images/EmpireOriginal.png" style="display: block; margin: auto;" />
 
 #### Classic Fog of War in Strategy Games
 [_Warcraft II: Tides of Darkness_](https://en.wikipedia.org/wiki/Warcraft_II:_Tides_of_Darkness) by [_Blizzard Entertainment_](https://www.blizzard.com/en-us/) presents an expansion in the concept of Fog of war in video games by adding a “fogged zone”, in which, if you have scouted that area, you’ll be able to see the map but not the enemies that might be moving or preparing an attack under its cover. 
 
-![WarcraftII FOW](https://github.com/DidacRomero/Fog-of-War-Project-2-Research/blob/master/docs/Images/Warcraft%20II%20FOW.gif "Warcraft 2 Fog of War system")
+![WarcraftII FOW](Images/Warcraft%20II%20FOW.gif "Warcraft 2 Fog of War system")
+<img src="Images/Warcraft%20II%20FOW.gif" style="display: block; margin: auto;" />
 
 From that moment on, later strategy games such as _Age of Empires_ or _League of Legends_ to list a few, will implement fogged areas, and these games will let the fogged state reveal information in different ways. For instance, in Age of Empires, you may scout an area where there’s a building, and once you leave the area you still see the building with its life points at the moment of sight. But when you come back the building might have been demolished entirely, and you will only have that information if you re-scout the area with your units. 
 
@@ -33,10 +35,11 @@ Now we will check some innovative ways that can still be related to the original
 ##### Recompile
 In the still to be released video game [_Recompile_](https://recompilegame.com/) by [_Phigames_](https://phigames.co.uk/), a new way of revealing the map is explored, in which you “undistort” the world to discover which paths to follow.
 
-![Recompile](https://github.com/DidacRomero/Fog-of-War-Project-2-Research/blob/master/docs/Images/Recompile%20FOW.gif "Isn't Recompile Fog of War really cool?")
+![Recompile](Images/Recompile%20FOW.gif "Isn't Recompile Fog of War really cool?")
+<img src="Images/Recompile%20FOW.gif" style="display: block; margin: auto;" />
 
 ##### Cylindrus
 [_Cylindrus_](https://shakethatbutton.com/cylindrus/) by [_Jerry Belich_](https://jerrytron.com/) is a game played on a cylinder, creating the effect of “natural fog of war” as described in this [Gamasutra article](http://www.gamasutra.com/view/news/291029/AltCTRLGDC_Showcase_Jerry_Belichs_Cylindrus.php), which forces you to move around the cylinder to see what’s going on.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/indWEhAzGac" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/indWEhAzGac?start=40" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
