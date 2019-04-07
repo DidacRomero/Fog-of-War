@@ -81,18 +81,25 @@ If you want to implement this method into your code, you can check [this link](h
 ### 2D visibility approach
 This approach is typically used in 2D Top-Down View games and it simulates vision depending on the position of our character and the walls that surround him/her. Please note that images and information were taken both from [Red Blob Games 2D Visibility article](https://www.redblobgames.com/articles/visibility/) and from [this video](https://www.youtube.com/watch?v=fc3nnG2CG8U) by [One Lone Coder](http://onelonecoder.com/).
 
-As I've said before, in this approach we will determine which parts are visible and which are not depending on our player's position and the walls/environment surrounding it. The first approach for this, would be to raycast from the center of the player as an aproximation.
+![2D visibility by Red Blob Games](Images/2D Visibility Example.gif "2D visibility by Red Blob Games")
 
-But that is not efficient, so we should look for a more lighweight and intelligent way to determine the beginning and ending of the walls. This way we can raycast directly to them to generate the triangular shapes that are visible. Once we have determined which are these triangles, we subtract them to the black layer covering the screen to create visibility. In the case of the image, the triangles are filled in yellow.
+As I've said before, in this approach we will determine which parts are visible and which are not visible depending on our player's position and the walls/environment surrounding it. The first approach for this, would be to raycast from the center of the player, which will give us an aproximation on how 2D visibility looks like. Like in the previous approach, we print a dark layer overlapping the map. Then, we get the triangles that are formed in-between the rays, and we subtract them to the dark layer.
 
+![2D Raycast all](Images/Raycast to everything.PNG "Raycasting in all directions")
 
-But there's a problem to that if our map is tile based and we are checking each corner of each tile so we need a way to abstractly represent our map from this.
+But that is not efficient, so we should look for a more lighweight and intelligent way to determine the beginning and ending of the walls. This way we can raycast directly to them to generate the triangular shapes that are visible. In the case of the image, the triangles are filled in yellow.
 
+![2D raycasting to corners](Images/2D Visibility Ray casting.PNG)
+
+But there's a problem to that: if our map is tile based, or several squares are "joint", we are checking each corner of each tile/square, so we need a way to abstractly represent our map from this.
+
+![Tile Map](Images/2D visibility Tile Map.PNG)
 
 To this.
 
+![Poly Map](Images/2D visibility polygon Map.PNG)
 
-In this video by One Lone Coder, the implementation of 2D visibility and the abstraction of the map is explained and coded in detail.
+So that we perform the least amount of calculations. In this video by One Lone Coder, the implementation of 2D visibility and the abstraction of the map is explained and coded in detail.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/fc3nnG2CG8U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
