@@ -87,8 +87,8 @@ enum class FOW_TileState
 struct FOW_Entity
 {
 	// Vars for position and movement
-	iPoint position;
-	iPoint motion;
+	iPoint position = {0,0};
+	iPoint motion = { 0,0 };
 
 	// Bools for checks
 	bool is_visible;
@@ -101,6 +101,8 @@ struct FOW_Entity
 	std::list<iPoint> LOS;
 	std::list<iPoint> last_LOS;
 
+	// Default Constructor
+	FOW_Entity() {}
 	// Constructor
 	FOW_Entity(iPoint position, bool provides_visibility) : 
 		position(position), 
@@ -109,12 +111,7 @@ struct FOW_Entity
 
 	// Pass the position in world coordinates, the function will automatically
 	// change the coordinates to map coordinates
-	void SetPos(iPoint new_pos)
-	{
-		motion = new_pos - position;
-		motion = App->map->WorldToMap(motion.x,motion.y);
-		position = App->map->WorldToMap(new_pos.x, new_pos.y);
-	}
+	void SetPos(iPoint new_pos);
 
 };
 
@@ -141,6 +138,13 @@ public: // Functions
 	//Save
 	bool Save(pugi::xml_node&) const;
 
+	// Create a Fog of War Entity (Abstraction of an entity that will be managed
+	// by the FOWManager)
+	FOW_Entity* CreateFOWEntity(iPoint position, bool provides_visibility);
+
+	//Destroy a Fog of War Entity and take it out of the list
+	bool DestroyFOWEntity(FOW_Entity* to_destroy);
+
 	// Set Visibility Map
 	void SetVisibilityMap(uint width, uint height);
 	// Reset Visibility Map
@@ -153,6 +157,8 @@ public: // Functions
 	void SmoothEdges();
 
 	void SmoothEntitiesInnerEdges();
+
+	
 
 private: // Functions
 
@@ -200,6 +206,9 @@ private: //Variables
 
 	// Testing the FOW_Entity 
 	FOW_Entity player;
+
+	// List of all FOW Entities
+	std::list<FOW_Entity*> fow_entities;
 
 	// This list contains the position in MAP COORDINATES of all entities
 	std::list<iPoint> entities_pos;

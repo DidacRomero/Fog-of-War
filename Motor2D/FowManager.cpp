@@ -137,6 +137,36 @@ bool FowManager::Save(pugi::xml_node &) const
 	return true;
 }
 
+FOW_Entity * FowManager::CreateFOWEntity(iPoint position, bool provides_visibility)
+{
+	FOW_Entity* ret = nullptr;
+
+	ret = new FOW_Entity(position, provides_visibility);
+
+	if(ret != nullptr)
+	fow_entities.push_back(ret);
+
+	return ret;
+}
+
+bool FowManager::DestroyFOWEntity(FOW_Entity* to_destroy)
+{
+	bool ret = false;
+
+	for (std::list<FOW_Entity*>::iterator item = fow_entities.begin(); item != fow_entities.end(); ++item)
+	{
+		if (to_destroy == (*item))
+		{
+			delete (*item);
+			fow_entities.remove(*item);
+			ret = true;
+			break;
+		}
+	}
+
+	return ret;
+}
+
 void FowManager::SetVisibilityMap(uint w, uint h)
 {
 	if (visibility_map != nullptr)
@@ -584,4 +614,10 @@ std::list<iPoint> FowManager::FillFrontier(const std::list<iPoint>& frontier)
 	}
 
 	return shape_to_fill;
+}
+
+void FOW_Entity::SetPos(iPoint new_pos)
+{
+	motion = App->map->WorldToMap(new_pos.x - position.x, new_pos.y - position.y);
+	position = App->map->WorldToMap(new_pos.x, new_pos.y);
 }
