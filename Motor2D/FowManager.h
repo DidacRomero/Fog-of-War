@@ -86,15 +86,36 @@ enum class FOW_TileState
 
 struct FOW_Entity
 {
-	// List containing the tiles 
+	// Vars for position and movement
+	iPoint position;
+	iPoint motion;
+
+	// Bools for checks
+	bool is_visible;
+	bool provides_visibility;
+
+	// Lists containing tiles 
 	std::list<iPoint> frontier;
 	std::list<iPoint> last_frontier;
 
 	std::list<iPoint> LOS;
 	std::list<iPoint> last_LOS;
 
-	iPoint position;
-	iPoint motion;
+	// Constructor
+	FOW_Entity(iPoint position, bool provides_visibility) : 
+		position(position), 
+		provides_visibility(provides_visibility)
+	{}
+
+	// Pass the position in world coordinates, the function will automatically
+	// change the coordinates to map coordinates
+	void SetPos(iPoint new_pos)
+	{
+		motion = new_pos - position;
+		motion = App->map->WorldToMap(motion.x,motion.y);
+		position = App->map->WorldToMap(new_pos.x, new_pos.y);
+	}
+
 };
 
 class FowManager : public j1Module
