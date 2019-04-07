@@ -15,3 +15,9 @@ Since uncertainty can be a very powerful mechanic of a game, specially in strate
 
 The first time we saw the concept of Fog of War applied in a video game was in the Turn-based Wargame [_Empire_](https://en.wikipedia.org/wiki/Empire_(1977_video_game)) by [_Walter Bright_](https://en.wikipedia.org/wiki/Walter_Bright). In this game black squared tiles covered unvisited areas.
 
+![Empire](https://github.com/DidacRomero/Fog-of-War-Project-2-Research/blob/master/docs/Images/EmpireOriginal.png)
+
+
+
+
+![Gif Test](https://phigames.co.uk/images/rc/fog/101_fog_of_war_explanation_rerecord.gif)
