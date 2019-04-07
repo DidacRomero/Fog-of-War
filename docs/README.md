@@ -63,5 +63,13 @@ There are a couple of ways to do this, but generally we have a 2D container with
 
 The main drawback of this approach is that as tiles have edges, we will need to think and code a solution to smooth the edges of the tiles.
 
+### Mask based approach
+In this approach we will draw a surface overlapping the map. This way we cover the map in a determined color and alpha that we want.
+
+We will create a png sprite with the shape and radius that we want. This sprite will be following our player. Each time that our character moves, we will be subtracting the transparent area of the sprite we created onto the surface that is covering the map.
+
+We can create another gray layer with some transparency that will go under the main black mask of the Fog of war, where we refill the previous “hole” of subtracted pixels before subtracting the sprite onto the surface.
+
+If you want to implement this method into your code, you can check [this link](https://stackoverflow.com/questions/13654753/sdl-drawing-negative-circles-fog-of-war=) where the method is explained in detail and coded in Simple Direct-Media Layer. I also took the photos of this implementation from this explanation.
 
 
