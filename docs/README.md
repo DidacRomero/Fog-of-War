@@ -79,7 +79,21 @@ We can create another gray layer with some transparency that will go under the m
 If you want to implement this method into your code, you can check [this link](https://stackoverflow.com/questions/13654753/sdl-drawing-negative-circles-fog-of-war=) where the method is explained in detail and coded in Simple Direct-Media Layer. I also took the photos of this implementation from this explanation.
 
 ### 2D visibility approach
+This approach is typically used in 2D Top-Down View games and it simulates vision depending on the position of our character and the walls that surround him/her. Please note that images and information were taken both from [Red Blob Games 2D Visibility article](https://www.redblobgames.com/articles/visibility/) and from [this video](https://www.youtube.com/watch?v=fc3nnG2CG8U) by [One Lone Coder](http://onelonecoder.com/).
 
+As I've said before, in this approach we will determine which parts are visible and which are not depending on our player's position and the walls/environment surrounding it. The first approach for this, would be to raycast from the center of the player as an aproximation.
+
+But that is not efficient, so we should look for a more lighweight and intelligent way to determine the beginning and ending of the walls. This way we can raycast directly to them to generate the triangular shapes that are visible. Once we have determined which are these triangles, we subtract them to the black layer covering the screen to create visibility. In the case of the image, the triangles are filled in yellow.
+
+
+But there's a problem to that if our map is tile based and we are checking each corner of each tile so we need a way to abstractly represent our map from this.
+
+
+To this.
+
+
+In this video by One Lone Coder, the implementation of 2D visibility and the abstraction of the map is explained and coded in detail.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fc3nnG2CG8U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 
