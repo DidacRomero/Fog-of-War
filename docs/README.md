@@ -102,6 +102,84 @@ To this.
 So that we perform the least amount of calculations. In this video by One Lone Coder, the implementation of 2D visibility and the abstraction of the map is explained and coded in detail.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/fc3nnG2CG8U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+## Implementation: A take on tile based fog of war
+
+Now we will cover in-depth a way to approach the Tile-based fog of war, which is the one that we will be implementing over in the code exercise and that you can check all the code in the repository.
+
+First of all, we need a tile based map, in this case, the map is done in [Tiled](https://www.mapeditor.org/). If you don’t know how to generate and print a tile based map, check this [link](http://www.cplusplus.com/forum/general/18315/). Now that we have a tile-based map, we have to create a 2D Container with the same dimensions as the map. This container will have an ID for each tile of the map, this ID will dictate what’s its state is in relation to Fog of War.
+
+### Pillars of the Implementation:
+
+* **2D Container: Visibility map**
+
+This is a container located in the FOW module. It contains the ID’s for each tile of the map, which dictaminate what is going on with the Fog of War in that tile, allowing us to manipulate the map visibility and hide enemies. To get started we will only have the following ID’s:  0= Unvisited (completely black), 1= Clear (visible) and 2= Fogged (a tile we have cleared but that is no longer on our Line of Sight). 
+
+* **Smoothing the Tiles: generating Fog of War Tiles**
+
+As we will see during the implementation, in order to smooth the tiles we will need to create a spritesheet with the smooth tiles that will be printed over the map. This also means that we will need to have a bigger variety of ID’s available to be used in the visibility map, so we will be using an enum.
+
+* **Regarding Entities**
+
+We will need some sort of abstraction of the entities you have in your game where you plan to implement FOW. We will need to have the entity position, and in the case a given entity manipulates the visibility map, we will also keep its visibility frontier and its LOS (Line of Sight).
+
+### Understanding the Algorithm
+Let’s start from the point in which we already have a map created and some entities spawned!
+
+#### Selecting the Tiles to Update
+We have said that we will be setting the values of the visibility map but, how are we going to determine which tiles must be modified or set?
+
+**1. Getting a Frontier**
+
+To do so, entities that will modify the visibility map will have a frontier, which will contain the tiles at maximum sight range from the position of the entity. The frontier must be a set of enclosed tiles! In this case we will be using a rectangle but any enclosed frontier should work too. 
+
+
+
+**2. Getting the Line of Sight (LOS)**
+
+Once we have the frontier of that entity we need to fill its LOS (line of sight). Filling all the tiles inside the frontier (including the frontier tiles) will give us the LOS.
+The LOS is the area that the entity can see, and those tiles are the ones that will be modifying the ID’s in the visibility map!
+
+
+
+**3. Updating the visibility map**
+
+Once the entity moves from one tile to another we have to update our Line of Sight area along with the entity. We also have to keep track of the tiles that were in our LOS before moving to a new tile. Those tiles then should modify it’s ID’s to the appropriate ID depending on their situation and print an opaque texture over them.
+
+
+### Mastering the Algorithm: Tile smoothing
+As we have seen previously, Tile based fog of war is based on tiles, meaning the edges of the limit of the fog will be rough. To solve that we need to create some textures in the form of a spritesheet, so we can have tiles with some alpha values printed over the limit of our Line of Sight and of our Fog. We will also need a good way to directly print the adequate smoothing tile, so we will need a wider variety of ID’s that can be applied in the visibility map.
+
+The first problem, is updating just the necessary tiles. Moreover, if our system has fogged tiles and unvisited tiles, this means that we will need different smoothing for each of them.
+
+
+**1. Getting the Tiles to update**
+
+To fix this, we will use the frontier of our entity Following the same strategy that we described before with the Line of Sight. We will be checking the tiles in the frontier to determine which state ID they will have to, after that, print the appropriate texture for the tile.
+
+Now we need to keep the tiles that were contained in the frontier before we moved, to determine which tiles also need updating.
+
+
+**2. Setting the Tiles new ID’s**
+Once we know which tiles must be updated, we need to update their ID’s how do we do that?
+
+To determine which is the state of the tile corresponding to the smoothing tile it needs to print we will be checking its neighbour tiles. By knowing the ID’s of the neighbours in the visibility map, we can know which is the state for the tile we want to update. To do so we should implement a neighbour [aware tile selection algorithm](https://web.archive.org/web/20170608082007/http://www.saltgames.com/article/awareTiles/) to avoid doing very long conditions and switches.
+
+In this algorithm, we check the tiles Above,Left,Below and Right. We can generate a number for each tile by knowing if the tiles: above, at our left, below us, or at our right, have a determined state. For instance, the entity frontier will check if these adjacent tiles have the Fogged state, since it can only be surrounded by them. On the contrary, the tiles that were part of the frontier before we moved, will check if the adjacent tiles are Unvisited to determine the outcome of this algorithm.
+
+So, everytime we visit a neighbour tile we should add a number to a variable. This variable will be the state of the tile, which will dictaminate the smoothing tile that we must print.
+
+**3. Why is this good?**
+With this algorithm we use powers of 2 to determine all the outcomes of visiting the tiles, each of them being unique. Pseudocode example of the algorithm here.
+
+```C++
+ var sum = 0;
+ if (above) sum += 1;    // 2 power of 0 = 1
+ if (left) sum += 2;     // 2 power of 1 = 2
+ if (below) sum += 4;    // 2 power of 2 = 4
+ if (right) sum += 8;    // 2 power of 3 = 8
+```
+
+
 
 
 ## References
