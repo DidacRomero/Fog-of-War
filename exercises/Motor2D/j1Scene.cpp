@@ -41,7 +41,7 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);*/
 	}
 
-	debug_tex = App->tex->Load("maps/path2.png");
+	//debug_tex = App->tex->Load("maps/path2.png");
 
 	//Testing visibility map creation
 	App->fow_manager->SetVisibilityMap(App->map->data.width, App->map->data.height);
@@ -58,9 +58,9 @@ bool j1Scene::PreUpdate()
 	static bool origin_selected = false;
 
 	int x, y;
-	App->input->GetMousePosition(x, y);
+	/*App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
+	p = App->map->WorldToMap(p.x, p.y);*/
 
 	/*if(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{

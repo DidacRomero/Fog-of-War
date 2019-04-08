@@ -427,16 +427,22 @@ void FowManager::ManageEntitiesFOWManipulation()
 			//Since the Entity moved, we update the LOS position and make the tiles contained inside it visible 
 			for (std::list<iPoint>::iterator tile = (*item)->LOS.begin(); tile != (*item)->LOS.end(); tile++)
 			{
-				(*tile).x += (*item)->motion.x;
-				(*tile).y += (*item)->motion.y;
+				// TODO 3.5 Since we moved we update the position of the tiles in the LOS (Line of Sight), 
+				// effectively moving all the LOS area to the current position we are in.
 
-				SetVisibilityTile((*tile), FOW_TileState::VISIBLE);
+
+				// TODO 3.5 Set The Visibility of the tile we just moved. We need to go to the SAME
+				// tile in the VISIBILITY MAP and make it VISIBLE. Look at the header and search which 
+				// private function will allow you to do so
+
 			}
 
 			(*item)->moved_in_map = false;
 
-			//TODO 4 UNCOMMENT:
-			//Now iterate the tiles that the entity left behind to determine its state (fogged or unvisited depending of in if we leave a scouting trail)
+			//Now iterate the tiles that the entity left behind to determine its state 
+			//(fogged or unvisited depending of in if we leave a scouting trail)
+			
+			//TODO 4 UNCOMMENT FROM HERE: --------------------------------------------------------
 			/*for (std::list<iPoint>::const_iterator tile = prev_LOS.cbegin(); tile != prev_LOS.end(); tile++)
 			{
 				if (TileInsideList((*tile), (*item)->LOS) == false)
@@ -447,6 +453,8 @@ void FowManager::ManageEntitiesFOWManipulation()
 						SetVisibilityTile((*tile), FOW_TileState::UNVISITED);
 				}
 			}*/
+
+			//TODO 4 UNCOMMENT TO HERE: ---------------------------------------------------------
 
 			//Now, smooth the edges of the fontier of the entity 
 			//SmoothEdges((*item));
@@ -515,7 +523,7 @@ std::list<iPoint> FowManager::CreateFrontierRect(uint w, uint h, iPoint center)
 
 std::list<iPoint> FowManager::CreateFrontierSquare(uint radius, iPoint center)
 {
-	return CreateFrontierRect(radius, radius, center);
+	return CreateFrontierRect(radius*2, radius, center);
 }
 
 std::list<iPoint> FowManager::FillFrontier(const std::list<iPoint>& frontier)
