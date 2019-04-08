@@ -435,8 +435,9 @@ void FowManager::ManageEntitiesFOWManipulation()
 
 			(*item)->moved_in_map = false;
 
+			//TODO 4 UNCOMMENT:
 			//Now iterate the tiles that the entity left behind to determine its state (fogged or unvisited depending of in if we leave a scouting trail)
-			for (std::list<iPoint>::const_iterator tile = prev_LOS.cbegin(); tile != prev_LOS.end(); tile++)
+			/*for (std::list<iPoint>::const_iterator tile = prev_LOS.cbegin(); tile != prev_LOS.end(); tile++)
 			{
 				if (TileInsideList((*tile), (*item)->LOS) == false)
 				{
@@ -445,10 +446,10 @@ void FowManager::ManageEntitiesFOWManipulation()
 					else
 						SetVisibilityTile((*tile), FOW_TileState::UNVISITED);
 				}
-			}
+			}*/
 
 			//Now, smooth the edges of the fontier of the entity 
-			SmoothEdges((*item));
+			//SmoothEdges((*item));
 		}
 	}
 }
