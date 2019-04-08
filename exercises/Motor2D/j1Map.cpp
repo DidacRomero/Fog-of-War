@@ -78,34 +78,21 @@ void j1Map::Draw()
 
 					FOW_TileState st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y });
 
-					//If the tile is FOGGED or any state different than visible and unvisited
-					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED) 
-					{
-						//If we find ourselves in a special state (FOGGED area that has to be smoothed on top)
-						if (st >= FOW_TileState::UTOF_SMTH_TOP && st <= FOW_TileState::UTOF_SMTH_TRIGHT_OUT_CORNER)
-						{
-							// Blit as if tile is FOGGED
-							SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::FOGGED);
-							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
+					// TODO 4: To print over our tiles, since this tileset has decorative parts that get outside
+					// the boundaries of the tile we need to re-iterate the tiles and BLIT the FOGGED Rect over
+					// the current tile. right above this comment there's a variable called st,that already contains 
+					// the state of the tile, use it to compare with desired states.
+					// To get the rect to blit our tiles that are diferent than visible, 
+					// use the function GetFOWMetaRect from FowManager
 
-							// Calculate & Blit the correspondant smooth tile
-							int8_t fake_st = (int8_t)st - ((int8_t)FOW_TileState::UTOF_SMTH_TOP - (int8_t)FOW_TileState::UNVISITED_SMTH_TOP);
 
-							r = App->fow_manager->GetFOWMetaRect((FOW_TileState)fake_st);
-							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
+					// TODO 5: You achieved printing a tile over the map, now do it for all states. 
+					// EXPAND the code you just wrote in TODO 4 to take into account the following:
+					// Since you already receive the TileState and GetFOWMetaRect returns the appropiate rect to blit
+					// we only need to manage those tiles that will need to print multiple times over the tile.
+					// Like for instance all the UTOF_SMTH TileStates, which need to first print a FOGGED tile, then 
+					// their state st over that.
 
-						}
-						else // If we're not a special case
-						{
-							SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
-							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
-						}
-					}
-					/*else if (st == FOW_TileState::UNVISITED) // Uncomment this else if to print black tiles over unvisited tiles
-					{
-						SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
-						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
-					}*/
 				}
 			}
 		}

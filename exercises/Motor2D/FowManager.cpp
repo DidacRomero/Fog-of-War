@@ -523,7 +523,7 @@ std::list<iPoint> FowManager::CreateFrontierRect(uint w, uint h, iPoint center)
 
 std::list<iPoint> FowManager::CreateFrontierSquare(uint radius, iPoint center)
 {
-	return CreateFrontierRect(radius*2, radius, center);
+	return CreateFrontierRect(radius*2, radius*2, center);
 }
 
 std::list<iPoint> FowManager::FillFrontier(const std::list<iPoint>& frontier)
