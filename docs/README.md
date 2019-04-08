@@ -184,11 +184,18 @@ With this algorithm we use powers of 2 to determine all the outcomes of visiting
 ```
 
 # Implementation: Code exercise! Get the algorithm running
-To implement the take on tile based fog of war we will follow a series of steps, a series of TODO's to understand and complete a fog of war manager module.
+To implement the take on tile based fog of war we will follow a series of steps, a series of TODO's to understand and complete a fog of war manager module. Note that some TODO's might require to uncomment certain parts of the code. You can use Ctrl + Shft + F in Visual Studio to search directly each TODO.
 
 ### TODO 1
 Here we must understand how to get the visibility of a tile from the visibility map inside the FowManager Module. Hint: the function to get the info is called ``GetVisibilityTileAt``
 TODO 1 Right now all tiles are being drawn by the Blit below. Check the current  FOW_TileState of x and y map coordinates in the visbility map. Use the 2 variables described before (x and y) in the call of the function. If the tile we are checking is diferent than the UNVISITED FOW_TileState, print it .
+
+```
+// TODO 1:Right now all tiles are being drawn by the Blit below.
+					// Check the current  FOW_TileState of x and y map coordinates in the visbility map.
+					// Use the 2 variables described before (x and y) in the call of the function.
+					// If the tile we are checking is diferent than the UNVISITED FOW_TileState, print it .
+```
 
 Solution
 
@@ -197,12 +204,49 @@ What you should see
 ### TODO 2
 Here we are trying to understand how our own entities will handle the most basic interactions with the Fog of War module. This way, when you include this module into the game you'll understand how to without changing stuff from the Fow Manager your Fog of War module is running in no time! First learn how to tell the FowManager to create a FOW_Entity, and keep track of that entity. Now, we must keep our value for the bool that determines if we are visble in sync with the bool inside the FOW_Entity we have as reference.
 
+```
+Inside DummyEnemy
+ // TODO 2.1: Create the fow_entity. Essentially we need to tell the FowManager to create a new FOW_Entity*.
+	        // our FOW_Entity* fow_entity should be filled with the pointer that the 
+	        // function CreateFOWEntity (in the FowManager ) returns.
+ 
+ // TODO 2.2: Update our variable visible, which determines if we will be drawn or not, must be the same as the 
+	        // variable is_visible within our fow_entity. The FowManager manages if the fow_entity is visible. Our variable
+	        // visible is managed by the EntityManager and determines wheter we will be drawn or not.
+ 
+Inside Player
+  // TODO 2.3: Exactly as we did in TODO 2.1, create the fow_entity for the player, keep in mind that
+	        // this entity PROVIDES VISIBILITY!!!
+ 
+  // TODO 2.4: Exactly as TODO 2.2 Update our variable visible
+```
 Solution
 
 What you should see
 
 ### TODO 3
 The goal of this step is that you apply the concept explained before on how entities can manipulate the visibility map, how they determine which tiles will have their visibility changed in the visibility map, and actually changing them. 
+
+```
+Inside  Player
+// TODO 3.1: Create 5 tile radius Square frontier, (function named CreateFrontierSquare, inside FowManager) and 
+	       // assign it to our fow_entity->frontier. 
+	       // Once you have a frontier, fill our Line of Sight Area, fow_entity->LOS, by assigning to it the list
+	       // returned by FillFrontier, this function receives a frontier, and returns all tiles inside it including the frontier tiles
+// TODO 3.2: Update the fow_entity position, use fow_entity function to SetPos
+	       //Our player should update the position of the Fog of war entity that serves as refernce
+ 
+ Inside ManageEntitiesFOWManipulation
+ // TODO 3.5 Since we moved we needupdate the position of the tiles in the LOS (Line of Sight), 
+				// effectively moving all the LOS area to the current position we are in.
+				// Remember that each time an entity moves from one tile to another its variable motion is updated with
+				// the total movement in tile distance
+
+
+	// TODO 3.5 Set The Visibility of the tile we just moved. We need to go to the SAME
+				// tile in the VISIBILITY MAP and make it VISIBLE. Look at the header and search which 
+				// private function will allow you to do so
+```
 
 Solution
 
@@ -211,12 +255,35 @@ What you should see
 ### TODO 4
 This TODO is an introduction on how to manage diferent tile states, for now we will manage printing the FOGGED tiles accordingly.
 
+```
+// TODO 4: To print over our tiles, since this tileset has decorative parts that get outside
+					// the boundaries of the tile we need to re-iterate the tiles and BLIT the FOGGED Rect over
+					// the current tile. right above this comment there's a variable called st,that already contains 
+					// the state of the tile, use it to compare with desired states.
+					// To get the rect to blit our tiles that are diferent than visible, 
+					// use the function GetFOWMetaRect from FowManager
+
+					// Remember that the texture of that contains the fog of war tiles it's called meta_FOW and it's inside 
+					// the FowManager 
+```
 Solution
 
 What you should see 
 
+### Homework 
 ### TODO 5
 Since we will have to print smoothed tiles we need to manage the visual complexity they bring in. Some smoothed tiles will have to be printed not only over the map tiles like we did previously with FOGGED tiles, some of them will need to print themselves over a FOGGED tile, so we will adress this in this TODO.
+
+```
+// TODO 5: You achieved printing a tile over the map, now do it for all states. 
+					// EXPAND the code you just wrote in TODO 4 to take into account the following:
+					// Since you already receive the TileState and GetFOWMetaRect returns the appropiate rect to blit
+					// we only need to manage those tiles that will need to print multiple times over the tile.
+					// Like for instance all the UTOF_SMTH TileStates, which need to first print a FOGGED tile, then 
+					// their state st over that.
+					// UNCOMMENT the parts of the code below and fill in THE BLANKS this all this function must substitute
+					// what we did in TODO 4
+```
 
 Solution
 
@@ -226,6 +293,13 @@ What you should see
 We're almost there! Right know we need to properly understand how the aware tile selection algorithm works and is applied into our code.
 In this TODO we will understand how to identify which tiles will add numbers to our index to determine the right smoothed tile we must be.
 
+```
+// TODO 6: UNDERSTAND the Aware tile selection algorithm and how we apply it to choose the smoothing tiles accordingly
+		// We already have the diferent checks ABOVE, LEFT, DOWN and RIGHT. You must fill the if(false) statements to properly
+		// interpret if the tile state st is "occupying that neighbour tile" and we should add the number to index.
+		// Remember that the same contition will be valid for all 4 checks, once you have one, copy-paste the if in the
+		// next if(false) statement.
+```
 Solution
 
 What you should see
