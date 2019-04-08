@@ -93,6 +93,7 @@ struct FOW_Entity
 	// Bools for checks
 	bool is_visible;
 	bool provides_visibility;
+	bool moved_in_map = false; // This boolean stipulates if we moved in map coordinates
 
 	// Lists containing tiles 
 	std::list<iPoint> frontier;
@@ -104,10 +105,7 @@ struct FOW_Entity
 	// Default Constructor
 	FOW_Entity() {}
 	// Constructor
-	FOW_Entity(iPoint position, bool provides_visibility) : 
-		position(position), 
-		provides_visibility(provides_visibility)
-	{}
+	FOW_Entity(iPoint position, bool provides_visibility);
 
 	// Pass the position in world coordinates, the function will automatically
 	// change the coordinates to map coordinates
@@ -159,7 +157,11 @@ public: // Functions
 	void SmoothEntitiesInnerEdges();
 
 	
+	// Set a squared frontier depending of a radius
+	std::list<iPoint> CreateFrontierSquare(uint radius, iPoint center);
 
+	// Fill a given Frontier to return a LOS (Line of Sight)
+	std::list<iPoint> FillFrontier(const std::list<iPoint>& frontier);
 private: // Functions
 
 	// Set the state of a tile in the visibility map
@@ -180,14 +182,8 @@ private: // Functions
 	// Check boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
 
-	// Fill a given Frontier to return a LOS (Line of Sight)
-	std::list<iPoint> FillFrontier(const std::list<iPoint>& frontier);
-
 	// Set a frontier with the rectangle size
 	std::list<iPoint> CreateFrontierRect(uint width, uint height, iPoint center);
-
-	// Set a squared frontier depending of a radius
-	std::list<iPoint> CreateFrontierSquare(uint radius, iPoint center);
 
 public: // Variables
 

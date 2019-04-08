@@ -59,39 +59,56 @@ bool FowManager::Update(float dt)
 
 	if (debug == false)
 	{
-		if (UpdateEntitiesPositions() == true) // If the position of an entity that manipulates visibility changed, update the visibility map
+		for (std::list<FOW_Entity*>::iterator item = fow_entities.begin(); item != fow_entities.end(); ++item)
 		{
-			//Testing player frontier
-			player.position.x = (*entities_pos.begin()).x;
-			player.position.y = (*entities_pos.begin()).y;
-
-			player.motion = { player.position.x - player_last_pos.x , player.position.y - player_last_pos.y };
-
-			//player.frontier.clear();
-			//player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
-
-			for (std::list<iPoint>::iterator item = player.LOS.begin(); item != player.LOS.end(); item++)
+			if ((*item)->provides_visibility == true && (*item)->moved_in_map == true)
 			{
-				(*item).x += player.motion.x;
-				(*item).y += player.motion.y;
+				//If the Entity moved, we update the LOS position 
+				for (std::list<iPoint>::iterator tile = (*item)->LOS.begin(); tile != (*item)->LOS.end(); tile++)
+				{
+					(*tile).x += (*item)->motion.x;
+					(*tile).y += (*item)->motion.y;
 
-				SetVisibilityTile((*item), FOW_TileState::VISIBLE );
+					SetVisibilityTile((*tile), FOW_TileState::VISIBLE);
+				}
+
+				(*item)->moved_in_map = false;
 			}
 
-			
-				for (std::list<iPoint>::const_iterator lf_item = player.last_LOS.cbegin(); lf_item != player.last_LOS.end(); lf_item++)
-				{
-					if (TileInsideFrontier((*lf_item), player.LOS) == 0)
-					{
-						if (scouting_trail == true)
-							SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED );
-						else
-							SetVisibilityTile((*lf_item), FOW_TileState::UNVISITED );
-					}
-				}
-			
+			//if (UpdateEntitiesPositions() == true) // If the position of an entity that manipulates visibility changed, update the visibility map
+			//{
+			//	//Testing player frontier
+			//	player.position.x = (*entities_pos.begin()).x;
+			//	player.position.y = (*entities_pos.begin()).y;
 
-			SmoothEdges();
+			//	player.motion = { player.position.x - player_last_pos.x , player.position.y - player_last_pos.y };
+
+			//	//player.frontier.clear();
+			//	//player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
+
+			//	for (std::list<iPoint>::iterator item = player.LOS.begin(); item != player.LOS.end(); item++)
+			//	{
+			//		(*item).x += player.motion.x;
+			//		(*item).y += player.motion.y;
+
+			//		SetVisibilityTile((*item), FOW_TileState::VISIBLE);
+			//	}
+
+
+			//	for (std::list<iPoint>::const_iterator lf_item = player.last_LOS.cbegin(); lf_item != player.last_LOS.end(); lf_item++)
+			//	{
+			//		if (TileInsideFrontier((*lf_item), player.LOS) == 0)
+			//		{
+			//			if (scouting_trail == true)
+			//				SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED);
+			//			else
+			//				SetVisibilityTile((*lf_item), FOW_TileState::UNVISITED);
+			//		}
+			//	}
+
+
+			//	SmoothEdges();
+			//}
 		}
 	}
 
@@ -470,22 +487,16 @@ std::list<iPoint> FowManager::GetRectFrontier(uint w, uint h, iPoint pos)
 //We will manage the bool is_visible in the entities, so that the entity manager module manages everything else
 void FowManager::ManageEntitiesVisibility()
 {
-	//Get the entities 
-	std::list<j2Entity*> entities_info = App->entity_manager->GetEntitiesInfo();
-
-	std::list<iPoint>::const_iterator entity_position = entities_pos.begin();
-
-	for (std::list<j2Entity*>::iterator entity_item = entities_info.begin(); entity_item != entities_info.end(); entity_item++)
+	//NEW, correct way to do things
+	for (std::list<FOW_Entity*>::iterator item = fow_entities.begin(); item != fow_entities.end(); ++item)
 	{
-		int8_t st = GetVisibilityTileAt((*entity_position) );
+		int8_t st = GetVisibilityTileAt((*item)->position);
 		if (st == (int8_t)FOW_TileState::VISIBLE || (st < (int8_t)FOW_TileState::BTOS_SMTH_TOP && st >(int8_t)FOW_TileState::SHROUDED))
 		{
-		(*entity_item)->is_visible = true;
-
-		}else{
-		(*entity_item)->is_visible = false;
+			(*item)->is_visible = true;
+		} else {
+			(*item)->is_visible = false;
 		}
-		entity_position++;
 	}
 }
 
@@ -616,8 +627,21 @@ std::list<iPoint> FowManager::FillFrontier(const std::list<iPoint>& frontier)
 	return shape_to_fill;
 }
 
+FOW_Entity::FOW_Entity(iPoint position, bool provides_visibility):
+	position(App->map->WorldToMap(position.x, position.y)),
+	provides_visibility(provides_visibility)
+{}
+
+
 void FOW_Entity::SetPos(iPoint new_pos)
 {
-	motion = App->map->WorldToMap(new_pos.x - position.x, new_pos.y - position.y);
-	position = App->map->WorldToMap(new_pos.x, new_pos.y);
+	new_pos = App->map->WorldToMap(new_pos.x, new_pos.y);
+	// Our position is always in map reference
+	if (position != new_pos)
+	{
+		moved_in_map = true;
+		motion = { (new_pos.x - position.x), (new_pos.y - position.y) };
+		position = new_pos;
+
+	}
 }

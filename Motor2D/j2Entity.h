@@ -8,6 +8,7 @@
 #include <string>
 
 class j2EntityManager;
+struct FOW_Entity;
 
 enum class ENTITY_TYPE
 {
@@ -57,17 +58,19 @@ public:
 public:
 	iPoint position = {0,0};
 	SDL_Rect entity_rect;
-	bool active = false;
-	bool entity_enabled = false;
+
+	FOW_Entity* fow_entity = nullptr;
+	
 
 	// Boolean that the FowManager will check
 	bool provides_visibility = false;
 	mutable bool is_visible = true;
 
+	bool active = false;
+	bool entity_enabled = false;
+
 	SDL_Texture* entity_tex = nullptr;
-
 	ENTITY_TYPE type;
-
 	std::string name;
 
 private:
