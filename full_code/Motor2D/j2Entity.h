@@ -64,7 +64,7 @@ public:
 
 	// Boolean that the FowManager will check
 	bool provides_visibility = false;
-	mutable bool is_visible = true;
+	bool visible = true;
 
 	bool active = false;
 	bool entity_enabled = false;

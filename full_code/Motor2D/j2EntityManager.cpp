@@ -113,7 +113,7 @@ bool j2EntityManager::PostUpdate()
 	bool ret = true;
 	for (std::list<j2Entity*>::iterator item = entities.begin(); item != entities.end(); item++)
 	{
-		if ((*item)->is_visible == true)
+		if ((*item)->visible == true)
 		{
 			ret = (*item)->PostUpdate();
 			(*item)->Draw();

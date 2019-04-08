@@ -53,10 +53,14 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 
-					
+					// TODO 1:Right now all tiles are being drawn by the Blit below.
+					// Check the current  FOW_TileState of x and y map coordinates in the visbility map.
+					// Use the 2 variables described before (x and y) in the call of the function.
+					// If the tile we are checking is diferent than the UNVISITED FOW_TileState, print it .
+
 					if (App->fow_manager->GetVisibilityTileAt({ x,y }) != (int8_t)FOW_TileState::UNVISITED)
 					{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r); //Implement the condition to only print if the tile != than unvisited
 					}
 				}
 			}
@@ -76,8 +80,29 @@ void j1Map::Draw()
 
 					FOW_TileState st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y });
 
+					// TODO 4: To print over our tiles, since this tileset has decorative parts that get outside
+					// the boundaries of the tile we need to re-iterate the tiles and BLIT the FOGGED Rect over
+					// the current tile. right above this comment there's a variable called st,that already contains 
+					// the state of the tile, use it to compare with desired states.
+					// To get the rect to blit our tiles that are diferent than visible, 
+					// use the function GetFOWMetaRect from FowManager
+
+					//This is the solution for TODO 4, but in TODO 5 we expand it
+					/*if (st == FOW_TileState::FOGGED)
+					{
+						SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
+						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
+					}*/
+
+					// TODO 5: You achieved printing a tile over the map, now do it for all states. 
+					// EXPAND the code you just wrote in TODO 4 to take into account the following:
+					// Since you already receive the TileState and GetFOWMetaRect returns the appropiate rect to blit
+					// we only need to manage those tiles that will need to print multiple times over the tile.
+					// Like for instance all the UTOF_SMTH TileStates, which need to first print a FOGGED tile, then 
+					// their state st over that.
+
 					//If the tile is FOGGED or any state different than visible and unvisited
-					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED) 
+					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED)
 					{
 						//If we find ourselves in a special state (FOGGED area that has to be smoothed on top)
 						if (st >= FOW_TileState::UTOF_SMTH_TOP && st <= FOW_TileState::UTOF_SMTH_TRIGHT_OUT_CORNER)
@@ -104,6 +129,7 @@ void j1Map::Draw()
 						SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
 						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 					}
+
 				}
 			}
 		}
