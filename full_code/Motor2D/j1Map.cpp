@@ -113,10 +113,12 @@ void j1Map::Draw()
 						if (st >= FOW_TileState::UTOF_SMTH_TOP && st <= FOW_TileState::UTOF_SMTH_TRIGHT_OUT_CORNER)
 						{
 							// Blit as if tile is FOGGED
+							//FILL IN THE BLANK-------------------------------
 							SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::FOGGED);
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 
 							// Calculate & Blit the correspondant smooth tile
+							//FILL IN THE BLANK-------------------------------
 							int8_t fake_st = (int8_t)st - ((int8_t)FOW_TileState::UTOF_SMTH_TOP - (int8_t)FOW_TileState::UNVISITED_SMTH_TOP);
 
 							r = App->fow_manager->GetFOWMetaRect((FOW_TileState)fake_st);
