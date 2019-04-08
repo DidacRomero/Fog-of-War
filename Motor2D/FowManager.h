@@ -13,8 +13,8 @@ enum class FOW_TileState
 {
 	//Basic states
 	UNVISITED = 0,
-	VISIBLE = 1,
-	SHROUDED,
+	VISIBLE = 255,
+	SHROUDED = 1,
 
 	//States for edge smoothing (SMTH)
 	// Black

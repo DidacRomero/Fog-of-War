@@ -166,9 +166,12 @@ int8_t FowManager::GetVisibilityTileAt(const iPoint& pos) const
 SDL_Rect& FowManager::GetFOWMetaRect(FOW_TileState state)
 {
 	SDL_Rect ret;
-	uint real_sprite_pos = uint(state) - uint(FOW_TileState::SHROUDED); // tile inside the FOWmeta spritesheet
+	uint real_sprite_pos = uint(state) - (uint(FOW_TileState::UNVISITED)); // tile inside the FOWmeta spritesheet
 
-	ret.w = 64; // 64 is the width between different tiles in the spritesheet
+	// 64 is the width and height between different tiles in the spritesheet, thats done this way because it's the
+	// total rect we use to print tiles from the tileset. The Map module should provide you that data but for this
+	//Implementation you must not have calls to 
+	ret.w = 64; 
 	ret.h = 64;
 	ret.x = real_sprite_pos * ret.w; 
 	ret.y = 0;

@@ -116,6 +116,11 @@ void j1Map::Draw()
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 						}
 					}
+					else if (st == FOW_TileState::UNVISITED)
+					{
+						SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
+						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
+					}
 					//if (int8_t(st) != int8_t(FOW_TileState::VISIBLE) && int8_t(st) != int8_t(FOW_TileState::UNVISITED))
 					//{
 					//	if (st == FOW_TileState::BTOS_SMTH_DLEFT_CORNER || st == FOW_TileState::BTOS_SMTH_TLEFT_CORNER ||
