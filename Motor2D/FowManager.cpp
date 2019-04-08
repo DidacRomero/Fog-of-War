@@ -63,6 +63,8 @@ bool FowManager::Update(float dt)
 		{
 			if ((*item)->provides_visibility == true && (*item)->moved_in_map == true)
 			{
+				//We store the LOS of the current entity, since the LOS will change this will be our previous LOS
+				std::list<iPoint> prev_LOS = (*item)->LOS;
 				//If the Entity moved, we update the LOS position 
 				for (std::list<iPoint>::iterator tile = (*item)->LOS.begin(); tile != (*item)->LOS.end(); tile++)
 				{
@@ -73,42 +75,21 @@ bool FowManager::Update(float dt)
 				}
 
 				(*item)->moved_in_map = false;
+
+
+				for (std::list<iPoint>::const_iterator lf_item = prev_LOS.cbegin(); lf_item != prev_LOS.end(); lf_item++)
+				{
+					if (TileInsideList((*lf_item), (*item)->LOS) == false)
+					{
+						if (scouting_trail == true)
+							SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED);
+						else
+							SetVisibilityTile((*lf_item), FOW_TileState::UNVISITED);
+					}
+				}
+
+				SmoothEdges((*item));
 			}
-
-			//if (UpdateEntitiesPositions() == true) // If the position of an entity that manipulates visibility changed, update the visibility map
-			//{
-			//	//Testing player frontier
-			//	player.position.x = (*entities_pos.begin()).x;
-			//	player.position.y = (*entities_pos.begin()).y;
-
-			//	player.motion = { player.position.x - player_last_pos.x , player.position.y - player_last_pos.y };
-
-			//	//player.frontier.clear();
-			//	//player.frontier = GetRectFrontier(10, 10, { player.position.x, player.position.y });
-
-			//	for (std::list<iPoint>::iterator item = player.LOS.begin(); item != player.LOS.end(); item++)
-			//	{
-			//		(*item).x += player.motion.x;
-			//		(*item).y += player.motion.y;
-
-			//		SetVisibilityTile((*item), FOW_TileState::VISIBLE);
-			//	}
-
-
-			//	for (std::list<iPoint>::const_iterator lf_item = player.last_LOS.cbegin(); lf_item != player.last_LOS.end(); lf_item++)
-			//	{
-			//		if (TileInsideFrontier((*lf_item), player.LOS) == 0)
-			//		{
-			//			if (scouting_trail == true)
-			//				SetVisibilityTile((*lf_item), FOW_TileState::SHROUDED);
-			//			else
-			//				SetVisibilityTile((*lf_item), FOW_TileState::UNVISITED);
-			//		}
-			//	}
-
-
-			//	SmoothEdges();
-			//}
 		}
 	}
 
@@ -141,6 +122,14 @@ bool FowManager::CleanUp()
 {
 	App->tex->UnLoad(meta_FOW);
 	meta_FOW = nullptr;
+
+	for (std::list<FOW_Entity*>::iterator item = fow_entities.begin(); item != fow_entities.end(); ++item)
+	{
+		if((*item)!=nullptr)
+		delete (*item);
+	}
+
+	fow_entities.clear();
 	return true;
 }
 
@@ -245,12 +234,21 @@ SDL_Rect& FowManager::GetFOWMetaRect(FOW_TileState state)
 	return ret;
 }
 
-void FowManager::SmoothEdges()
+void FowManager::SmoothEdges(FOW_Entity* fow_entity)
 {
-	SmoothEntitiesInnerEdges();
+
+	std::list<iPoint> prev_frontier = fow_entity->frontier;
+
+	for (std::list<iPoint>::iterator tile = fow_entity->frontier.begin(); tile != fow_entity->frontier.end(); tile++)
+	{
+		(*tile).x += fow_entity->motion.x;
+		(*tile).y += fow_entity->motion.y;
+	}
+
+	SmoothEntitiesInnerEdges(fow_entity->frontier);
 	
 	std::list<iPoint> corners;
-	for (std::list<iPoint>::const_iterator item = player.last_frontier.cbegin(); item != player.last_frontier.cend(); item++)
+	for (std::list<iPoint>::const_iterator item = prev_frontier.cbegin(); item != prev_frontier.cend(); item++)
 	{
 		//Testing edge smoothing
 
@@ -362,13 +360,13 @@ void FowManager::SmoothEdges()
 	}
 }
 
-void FowManager::SmoothEntitiesInnerEdges()
+void FowManager::SmoothEntitiesInnerEdges(std::list<iPoint> inner_frontier)
 {
 	std::list<iPoint> inner_corners;
-	for (std::list<iPoint>::iterator item = player.frontier.begin(); item != player.frontier.end(); item++)
+	for (std::list<iPoint>::iterator item = inner_frontier.begin(); item != inner_frontier.end(); item++)
 	{
-		(*item).x += player.motion.x;
-		(*item).y += player.motion.y;
+		/*(*item).x += player.motion.x;
+		(*item).y += player.motion.y;*/
 		//Testing edge smoothing
 
 		// THE ENUM SWITCH IS USED AS A TOOL, SHOULD USE THE NUMBER OF STATES TO MIRROR POSITION IN THE SPRITESHEET
@@ -539,17 +537,17 @@ bool FowManager::UpdateEntitiesPositions()
 	return ret;
 }
 
-int8_t FowManager::TileInsideFrontier(iPoint tile, const std::list<iPoint>& frontier_checked) const
+bool FowManager::TileInsideList(iPoint tile, const std::list<iPoint>& list_checked) const
 {
-	for (std::list<iPoint>::const_iterator item = frontier_checked.cbegin(); item != frontier_checked.end(); item++)
+	for (std::list<iPoint>::const_iterator item = list_checked.cbegin(); item != list_checked.end(); item++)
 	{
 		if ((*item).x == tile.x && (*item).y == tile.y)
 		{
-			return 1;
+			return true;
 		}
 	}
 
-	return 0;
+	return false;
 }
 
 void FowManager::ResetFOWVisibility()

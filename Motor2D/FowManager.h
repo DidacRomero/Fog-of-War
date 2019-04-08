@@ -152,9 +152,9 @@ public: // Functions
 
 	SDL_Rect& GetFOWMetaRect(FOW_TileState state);
 
-	void SmoothEdges();
+	void SmoothEdges(FOW_Entity* fow_entity);
 
-	void SmoothEntitiesInnerEdges();
+	void SmoothEntitiesInnerEdges(std::list<iPoint> frontier);
 
 	
 	// Set a squared frontier depending of a radius
@@ -177,7 +177,7 @@ private: // Functions
 	bool UpdateEntitiesPositions();
 
 	// Tile inside a Frontier
-	int8_t TileInsideFrontier(iPoint tile, const std::list<iPoint>& frontier_checked) const;
+	bool TileInsideList(iPoint tile, const std::list<iPoint>& list_checked) const;
 
 	// Check boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
