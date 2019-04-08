@@ -21,7 +21,6 @@ bool Player::Start()
 	// TODO 2.3: Exactly as we did in TODO 2.1, create the fow_entity for the player, keep in mind that
 	// this entity PROVIDES VISIBILITY!!!
 
-	//From now on we should only call fow_entity.setpos()
 
 	// TODO 3.1: Create 5 tile radius Square frontier, (function named CreateFrontierSquare, inside FowManager) and 
 	// assign it to our fow_entity->frontier. 

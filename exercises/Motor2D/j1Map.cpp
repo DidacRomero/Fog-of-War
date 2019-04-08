@@ -53,11 +53,13 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 
-					
-					if (App->fow_manager->GetVisibilityTileAt({ x,y }) != (int8_t)FOW_TileState::UNVISITED)
-					{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
-					}
+					// TODO 1:Right now all tiles are being drawn by the Blit below.
+					// Check the current  FOW_TileState of x and y map coordinates in the visbility map.
+					// Use the 2 variables described before (x and y) in the call of the function.
+					// If the tile we are checking is diferent than the UNVISITED FOW_TileState, print it .
+
+					App->render->Blit(tileset->texture, pos.x, pos.y, &r); //Implement the condition to only print if the tile != than unvisited
+
 				}
 			}
 		}
@@ -99,11 +101,11 @@ void j1Map::Draw()
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 						}
 					}
-					else if (st == FOW_TileState::UNVISITED)
+					/*else if (st == FOW_TileState::UNVISITED) // Uncomment this else if to print black tiles over unvisited tiles
 					{
 						SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
 						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
-					}
+					}*/
 				}
 			}
 		}
