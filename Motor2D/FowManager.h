@@ -146,8 +146,10 @@ public: // Functions
 	// Reset Visibility Map
 	void ResetVisibilityMap();
 
+	//Get the value of a tile within the Visibility Map
 	int8_t GetVisibilityTileAt(const iPoint& pos) const;
 
+	//Get the Rect to blit the correspondant tile state
 	SDL_Rect& GetFOWMetaRect(FOW_TileState state);
 
 	void SmoothEdges(FOW_Entity* fow_entity);
@@ -180,24 +182,19 @@ private: // Functions
 public: // Variables
 
 	bool debug = false;
+	bool scouting_trail = true; // Leave a trail of Fogged tiles when leaving an area
 
-	bool scouting_trail = true;
-
+	//Texture for the fog of war tiles 
 	SDL_Texture* meta_FOW = nullptr;
 
 private: //Variables
 
 	uint width, height;
 
-
 	int8_t* visibility_map = nullptr;
 
 	// List of all FOW Entities
 	std::list<FOW_Entity*> fow_entities;
-
-	// This list contains the position in MAP COORDINATES of all entities
-	std::list<iPoint> entities_pos;
-
 
 	//---- This 2 pointers are for debug purpose only
 	int8_t* debug_map = nullptr;

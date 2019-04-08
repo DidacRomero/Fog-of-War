@@ -37,5 +37,5 @@ bool DummyEnemy::CleanUp()
 
 void DummyEnemy::Draw()
 {
-	App->render->Blit(entity_tex, position.x, position.y -64, &entity_rect);
+	App->render->Blit(entity_tex, position.x -16, position.y -64, &entity_rect);
 }
