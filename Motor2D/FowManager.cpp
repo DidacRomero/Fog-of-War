@@ -35,17 +35,6 @@ bool FowManager::Start()
 {
 	meta_FOW = App->tex->Load("maps/FOW_meta_sheet.png");
 
-	UpdateEntitiesPositions();
-
-	player.position.x = (*entities_pos.begin()).x;
-	player.position.y = (*entities_pos.begin()).y;
-
-	// Testing getting the player frontier
-	player.frontier = CreateFrontierSquare(10,player.position);
-
-	// Testing Filling the player frontier
-	player.LOS = FillFrontier(player.frontier);
-
 	return true;
 }
 
@@ -53,9 +42,6 @@ bool FowManager::Update(float dt)
 {
 	ManageEntitiesVisibility();
 	//Update Entities positions. 
-
-	// We will need the difference in position to move the forntiers and LOS
-	iPoint player_last_pos = player.position;
 
 	if (debug == false)
 	{
@@ -111,9 +97,6 @@ bool FowManager::Update(float dt)
 			visibility_map = visibility_debug_holder;
 		}
 	}
-
-	player.last_frontier = player.frontier;
-	player.last_LOS = player.LOS;
 
 	return true;
 }
@@ -462,26 +445,6 @@ void FowManager::SetVisibilityTile(iPoint pos, FOW_TileState state)
 			visibility_map[(pos.y * width) + pos.x] = (int8_t)state;
 }
 
-std::list<iPoint> FowManager::GetRectFrontier(uint w, uint h, iPoint pos)
-{
-	std::list<iPoint> square;
-
-	iPoint st_point = { int(pos.x - w / 2), int(pos.y - h / 2)};
-	iPoint curr = st_point;
-
-	for (int i = 1; i <= w; ++i)
-	{
-		for (int j = 0; j < h; ++j)
-		{
-			curr.y = st_point.y + j;
-			square.push_back(curr);
-		}
-		curr.x = st_point.x + i;
-	}
-
-	return square;
-}
-
 //We will manage the bool is_visible in the entities, so that the entity manager module manages everything else
 void FowManager::ManageEntitiesVisibility()
 {
@@ -498,45 +461,6 @@ void FowManager::ManageEntitiesVisibility()
 	}
 }
 
-bool FowManager::UpdateEntitiesPositions()
-{
-	bool ret = false;
-	// ------
-	// Get the position of all entities, we call the entity manager to provide us all the entities (const)
-	// When implementing into your game, you will have to do the same thing but adapted into your own entity and entity manager
-	std::list<j2Entity*> entities_info = App->entity_manager->GetEntitiesInfo();
-
-	std::list<j2Entity*>::iterator item = entities_info.begin();
-
-	// We want to know if the player moved in order to update fog, in your game, you should check for all entities that change visibility
-	// This is a bit hardcoded, since we know that the first entity of the list is the player
-	if (App->map->WorldToMap((*item)->position.x, (*item)->position.y) != player.position)
-	{
-		ret = true;
-	}
-
-	if (entities_pos.size() == 0)
-	{
-		for (; item != entities_info.end(); ++item)
-		{
-			entities_pos.push_back(App->map->WorldToMap((*item)->position.x, (*item)->position.y));
-		}
-	}
-	else
-	{
-		//We iterate the list of positions of entities to update the list of positions we have
-		std::list<iPoint>::iterator pos_item = entities_pos.begin();
-
-		for (; item != entities_info.end(); ++item)
-		{
-			(*pos_item) = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
-			pos_item++;
-		}
-	}
-	// ------
-	return ret;
-}
-
 bool FowManager::TileInsideList(iPoint tile, const std::list<iPoint>& list_checked) const
 {
 	for (std::list<iPoint>::const_iterator item = list_checked.cbegin(); item != list_checked.end(); item++)
@@ -550,7 +474,7 @@ bool FowManager::TileInsideList(iPoint tile, const std::list<iPoint>& list_check
 	return false;
 }
 
-void FowManager::ResetFOWVisibility()
+void FowManager::ResetVisibilityMap()
 {
 	// We simply set the map again this way other modules can call and it will be
 	// easier to understand rather than setting the the map again manually

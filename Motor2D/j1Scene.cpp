@@ -141,7 +141,7 @@ bool j1Scene::Update(float dt)
 	 App->map->DrawGrid();
 
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		App->fow_manager->ResetFOWVisibility();
+		App->fow_manager->ResetVisibilityMap();
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		App->fow_manager->scouting_trail = !App->fow_manager->scouting_trail;

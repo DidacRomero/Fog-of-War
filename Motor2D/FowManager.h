@@ -97,10 +97,8 @@ struct FOW_Entity
 
 	// Lists containing tiles 
 	std::list<iPoint> frontier;
-	std::list<iPoint> last_frontier;
 
 	std::list<iPoint> LOS;
-	std::list<iPoint> last_LOS;
 
 	// Default Constructor
 	FOW_Entity() {}
@@ -146,7 +144,7 @@ public: // Functions
 	// Set Visibility Map
 	void SetVisibilityMap(uint width, uint height);
 	// Reset Visibility Map
-	void ResetFOWVisibility();
+	void ResetVisibilityMap();
 
 	int8_t GetVisibilityTileAt(const iPoint& pos) const;
 
@@ -167,14 +165,8 @@ private: // Functions
 	// Set the state of a tile in the visibility map
 	void SetVisibilityTile(iPoint pos, FOW_TileState state);
 
-	// Returns a list of iPoints that are contained in width and height
-	std::list<iPoint> GetRectFrontier(uint width, uint height, iPoint pos);
-
 	// Manage visibility of entities
 	void ManageEntitiesVisibility();
-
-	//Update Entities positions
-	bool UpdateEntitiesPositions();
 
 	// Tile inside a Frontier
 	bool TileInsideList(iPoint tile, const std::list<iPoint>& list_checked) const;
@@ -199,9 +191,6 @@ private: //Variables
 
 
 	int8_t* visibility_map = nullptr;
-
-	// Testing the FOW_Entity 
-	FOW_Entity player;
 
 	// List of all FOW Entities
 	std::list<FOW_Entity*> fow_entities;
