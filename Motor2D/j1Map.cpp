@@ -78,7 +78,7 @@ void j1Map::Draw()
 					// Testing Fog Of War Shroud and smoothing
 					FOW_TileState st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y });
 
-					//if (st == FOW_TileState::SHROUDED)
+					//if (st == FOW_TileState::FOGGED)
 					//{
 					//	SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
 					//	App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
@@ -88,23 +88,23 @@ void j1Map::Draw()
 					//// Chek if we have to print any edge over the 
 					//st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y }, EDGES);
 
-					//if (st > FOW_TileState::SHROUDED) 
+					//if (st > FOW_TileState::FOGGED) 
 					//{
 					//	st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y }, EDGES);
 					//}
 					
-					//If the tile is shrouded or any state different than visible and unvisited
+					//If the tile is FOGGED or any state different than visible and unvisited
 					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED) 
 					{
-						//If we find ourselves in a special state (shrouded area that has to be smoothed on top)
-						if (st >= FOW_TileState::BTOS_SMTH_TOP && st <= FOW_TileState::BTOS_SMTH_TRIGHT_OUT_CORNER)
+						//If we find ourselves in a special state (FOGGED area that has to be smoothed on top)
+						if (st >= FOW_TileState::UTOF_SMTH_TOP && st <= FOW_TileState::UTOF_SMTH_TRIGHT_OUT_CORNER)
 						{
-							// Blit as if tile is shrouded
-							SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::SHROUDED);
+							// Blit as if tile is FOGGED
+							SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::FOGGED);
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 
 							// Calculate & Blit the correspondant smooth tile
-							int8_t fake_st = (int8_t)st - ((int8_t)FOW_TileState::BTOS_SMTH_TOP - (int8_t)FOW_TileState::BLACK_SMTH_TOP);
+							int8_t fake_st = (int8_t)st - ((int8_t)FOW_TileState::UTOF_SMTH_TOP - (int8_t)FOW_TileState::UNVISITED_SMTH_TOP);
 
 							r = App->fow_manager->GetFOWMetaRect((FOW_TileState)fake_st);
 							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
@@ -123,27 +123,27 @@ void j1Map::Draw()
 					}
 					//if (int8_t(st) != int8_t(FOW_TileState::VISIBLE) && int8_t(st) != int8_t(FOW_TileState::UNVISITED))
 					//{
-					//	if (st == FOW_TileState::BTOS_SMTH_DLEFT_CORNER || st == FOW_TileState::BTOS_SMTH_TLEFT_CORNER ||
-					//		st == FOW_TileState::BTOS_SMTH_DRIGHT_CORNER || st == FOW_TileState::BTOS_SMTH_TRIGHT_CORNER)
+					//	if (st == FOW_TileState::UTOF_SMTH_DLEFT_CORNER || st == FOW_TileState::UTOF_SMTH_TLEFT_CORNER ||
+					//		st == FOW_TileState::UTOF_SMTH_DRIGHT_CORNER || st == FOW_TileState::UTOF_SMTH_TRIGHT_CORNER)
 					//	{
-					//		SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::SHROUDED);
+					//		SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::FOGGED);
 					//		App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 
 					//		switch (st)
 					//		{
-					//		case FOW_TileState::BTOS_SMTH_DLEFT_CORNER:
-					//			st = FOW_TileState::BLACK_SMTH_DLEFT_CORNER;
+					//		case FOW_TileState::UTOF_SMTH_DLEFT_CORNER:
+					//			st = FOW_TileState::UNVISITED_SMTH_DLEFT_CORNER;
 					//			break;
 
-					//		case FOW_TileState::BTOS_SMTH_TLEFT_CORNER:
-					//			st = FOW_TileState::BLACK_SMTH_TLEFT_CORNER;
+					//		case FOW_TileState::UTOF_SMTH_TLEFT_CORNER:
+					//			st = FOW_TileState::UNVISITED_SMTH_TLEFT_CORNER;
 					//			break;
 
-					//		case FOW_TileState::BTOS_SMTH_DRIGHT_CORNER:
-					//			st = FOW_TileState::BLACK_SMTH_DRIGHT_CORNER;
+					//		case FOW_TileState::UTOF_SMTH_DRIGHT_CORNER:
+					//			st = FOW_TileState::UNVISITED_SMTH_DRIGHT_CORNER;
 					//			break;
-					//		case FOW_TileState::BTOS_SMTH_TRIGHT_CORNER:
-					//			st = FOW_TileState::BLACK_SMTH_TRIGHT_CORNER;
+					//		case FOW_TileState::UTOF_SMTH_TRIGHT_CORNER:
+					//			st = FOW_TileState::UNVISITED_SMTH_TRIGHT_CORNER;
 					//			break;
 					//		}
 					//		SDL_Rect r_1 = App->fow_manager->GetFOWMetaRect(st);
