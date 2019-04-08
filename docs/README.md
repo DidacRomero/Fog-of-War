@@ -183,8 +183,85 @@ With this algorithm we use powers of 2 to determine all the outcomes of visiting
  if (right) sum += 8;    // 2 power of 3 = 8
 ```
 
+# Implementation: Code exercise! Get the algorithm running
+To implement the take on tile based fog of war we will follow a series of steps, a series of TODO's to understand and complete a fog of war manager module.
+
+### TODO 1
+Here we must understand how to get the visibility of a tile from the visibility map inside the FowManager Module. Hint: the function to get the info is called ``GetVisibilityTileAt``
+TODO 1 Right now all tiles are being drawn by the Blit below. Check the current  FOW_TileState of x and y map coordinates in the visbility map. Use the 2 variables described before (x and y) in the call of the function. If the tile we are checking is diferent than the UNVISITED FOW_TileState, print it .
+
+Solution
+
+What you should see
+
+### TODO 2
+Here we are trying to understand how our own entities will handle the most basic interactions with the Fog of War module. This way, when you include this module into the game you'll understand how to without changing stuff from the Fow Manager your Fog of War module is running in no time! First learn how to tell the FowManager to create a FOW_Entity, and keep track of that entity. Now, we must keep our value for the bool that determines if we are visble in sync with the bool inside the FOW_Entity we have as reference.
+
+Solution
+
+What you should see
+
+### TODO 3
+The goal of this step is that you apply the concept explained before on how entities can manipulate the visibility map, how they determine which tiles will have their visibility changed in the visibility map, and actually changing them. 
+
+Solution
+
+What you should see
+
+### TODO 4
+This TODO is an introduction on how to manage diferent tile states, for now we will manage printing the FOGGED tiles accordingly.
+
+Solution
+
+What you should see 
+
+### TODO 5
+Since we will have to print smoothed tiles we need to manage the visual complexity they bring in. Some smoothed tiles will have to be printed not only over the map tiles like we did previously with FOGGED tiles, some of them will need to print themselves over a FOGGED tile, so we will adress this in this TODO.
+
+Solution
+
+What you should see
+
+### TODO 6
+We're almost there! Right know we need to properly understand how the aware tile selection algorithm works and is applied into our code.
+In this TODO we will understand how to identify which tiles will add numbers to our index to determine the right smoothed tile we must be.
+
+Solution
+
+What you should see
+
+Uncommenting: Final UNCOMMENT 
 
 
+
+# Improvements on the system
+### **Easy:   (Lvl. 1 Student)**
+ * **Load metadata from an xml!**
+ Create a metadata map in a similar way to the visibility map and fill it with information with Tiled.
+ This will allow you to be more creative in design and is necessary for some improvements in this list: Implementing bushes, Entities that interact diferently with the fog of war. 
+ * **Vision Buffs and De-buffs**
+ A good example would be Warcraft III, in which units have more or less line of sight depending on if it's day or night, or if you buy a   certain improvement for a troop like ultravision.
+ * **Entities that interact differently with Fog of War**
+ If a flying entity and a ground entity where to be in the same position and we have heights implemented into our RTS, the ground units  shouldn't be able to see the terraing that is above them but flying entities should be able to see the higher ground.
+### **Medium:   (Lvl. 50  HackerMan)**
+* **Quad Trees**
+If your game doesn't use quad trees already, implement them in code for all checks related to blits.
+* **Bushes**
+ Implement a system of bushes where players and enemies can hide like if it was a Fogged zone. Try to implement it like the cool bush system from League of Legends. Things get specially interesting when you are inside a zone of bushes, but your range of visibility is enough to reach another zone of bushes. You shouldn't be able too see what is happening inside that zone of bushes, plus your code has to be optimal to not loose time. You can ask me about this implementation if you like, since I have figured out a way to get around this problem.
+ * **Hexagonal tiles**
+ Adapt the module we created to work with hexagonal maps
+ 
+### **Hard:   (Lvl. 100 Pointer Demi-god)**
+* **Tile Fading**
+When a tile is no longer in our line of sight, slowly fade it out.
+
+* **AI & Pathfinding that accounts for fog of war**
+Manage AI pathfinding as if it also had fog of war, much strategy games don't do this since they reveal the whole map to the AI, but it is an interesting matter to look into.
+
+# A big thank you
+
+If you have reached this point... Thank you! It means a lot to me if you check this content and it helped you.
+I also wanted to thank all the amazing people who is referrenced below or at some point during the web. If you hadn't shared your knowledge online this would not have been possible!
 
 ## References
 
@@ -195,7 +272,7 @@ With this algorithm we use powers of 2 to determine all the outcomes of visiting
   * [Fog of War by Roger Tello](https://github.com/rogerta97/FogOfWar)
   * [Line Of Sight or Shadow Casting in 2D](https://www.youtube.com/watch?v=fc3nnG2CG8U)
   * [2D Visibility](https://www.redblobgames.com/articles/visibility/)
-* **My approach? Implementing Tile-based Fog of War**
+* **Implementation: A take on tile based fog of war**
   * [A Story of Fog and War](https://technology.riotgames.com/news/story-fog-and-war)
   * [Fog of War by Roger Tello](https://github.com/rogerta97/FogOfWar)
   * [Neighbour aware tile selection](https://web.archive.org/web/20170608082007/http://www.saltgames.com/article/awareTiles/)
