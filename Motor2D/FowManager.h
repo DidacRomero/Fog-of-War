@@ -129,10 +129,7 @@ public: // Functions
 	// Called before quitting
 	bool CleanUp();
 
-	//Load
-	bool Load(pugi::xml_node&);
-	//Save
-	bool Save(pugi::xml_node&) const;
+
 
 	// Create a Fog of War Entity (Abstraction of an entity that will be managed
 	// by the FOWManager)
@@ -140,6 +137,8 @@ public: // Functions
 
 	//Destroy a Fog of War Entity and take it out of the list
 	bool DestroyFOWEntity(FOW_Entity* to_destroy);
+
+
 
 	// Set Visibility Map
 	void SetVisibilityMap(uint width, uint height);
@@ -152,16 +151,22 @@ public: // Functions
 	//Get the Rect to blit the correspondant tile state
 	SDL_Rect& GetFOWMetaRect(FOW_TileState state);
 
+
+
+	//This function will call do the proper frontier managing and calling the functions 
+	//that will actually smooth the edges
 	void SmoothEdges(FOW_Entity* fow_entity);
 
 	void SmoothEntitiesInnerEdges(std::list<iPoint> frontier);
+	void SmoothEntitiesOuterEdges(std::list<iPoint> frontier);
 
-	
 	// Set a squared frontier depending of a radius
 	std::list<iPoint> CreateFrontierSquare(uint radius, iPoint center);
 
 	// Fill a given Frontier to return a LOS (Line of Sight)
 	std::list<iPoint> FillFrontier(const std::list<iPoint>& frontier);
+
+
 private: // Functions
 
 	// Set the state of a tile in the visibility map
@@ -170,10 +175,13 @@ private: // Functions
 	// Manage visibility of entities
 	void ManageEntitiesVisibility();
 
-	// Tile inside a Frontier
+	// Manage Entities FOW manipulation
+	void ManageEntitiesFOWManipulation();
+
+	// Returns true if a tile is inside a given list (if an iPoint is inside an iPoint list)
 	bool TileInsideList(iPoint tile, const std::list<iPoint>& list_checked) const;
 
-	// Check boundaries
+	// Check boundaries of the Visibility map
 	bool CheckBoundaries(const iPoint& pos) const;
 
 	// Set a frontier with the rectangle size
@@ -184,7 +192,7 @@ public: // Variables
 	bool debug = false;
 	bool scouting_trail = true; // Leave a trail of Fogged tiles when leaving an area
 
-	//Texture for the fog of war tiles 
+	//Texture for the fog of war tiles
 	SDL_Texture* meta_FOW = nullptr;
 
 private: //Variables
