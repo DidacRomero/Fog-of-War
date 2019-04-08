@@ -53,8 +53,8 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 
-					// testing Fog Of War
-					if (App->fow_manager->GetVisibilityTileAt({ x,y } ) !=0)
+					
+					if (App->fow_manager->GetVisibilityTileAt({ x,y }) != (int8_t)FOW_TileState::UNVISITED)
 					{
 						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 					}
@@ -74,25 +74,8 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 
-					
-					// Testing Fog Of War Shroud and smoothing
 					FOW_TileState st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y });
 
-					//if (st == FOW_TileState::FOGGED)
-					//{
-					//	SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
-					//	App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
-
-					//}
-
-					//// Chek if we have to print any edge over the 
-					//st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y }, EDGES);
-
-					//if (st > FOW_TileState::FOGGED) 
-					//{
-					//	st = (FOW_TileState)App->fow_manager->GetVisibilityTileAt({ x,y }, EDGES);
-					//}
-					
 					//If the tile is FOGGED or any state different than visible and unvisited
 					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED) 
 					{
@@ -121,41 +104,6 @@ void j1Map::Draw()
 						SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
 						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
 					}
-					//if (int8_t(st) != int8_t(FOW_TileState::VISIBLE) && int8_t(st) != int8_t(FOW_TileState::UNVISITED))
-					//{
-					//	if (st == FOW_TileState::UTOF_SMTH_DLEFT_CORNER || st == FOW_TileState::UTOF_SMTH_TLEFT_CORNER ||
-					//		st == FOW_TileState::UTOF_SMTH_DRIGHT_CORNER || st == FOW_TileState::UTOF_SMTH_TRIGHT_CORNER)
-					//	{
-					//		SDL_Rect r = App->fow_manager->GetFOWMetaRect(FOW_TileState::FOGGED);
-					//		App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
-
-					//		switch (st)
-					//		{
-					//		case FOW_TileState::UTOF_SMTH_DLEFT_CORNER:
-					//			st = FOW_TileState::UNVISITED_SMTH_DLEFT_CORNER;
-					//			break;
-
-					//		case FOW_TileState::UTOF_SMTH_TLEFT_CORNER:
-					//			st = FOW_TileState::UNVISITED_SMTH_TLEFT_CORNER;
-					//			break;
-
-					//		case FOW_TileState::UTOF_SMTH_DRIGHT_CORNER:
-					//			st = FOW_TileState::UNVISITED_SMTH_DRIGHT_CORNER;
-					//			break;
-					//		case FOW_TileState::UTOF_SMTH_TRIGHT_CORNER:
-					//			st = FOW_TileState::UNVISITED_SMTH_TRIGHT_CORNER;
-					//			break;
-					//		}
-					//		SDL_Rect r_1 = App->fow_manager->GetFOWMetaRect(st);
-					//		App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r_1);
-					//	}
-					//	else // Base case
-					//	{
-
-					//		SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
-					//		App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);
-					//	}
-					//}
 				}
 			}
 		}

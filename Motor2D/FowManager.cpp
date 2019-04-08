@@ -42,7 +42,7 @@ bool FowManager::Update(float dt)
 {
 	if (debug == false)
 	{
-		// Now we manage the fow_entities visibility 
+		// We manage fow_entities that manipulate the visibility map 
 		ManageEntitiesFOWManipulation();
 	}
 	//Manage the entities visibibility, check if they are visible or not
@@ -185,15 +185,22 @@ SDL_Rect& FowManager::GetFOWMetaRect(FOW_TileState state)
 
 void FowManager::SmoothEdges(FOW_Entity* fow_entity)
 {
+	//Before we update the frontier and its tiles position, keep it so that it is the previous frontier
 	std::list<iPoint> prev_frontier = fow_entity->frontier;
 
+	//Move the frontier and it's tiles
 	for (std::list<iPoint>::iterator tile = fow_entity->frontier.begin(); tile != fow_entity->frontier.end(); tile++)
 	{
 		(*tile).x += fow_entity->motion.x;
 		(*tile).y += fow_entity->motion.y;
 	}
 
+	// Pass the frontier we just moved to this function, 
+	// tiles conatined in this frontier might be adjacent FOGGED and UNVISITED tiles
 	SmoothEntitiesInnerEdges(fow_entity->frontier);
+
+	// Pass previous frontier, 
+	// tiles conatined in this frontier might be in contact with unvisited areas, which are the ones we'll check
 	SmoothEntitiesOuterEdges(prev_frontier);
 }
 
@@ -202,10 +209,6 @@ void FowManager::SmoothEntitiesInnerEdges(std::list<iPoint> inner_frontier)
 	std::list<iPoint> inner_corners;
 	for (std::list<iPoint>::iterator item = inner_frontier.begin(); item != inner_frontier.end(); item++)
 	{
-		/*(*item).x += player.motion.x;
-		(*item).y += player.motion.y;*/
-		//Testing edge smoothing
-
 		// THE ENUM SWITCH IS USED AS A TOOL, SHOULD USE THE NUMBER OF STATES TO MIRROR POSITION IN THE SPRITESHEET
 		// If we did this we would only need to typecast index to FOW_TileState 
 		int index = 0;
@@ -228,7 +231,7 @@ void FowManager::SmoothEntitiesInnerEdges(std::list<iPoint> inner_frontier)
 		switch (index)
 		{
 		case 0:
-			// A tile in the last frontier will never be a FOGGED area, so we can assume it's an outer corner
+			// A tile in the frontier might not be a FOGGED area, so we will assume it's an outer corner to perform more checks
 			inner_corners.push_back(*item);
 			break;
 		case 1:
@@ -272,8 +275,9 @@ void FowManager::SmoothEntitiesInnerEdges(std::list<iPoint> inner_frontier)
 
 	for (std::list<iPoint>::const_iterator item = inner_corners.cbegin(); item != inner_corners.cend(); item++)
 	{
-		//Since we know these elements where in a frontier, thus they can only be corners, we will check the diagonal tiles
-		//since there can only be one tile that is still unvisited, when we find it we will: continue; the loop
+		//Since we know these elements where in a frontier and did not become a smoothed tile, thus they might be corners, 
+		// we will check the diagonal tiles since there can only be one tile that is still unvisited, when we find it we 
+		// will continue with the loop (hence the if-else if)
 		if (GetVisibilityTileAt({ (*item).x - 1, (*item).y - 1 } ) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-LEFT
 		{
 			SetVisibilityTile((*item), FOW_TileState::FOGGED_SMTH_TLEFT_OUT_CORNER );
@@ -298,9 +302,7 @@ void FowManager::SmoothEntitiesOuterEdges(std::list<iPoint> frontier)
 	std::list<iPoint> corners;
 	for (std::list<iPoint>::const_iterator item = frontier.cbegin(); item != frontier.cend(); item++)
 	{
-		//Testing edge smoothing
 
-		// THIS IS HARDCODED, SHOULD USE STATES MIRRORING POSITION IN THE SPRITESHEET
 		int index = 0;
 		if (GetVisibilityTileAt({ (*item).x, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE
 			index += 1;
@@ -320,7 +322,7 @@ void FowManager::SmoothEntitiesOuterEdges(std::list<iPoint> frontier)
 			switch (index)
 			{
 			case 0:
-				// A tile in the last frontier will never be a FOGGED area, so we can assume it's an outer corner
+				// A tile in the last frontier might not be a FOGGED area, so we will assume it's an outer corner to perform more checks
 				corners.push_back(*item);
 				break;
 			case 1:
@@ -361,33 +363,12 @@ void FowManager::SmoothEntitiesOuterEdges(std::list<iPoint> frontier)
 				break;
 			}
 		}
-		else
-		{
-			/*switch (index)
-			{
-
-			case 3:
-				SetVisibilityTile((*item), FOW_TileState::UTOF_SMTH_TLEFT_CORNER );
-				break;
-
-			case 6:
-				SetVisibilityTile((*item), FOW_TileState::UTOF_SMTH_DLEFT_CORNER );
-				break;
-
-			case 9:
-				SetVisibilityTile((*item), FOW_TileState::UTOF_SMTH_TRIGHT_CORNER );
-				break;
-
-			case 12:
-				SetVisibilityTile((*item), FOW_TileState::UTOF_SMTH_DRIGHT_CORNER );
-				break;
-			}*/
-		}
 
 		for (std::list<iPoint>::const_iterator item = corners.cbegin(); item != corners.cend(); item++)
 		{
-			//Since we know these elements where in a frontier, thus they can only be corners, we will check the diagonal tiles
-			//since there can only be one tile that is still unvisited, when we find it we will: continue; the loop
+			//Since we know these elements where in a frontier and did not become a smoothed tile, thus they might be corners, 
+		    // we will check the diagonal tiles since there can only be one tile that is still unvisited, when we find it we 
+		    // will continue with the loop (hence the if-else if)
 			if (GetVisibilityTileAt({ (*item).x - 1, (*item).y - 1 }) == int8_t(FOW_TileState::UNVISITED)) //Check ABOVE-LEFT
 			{
 				SetVisibilityTile((*item), FOW_TileState::UTOF_SMTH_TLEFT_OUT_CORNER);
@@ -421,8 +402,9 @@ void FowManager::ManageEntitiesVisibility()
 	for (std::list<FOW_Entity*>::iterator item = fow_entities.begin(); item != fow_entities.end(); ++item)
 	{
 		int8_t st = GetVisibilityTileAt((*item)->position);
-		// If the tile isn't visible or a smoothing 
-		if (st != (int8_t)FOW_TileState::UNVISITED && st != (int8_t)FOW_TileState::FOGGED)
+		// If the tile isn't visible or a smoothing tile from black to Fogged
+		if (st != (int8_t)FOW_TileState::UNVISITED && st != (int8_t)FOW_TileState::FOGGED 
+			&& st < (int8_t)FOW_TileState::UTOF_SMTH_TOP &&  st < (int8_t)FOW_TileState::UTOF_SMTH_TRIGHT_OUT_CORNER)
 		{
 			(*item)->is_visible = true;
 		} else {
@@ -433,6 +415,7 @@ void FowManager::ManageEntitiesVisibility()
 
 void FowManager::ManageEntitiesFOWManipulation()
 {
+	//Iterate all fow_entities
 	for (std::list<FOW_Entity*>::iterator item = fow_entities.begin(); item != fow_entities.end(); ++item)
 	{
 		// If an entity provides visibility and has moved
@@ -440,7 +423,8 @@ void FowManager::ManageEntitiesFOWManipulation()
 		{
 			//We store the LOS of the current entity, since the LOS will change this will be our previous LOS
 			std::list<iPoint> prev_LOS = (*item)->LOS;
-			//If the Entity moved, we update the LOS position 
+
+			//Since the Entity moved, we update the LOS position and make the tiles contained inside it visible 
 			for (std::list<iPoint>::iterator tile = (*item)->LOS.begin(); tile != (*item)->LOS.end(); tile++)
 			{
 				(*tile).x += (*item)->motion.x;
@@ -451,7 +435,7 @@ void FowManager::ManageEntitiesFOWManipulation()
 
 			(*item)->moved_in_map = false;
 
-			//Now iterate the tiles that we left to determine its state (fogged or unvisited depending of in if we leave a scouting trail)
+			//Now iterate the tiles that the entity left behind to determine its state (fogged or unvisited depending of in if we leave a scouting trail)
 			for (std::list<iPoint>::const_iterator tile = prev_LOS.cbegin(); tile != prev_LOS.end(); tile++)
 			{
 				if (TileInsideList((*tile), (*item)->LOS) == false)
@@ -463,6 +447,7 @@ void FowManager::ManageEntitiesFOWManipulation()
 				}
 			}
 
+			//Now, smooth the edges of the fontier of the entity 
 			SmoothEdges((*item));
 		}
 	}
