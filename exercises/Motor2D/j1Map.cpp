@@ -85,6 +85,9 @@ void j1Map::Draw()
 					// To get the rect to blit our tiles that are diferent than visible, 
 					// use the function GetFOWMetaRect from FowManager
 
+					// Remember that the texture of that contains the fog of war tiles it's called meta_FOW and it's inside 
+					// the FowManager 
+
 
 					// TODO 5: You achieved printing a tile over the map, now do it for all states. 
 					// EXPAND the code you just wrote in TODO 4 to take into account the following:
@@ -92,6 +95,36 @@ void j1Map::Draw()
 					// we only need to manage those tiles that will need to print multiple times over the tile.
 					// Like for instance all the UTOF_SMTH TileStates, which need to first print a FOGGED tile, then 
 					// their state st over that.
+					// UNCOMMENT the parts of the code below and fill in THE BLANKS this all this function must substitute
+					// what we did in TODO 4
+
+					//If the tile is FOGGED or any state different than visible and unvisited
+					
+					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED)
+					{
+						//If we find ourselves in a special state (FOGGED area that has to be smoothed on top)
+						if (st >= FOW_TileState::UTOF_SMTH_TOP && st <= FOW_TileState::UTOF_SMTH_TRIGHT_OUT_CORNER)
+						{
+							// Blit as if tile is FOGGED
+							//FILL IN THE BLANK--------------------------
+					
+
+							// Calculate & Blit the correspondant smooth tile
+							//FILL IN THE BLANK--------------------------
+
+						}
+						else // If we're not a special case
+						{
+							/*SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
+							App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);*/
+						}
+					}
+					else if (st == FOW_TileState::UNVISITED)
+					{
+						//This is just for our case of tile grass going over the normal dimensions of a tile
+						/*SDL_Rect r = App->fow_manager->GetFOWMetaRect(st);
+						App->render->Blit(App->fow_manager->meta_FOW, pos.x, pos.y, &r);*/
+					}
 
 				}
 			}

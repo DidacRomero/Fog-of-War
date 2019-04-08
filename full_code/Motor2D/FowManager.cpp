@@ -431,8 +431,10 @@ void FowManager::ManageEntitiesFOWManipulation()
 			//Since the Entity moved, we update the LOS position and make the tiles contained inside it visible 
 			for (std::list<iPoint>::iterator tile = (*item)->LOS.begin(); tile != (*item)->LOS.end(); tile++)
 			{
-				// TODO 3.5 Since we moved we update the position of the tiles in the LOS (Line of Sight), 
+				// TODO 3.5 Since we moved we needupdate the position of the tiles in the LOS (Line of Sight), 
 				// effectively moving all the LOS area to the current position we are in.
+				// Remember that each time an entity moves from one tile to another its variable motion is updated with
+				// the total movement in tile distance
 				(*tile) += (*item)->motion;
 
 

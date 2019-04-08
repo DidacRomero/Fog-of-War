@@ -56,7 +56,7 @@ void j1Map::Draw()
 					// TODO 1:Right now all tiles are being drawn by the Blit below.
 					// Check the current  FOW_TileState of x and y map coordinates in the visbility map.
 					// Use the 2 variables described before (x and y) in the call of the function.
-					// If the tile we are checking is diferent than the UNVISITED FOW_TileState, print it .
+					// If the tile we are checking is diferent than the UNVISITED FOW_TileState, print it.
 
 					if (App->fow_manager->GetVisibilityTileAt({ x,y }) != (int8_t)FOW_TileState::UNVISITED)
 					{
@@ -87,6 +87,9 @@ void j1Map::Draw()
 					// To get the rect to blit our tiles that are diferent than visible, 
 					// use the function GetFOWMetaRect from FowManager
 
+					// Remember that the texture of that contains the fog of war tiles it's called meta_FOW and it's inside 
+					// the FowManager 
+
 					//This is the solution for TODO 4, but in TODO 5 we expand it
 					/*if (st == FOW_TileState::FOGGED)
 					{
@@ -100,6 +103,8 @@ void j1Map::Draw()
 					// we only need to manage those tiles that will need to print multiple times over the tile.
 					// Like for instance all the UTOF_SMTH TileStates, which need to first print a FOGGED tile, then 
 					// their state st over that.
+					// UNCOMMENT the parts of the code below and fill in THE BLANKS this all this function must substitute
+					// what we did in TODO 4
 
 					//If the tile is FOGGED or any state different than visible and unvisited
 					if (st != FOW_TileState::VISIBLE && st != FOW_TileState::UNVISITED)
