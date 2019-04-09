@@ -190,6 +190,8 @@ To implement the take on tile based fog of war we will follow a series of steps,
 
 Debug Functionalities: **F1** Toggle Fog of war on/off, **1** Toggle Grid on/off, **2** Reset visbility
 
+In case that what to see gifs and solutions are still broken: check them in the original README https://github.com/DidacRomero/Fog-of-War#implementation-code-exercise-get-the-algorithm-running .
+
 ### TODO 1
 Here we must understand how to get the visibility of a tile from the visibility map inside the FowManager Module. Hint: the function to get the info is called ``GetVisibilityTileAt``
 TODO 1 Right now all tiles are being drawn by the Blit below. Check the current  FOW_TileState of x and y map coordinates in the visbility map. Use the 2 variables described before (x and y) in the call of the function. If the tile we are checking is diferent than the UNVISITED FOW_TileState, print it .
