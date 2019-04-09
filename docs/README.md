@@ -13,12 +13,21 @@ Since uncertainty can be a very powerful mechanic of a game, specially in strate
 
 The first time we saw the concept of Fog of War applied in a video game was in the Turn-based Wargame [_Empire_](https://en.wikipedia.org/wiki/Empire_(1977_video_game)) by [_Walter Bright_](https://en.wikipedia.org/wiki/Walter_Bright). In this game black squared tiles covered unvisited areas.
 
+<p align="center">
 <img src="Images/EmpireOriginal.png" style="display: block; margin: auto;" />
+
+<p align="center">
+	Empire by Walter Bright
+</p>
 
 ## Classic Fog of War in Strategy Games
 [_Warcraft II: Tides of Darkness_](https://en.wikipedia.org/wiki/Warcraft_II:_Tides_of_Darkness) by [_Blizzard Entertainment_](https://www.blizzard.com/en-us/) presents an expansion in the concept of Fog of war in video games by adding a “fogged zone”, in which, if you have scouted that area, you’ll be able to see the map but not the enemies that might be moving or preparing an attack under its cover. 
 
 ![WarcraftII FOW](Images/Warcraft%20II%20FOW.gif "Warcraft 2 Fog of War system")
+
+<p align="center">
+	Warcraft II: Tides of Darkness by Blizzard Entertainment
+</p>
 
 From that moment on, later strategy games such as _Age of Empires_ or _League of Legends_ to list a few, will implement fogged areas, and these games will let the fogged state reveal information in different ways. For instance, in Age of Empires, you may scout an area where there’s a building, and once you leave the area you still see the building with its life points at the moment of sight. But when you come back the building might have been demolished entirely, and you will only have that information if you re-scout the area with your units. 
 
@@ -54,10 +63,12 @@ We have seen now which aspects are comprised in the use of Fog of War mechanics 
 Some games maps, specially 2D games, are made up of tiles which can have different shapes: orthogonal squared tiles, isometric rectangle tiles or hexagonal tiles. Note that you can still apply this approach to a game with different characteristics in terms of the map, but it will need a way to abstractly partition the terrain that more often than not will make it harder to implement this method.
 
 ![Tile based_FOW](Images/Tile-Based Fog of War.png)
-
+<p align="center">
+	Extracted photo form the article Making a game in less than 13kb, referenced at the end of the web
+</p>
 In this approach, we will keep track of all the tiles in the map, to know what must be done at each tile in terms of visuals and logic, specially regarding entities such as enemies or structures.
 
-There are a couple of ways to do this, but generally we have a 2D container with the same size as our map. In the container, we will store **ID**’s referring to the state of each tile in its correspondent position, to know if it’s **unvisited**, covered in **fog** or completely **clear** (visible). With this approach we can also have metadata stored in another equal in size 2D container in order to create zones with special conditions, such as always visible areas, areas only visible for certain entities, bushes that hide everything under them until you are inside the bush etc.
+There are a couple of ways to do this, but generally we have a 2D container with the same size as our map. In the container, we will store **ID**’s referring to the state of each tile in its correspondent position, to know if it’s **unvisited**, covered in **fog** or completely **visible**. With this approach we can also have metadata stored in another equal in size 2D container in order to create zones with special conditions, such as always visible areas, areas only visible for certain entities, bushes that hide everything under them until you are inside the bush etc.
 
 The main drawback of this approach is that as tiles have edges, we will need to think and code a solution to smooth the edges of the tiles.
 
@@ -413,6 +424,7 @@ I also wanted to thank all the amazing people who is referrenced below or at som
   * [Fog of War by Roger Tello](https://github.com/rogerta97/FogOfWar)
   * [Line Of Sight or Shadow Casting in 2D](https://www.youtube.com/watch?v=fc3nnG2CG8U)
   * [2D Visibility](https://www.redblobgames.com/articles/visibility/)
+  * [Making a game in less than 13kb by Ernesto Torres] (https://ehtd.wordpress.com/2014/09/16/making-a-game-in-less-than-13kb-part-2/)
 * **Implementation: A take on tile based fog of war**
   * [A Story of Fog and War](https://technology.riotgames.com/news/story-fog-and-war)
   * [Fog of War by Roger Tello](https://github.com/rogerta97/FogOfWar)
