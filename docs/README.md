@@ -186,6 +186,8 @@ With this algorithm we use powers of 2 to determine all the outcomes of visiting
 # Implementation: Code exercise! Get the algorithm running
 To implement the take on tile based fog of war we will follow a series of steps, a series of TODO's to understand and complete a fog of war manager module. Note that some TODO's might require to uncomment certain parts of the code. You can use Ctrl + Shft + F in Visual Studio to search directly each TODO.
 
+Debug Functionalities: **F1** Toggle Fog of war on/off, **1** Toggle Grid on/off, **2** Reset visbility
+
 ### TODO 1
 Here we must understand how to get the visibility of a tile from the visibility map inside the FowManager Module. Hint: the function to get the info is called ``GetVisibilityTileAt``
 TODO 1 Right now all tiles are being drawn by the Blit below. Check the current  FOW_TileState of x and y map coordinates in the visbility map. Use the 2 variables described before (x and y) in the call of the function. If the tile we are checking is diferent than the UNVISITED FOW_TileState, print it .
@@ -204,7 +206,11 @@ TODO 1 Right now all tiles are being drawn by the Blit below. Check the current 
 </p>
 </details>
 
-What you should see
+What you should see:
+
+<p align="center">
+  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%201%20Solution.PNG">
+</p>
 
 ### TODO 2
 Here we are trying to understand how our own entities will handle the most basic interactions with the Fog of War module. This way, when you include this module into the game you'll understand how to without changing stuff from the Fow Manager your Fog of War module is running in no time! First learn how to tell the FowManager to create a FOW_Entity, and keep track of that entity. Now, we must keep our value for the bool that determines if we are visble in sync with the bool inside the FOW_Entity we have as reference.
@@ -235,8 +241,13 @@ Inside Player
 </p>
 </details>
 
-What you should see
+What you should see:
 
+<p align="center">
+  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%202%20Solution.PNG">
+</p>
+ 
+ 
 ### TODO 3
 The goal of this step is that you apply the concept explained before on how entities can manipulate the visibility map, how they determine which tiles will have their visibility changed in the visibility map, and actually changing them. 
 
@@ -270,7 +281,11 @@ Inside  Player
 </p>
 </details>
 
-What you should see
+What you should see:
+
+<p align="center">
+  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%203%20Solution.gif">
+</p>
 
 ### TODO 4
 This TODO is an introduction on how to manage diferent tile states, for now we will manage printing the FOGGED tiles accordingly.
@@ -295,7 +310,11 @@ Solution
 </p>
 </details>
 
-What you should see 
+What you should see:
+
+<p align="center">
+  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%204%20Solution.gif">
+</p>
 
 ### Homework 
 ### TODO 5
@@ -319,7 +338,13 @@ Since we will have to print smoothed tiles we need to manage the visual complexi
 </p>
 </details>
 
-What you should see
+What you should see:
+
+After uncommenting the part of TODO 6 UNCOMMENT. Some tiles of the meta_FOW spritesheet print in the borders.
+
+<p align="center">
+  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%205%20Solution.PNG">
+</p>
 
 ### TODO 6
 We're almost there! Right know we need to properly understand how the aware tile selection algorithm works and is applied into our code.
@@ -339,10 +364,11 @@ In this TODO we will understand how to identify which tiles will add numbers to 
 </p>
 </details>
 
-What you should see
+What you should see after uncommenting: Final UNCOMMENT 
 
-Uncommenting: Final UNCOMMENT 
-
+<p align="center">
+  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/Uncommenting%20LAST%20UNCOMMENT.gif">
+</p>
 
 
 # Improvements on the system
