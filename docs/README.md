@@ -118,7 +118,9 @@ As we will see during the implementation, in order to smooth the tiles we will n
 
 * **Regarding Entities**
 
-We will need some sort of abstraction of the entities you have in your game where you plan to implement FOW. We will need to have the entity position, and in the case a given entity manipulates the visibility map, we will also keep its visibility frontier and its LOS (Line of Sight).
+We will need some sort of abstraction of the entities you have in your game where you plan to implement FOW. This abstraction will need to have a position, a value to detremine if its visible and lists for the frontier and the line of sight (LOS). This entity will be managed by our Fog of war module. But even though, your entities of the game should be able to tell the fog of war manager to create such entity and keep a pointer to it. This way the fog of war module doesn't have to query into other modules, instead your entities will set the position of these FOW entities and receive if they should be visble or not. Note that your entities should have a variable like ``bool im_visible`` which determines if they will be printed or not.
+This is the entity abstraction i've created for the exercise we will be coding later.
+![FOW_Entity](Images/FOW_Entity photo.PNG "Example of an abstraction of an entity for a Fog of War Module")
 
 ## Understanding the Algorithm
 Let’s start from the point in which we already have a map created and some entities spawned!
