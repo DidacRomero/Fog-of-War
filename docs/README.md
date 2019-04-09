@@ -413,7 +413,7 @@ I also wanted to thank all the amazing people who is referrenced below or at som
   * [Fog of War by Roger Tello](https://github.com/rogerta97/FogOfWar)
   * [Line Of Sight or Shadow Casting in 2D](https://www.youtube.com/watch?v=fc3nnG2CG8U)
   * [2D Visibility](https://www.redblobgames.com/articles/visibility/)
-  * [Making a game in less than 13kb by Ernesto Torres] (https://ehtd.wordpress.com/2014/09/16/making-a-game-in-less-than-13kb-part-2/)
+  * [Making a game in less than 13kb by Ernesto Torres](https://ehtd.wordpress.com/2014/09/16/making-a-game-in-less-than-13kb-part-2/)
 * **Implementation: A take on tile based fog of war**
   * [A Story of Fog and War](https://technology.riotgames.com/news/story-fog-and-war)
   * [Fog of War by Roger Tello](https://github.com/rogerta97/FogOfWar)
