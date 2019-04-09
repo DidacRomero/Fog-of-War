@@ -197,7 +197,12 @@ TODO 1 Right now all tiles are being drawn by the Blit below. Check the current 
 					// If the tile we are checking is diferent than the UNVISITED FOW_TileState, print it .
 ```
 
-Solution
+<details> 
+  <summary>Solution (click to open)</summary>
+  <p> 
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSolTODO1.PNG">
+</p>
+</details>
 
 What you should see
 
@@ -220,7 +225,15 @@ Inside Player
  
   // TODO 2.4: Exactly as TODO 2.2 Update our variable visible
 ```
-Solution
+<details> 
+  <summary>Solution (click to open)</summary>
+  <p> 
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSOLTODO2_1.PNG">
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSolTODO2_2.PNG">
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSolTODO2_3.PNG">
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSolTODO2_4.PNG">
+</p>
+</details>
 
 What you should see
 
@@ -248,7 +261,14 @@ Inside  Player
 				// private function will allow you to do so
 ```
 
-Solution
+<details> 
+  <summary>Solution (click to open)</summary>
+  <p> 
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSolTODO3_1.PNG">
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSolTODO3_2.PNG">
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSolTODO3_5.PNG">	  
+</p>
+</details>
 
 What you should see
 
@@ -268,6 +288,13 @@ This TODO is an introduction on how to manage diferent tile states, for now we w
 ```
 Solution
 
+<details> 
+  <summary>Solution (click to open)</summary>
+  <p> 
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSolTODO4.PNG">	  
+</p>
+</details>
+
 What you should see 
 
 ### Homework 
@@ -285,7 +312,12 @@ Since we will have to print smoothed tiles we need to manage the visual complexi
 					// what we did in TODO 4
 ```
 
-Solution
+<details> 
+  <summary>Solution (click to open)</summary>
+  <p> 
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSolTODO5.PNG">	  
+</p>
+</details>
 
 What you should see
 
@@ -300,7 +332,12 @@ In this TODO we will understand how to identify which tiles will add numbers to 
 		// Remember that the same contition will be valid for all 4 checks, once you have one, copy-paste the if in the
 		// next if(false) statement.
 ```
-Solution
+<details> 
+  <summary>Solution (click to open)</summary>
+  <p> 
+<img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/CodeSolTODO6.PNG">	  
+</p>
+</details>
 
 What you should see
 
