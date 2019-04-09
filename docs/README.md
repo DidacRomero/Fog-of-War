@@ -13,21 +13,12 @@ Since uncertainty can be a very powerful mechanic of a game, specially in strate
 
 The first time we saw the concept of Fog of War applied in a video game was in the Turn-based Wargame [_Empire_](https://en.wikipedia.org/wiki/Empire_(1977_video_game)) by [_Walter Bright_](https://en.wikipedia.org/wiki/Walter_Bright). In this game black squared tiles covered unvisited areas.
 
-<p align="center">
-<img src="Images/EmpireOriginal.png" style="display: block; margin: auto;" />
-
-<p align="center">
-	Empire by Walter Bright
-</p>
 
 ## Classic Fog of War in Strategy Games
 [_Warcraft II: Tides of Darkness_](https://en.wikipedia.org/wiki/Warcraft_II:_Tides_of_Darkness) by [_Blizzard Entertainment_](https://www.blizzard.com/en-us/) presents an expansion in the concept of Fog of war in video games by adding a “fogged zone”, in which, if you have scouted that area, you’ll be able to see the map but not the enemies that might be moving or preparing an attack under its cover. 
 
 ![WarcraftII FOW](Images/Warcraft%20II%20FOW.gif "Warcraft 2 Fog of War system")
 
-<p align="center">
-	Warcraft II: Tides of Darkness by Blizzard Entertainment
-</p>
 
 From that moment on, later strategy games such as _Age of Empires_ or _League of Legends_ to list a few, will implement fogged areas, and these games will let the fogged state reveal information in different ways. For instance, in Age of Empires, you may scout an area where there’s a building, and once you leave the area you still see the building with its life points at the moment of sight. But when you come back the building might have been demolished entirely, and you will only have that information if you re-scout the area with your units. 
 
