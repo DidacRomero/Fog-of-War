@@ -54,9 +54,7 @@ We have seen now which aspects are comprised in the use of Fog of War mechanics 
 Some games maps, specially 2D games, are made up of tiles which can have different shapes: orthogonal squared tiles, isometric rectangle tiles or hexagonal tiles. Note that you can still apply this approach to a game with different characteristics in terms of the map, but it will need a way to abstractly partition the terrain that more often than not will make it harder to implement this method.
 
 ![Tile based_FOW](Images/Tile-Based Fog of War.png)
-<p align="center">
-	Extracted photo form the article Making a game in less than 13kb, referenced at the end of the web
-</p>
+
 In this approach, we will keep track of all the tiles in the map, to know what must be done at each tile in terms of visuals and logic, specially regarding entities such as enemies or structures.
 
 There are a couple of ways to do this, but generally we have a 2D container with the same size as our map. In the container, we will store **ID**’s referring to the state of each tile in its correspondent position, to know if it’s **unvisited**, covered in **fog** or completely **visible**. With this approach we can also have metadata stored in another equal in size 2D container in order to create zones with special conditions, such as always visible areas, areas only visible for certain entities, bushes that hide everything under them until you are inside the bush etc.
