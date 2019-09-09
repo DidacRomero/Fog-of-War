@@ -211,7 +211,9 @@ TODO 1 Right now all tiles are being drawn by the Blit below. Check the current 
 </details>
 
 What you should see:
-
+<p align="center">
+  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%201%20Solution.PNG">
+</p>
 
 
 ### TODO 2
