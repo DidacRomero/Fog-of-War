@@ -245,9 +245,7 @@ Inside Player
 
 What you should see:
 
-<p align="center">
-  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%202%20Solution.PNG">
-</p>
+![After completing TODO 2 you should see this](Images/TODO's%20Solutions/TODO%202%20Solution.PNG "After completing TODO 2 you should see this")
  
  
 ### TODO 3
@@ -285,9 +283,7 @@ Inside  Player
 
 What you should see:
 
-<p align="center">
-  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%203%20Solution.gif">
-</p>
+![After completing TODO 3 you should see this](Images/TODO's%20Solutions/TODO%203%20Solution.gif "After completing TODO 3 you should see this")
 
 ### TODO 4
 This TODO is an introduction on how to manage diferent tile states, for now we will manage printing the FOGGED tiles accordingly.
