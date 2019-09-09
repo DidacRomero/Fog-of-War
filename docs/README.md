@@ -211,10 +211,8 @@ TODO 1 Right now all tiles are being drawn by the Blit below. Check the current 
 </details>
 
 What you should see:
-<p align="center">
-  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%201%20Solution.PNG">
-</p>
 
+![After completing TODO 1 you should see this](Images/TODO's%20Solutions/TODO%201%20Solution.PNG "After completing TODO 1 you should see this")
 
 ### TODO 2
 Here we are trying to understand how our own entities will handle the most basic interactions with the Fog of War module. This way, when you include this module into the game you'll understand how to without changing stuff from the Fow Manager your Fog of War module is running in no time! First learn how to tell the FowManager to create a FOW_Entity, and keep track of that entity. Now, we must keep our value for the bool that determines if we are visble in sync with the bool inside the FOW_Entity we have as reference.
