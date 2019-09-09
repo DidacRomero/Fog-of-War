@@ -310,9 +310,7 @@ Solution
 
 What you should see:
 
-<p align="center">
-  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%204%20Solution.gif">
-</p>
+![After completing TODO 4 you should see this](Images/TODO's%20Solutions/TODO%204%20Solution.gif "After completing TODO 4 you should see this")
 
 ### Homework 
 ### TODO 5
@@ -340,9 +338,7 @@ What you should see:
 
 After uncommenting the part of TODO 6 UNCOMMENT. Some tiles of the meta_FOW spritesheet print in the borders.
 
-<p align="center">
-  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/TODO%205%20Solution.PNG">
-</p>
+![After completing TODO 5 you should see this](Images/TODO's%20Solutions/TODO%205%20Solution.PNG "After uncommenting the part of TODO 6 UNCOMMENT you should see this")
 
 ### TODO 6
 We're almost there! Right know we need to properly understand how the aware tile selection algorithm works and is applied into our code.
@@ -364,9 +360,7 @@ In this TODO we will understand how to identify which tiles will add numbers to 
 
 What you should see after uncommenting: Final UNCOMMENT 
 
-<p align="center">
-  <img src="https://github.com/DidacRomero/Fog-of-War/blob/master/docs/Images/TODO's%20Solutions/Uncommenting%20LAST%20UNCOMMENT.gif">
-</p>
+![After completing TODO 6 you should see this](Images/TODO's%20Solutions/Uncommenting%20LAST%20UNCOMMENT.gif "After completing TODO 6 you should see this")
 
 
 # Improvements on the system
